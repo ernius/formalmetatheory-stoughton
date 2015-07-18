@@ -1,0 +1,154 @@
+\documentclass{article} 
+
+% no margen
+\usepackage[margin=0.1in]{geometry}
+\usepackage{graphicx}
+
+%\usepackage[bw,references]{latex/agda}
+%\usepackage[conor,references]{latex/agda}
+\usepackage[hidelinks]{hyperref}
+\usepackage[references,links]{agda}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{textgreek}
+\usepackage{catchfilebetweentags}
+\usepackage{tipa}
+\usepackage{bussproofs}
+
+\newcommand{\Nat}{\ensuremath{\mathbb{N}}}
+\newcommand{\Real}{\ensuremath{\mathbb{R}}}
+\newcommand{\Var}{\ensuremath{\mathsf{V}}}
+\newcommand{\Vars}{\Var}
+\newcommand{\Terms}{\ensuremath{\mathsf{\Lambda}}}
+\newcommand{\Subst}{\ensuremath{\mathsf{\Sigma}}}
+\newcommand{\Restr}{\rest}
+
+\newcommand{\ddefs}{\ensuremath{=_{\mathit{def}}}} 
+\newcommand{\ddef}[2]{\ensuremath{#1 \ddefs #2}} 
+% \triangleq
+
+\newcommand{\free}{\textsl{free}}
+\newcommand{\freer}[2]{\ensuremath{#1 *#2}}
+\newcommand{\samefree}[2]{\ensuremath{#1 \sim_{*} #2}}
+\newcommand{\ssamefree}[3]{\ensuremath{\res{\samefree{#1}{#2}}{#3}}}
+\newcommand{\fv}[1]{\ensuremath{\mathit{FV}\,#1}}
+\newcommand{\comm}[1]{\textsf{#1}}
+\newcommand{\cnst}[1]{\textsl{#1}}
+\newcommand{\vart}{\textsf{V}}
+\newcommand{\codom}{range}
+\newcommand{\res}[2]{\ensuremath{#1\downharpoonright#2}}
+\newcommand{\rest}{\textsf{P}}
+\newcommand{\reseqs}{\ensuremath{\cong}}
+\newcommand{\freshr}[2]{\ensuremath{#1\ \#\,#2}}
+\newcommand{\fresh}[3]{\ensuremath{#1\ \#\,\,\res{#2}{#3}}}
+\newcommand{\subseq}[3]{\ensuremath{\res{#1 \reseqs #2}{#3}}}
+\newcommand{\sexteq}[2]{\ensuremath{#1 \reseqs #2}}
+\newcommand{\alpeq}{\ensuremath{\sim_{\alpha}}}
+\newcommand{\alcnv}[2]{\ensuremath{#1\alpeq #2}}
+\newcommand{\subscnv}[3]{\ensuremath{\res{#1\alpeq #2}{#3}}}
+\newcommand{\longred}[2]{\ensuremath{#1\,\mbox{$\to\!\!\!\!\!\to$}\,#2}}
+\newcommand{\idsubst}{\ensuremath{\iota}}
+\newcommand{\upd}[3]{\ensuremath{#1, #2 {:=} #3}}
+%<\!\!\!+
+\newcommand{\subsap}[2]{\ensuremath{#1 #2}}
+\newcommand{\choice}[1]{\ensuremath{\chi\,#1}}
+\newcommand{\scomp}[2]{\ensuremath{#1 \circ #2}}
+
+\newcommand{\preds}{\ensuremath{\rightrightarrows}}
+\newcommand{\pred}[2]{\ensuremath{#1 \preds #2}}
+
+\newtheorem{lema}{Lemma}
+\newtheorem{prop}{Proposition}
+\newtheorem{coro}{Corollary}
+\newcommand{\epf}{\hfill\ensuremath{\Box}}
+\newcommand{\epff}{\ensuremath{\Box}}
+
+% Aca son nuevas mias !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\newcommand{\type}[3]{\ensuremath{#1 \vdash #2 : #3}}
+\newcommand{\goes}[3]{\ensuremath{#1 : #2 \rightharpoonup #3}}
+\newcommand{\betacontr}[2]{\ensuremath{#1 \triangleright #2}}
+\newcommand{\restfresh}[3]{\ensuremath{#1 \mathbin{\#\!\!\downharpoonright} (#2,#3)}}
+\begin{document}
+
+\section{Types}
+\label{sec:types}
+
+\[ \alpha,\beta ::= \tau\ |\ \alpha \rightarrow \beta \]
+
+\subsection{Typing judgement}\label{sec:typing}
+
+\begin{center}
+\AxiomC{$x \in \Gamma$}
+\UnaryInfC{\type{\Gamma}{x}{\Gamma x} }
+\DisplayProof
+    \hskip 3em
+\AxiomC{\type{\Gamma}{M}{\alpha \rightarrow  \beta}}
+\AxiomC{\type{\Gamma}{N}{\alpha}}
+\BinaryInfC{\type{\Gamma}{M N}{\beta}}
+\DisplayProof
+    \hskip 3em
+\AxiomC{\type{\Gamma , x : \alpha}{M}{\beta}}
+\UnaryInfC{\type{\Gamma}{\lambda x.M}{\alpha \rightarrow \beta}}
+\DisplayProof
+\end{center}
+
+We define the inclusion between contexts $\Gamma \subseteq \Delta$\  as $\forall x \in \Gamma, x \in \Delta \wedge \Gamma x = \Delta x$. Next, we present two weakening lemmas of the typing judgement. The proofs are direct structural inductions on the typing relation.
+
+\begin{prop}[Weakening Lemma]
+  \begin{enumerate}
+  \item $\Gamma \subseteq \Delta, \type{\Gamma}{M}{\alpha} \Rightarrow  \type{\Delta}{M}{\alpha}$
+  \item $\freshr{x}{M} , \type{\Gamma}{M}{\alpha} \Rightarrow  \type{\Gamma , x : \beta}{M}{\alpha}$
+  \end{enumerate}
+\end{prop}
+
+The following proposition establish that all free variables of a term should appear in his typing context.
+
+\begin{prop}
+  $ \type{\Gamma}{M}{\alpha} , \freer{x}{M} \Rightarrow x \in \Gamma$
+\end{prop}
+
+We define a substitution $\sigma$\ goes from  $\Gamma$\ to $\Delta$ contexts, denoted as $\goes{\sigma}{\Gamma}{\Delta}$, iff $ \forall z \in \Gamma, \type{\Delta}{\sigma z}{\Gamma z}$. Some usefull direct properties are:
+
+\begin{prop}
+  \begin{enumerate}
+  \item $\goes{\iota}{\Gamma}{\Gamma}$
+  \item $\type{\Gamma}{M}{\alpha} \Rightarrow \goes{(\upd{\iota}{x}{M})}{\Gamma , x : \alpha}{\Gamma} $
+  \end{enumerate}
+\end{prop}
+
+Next we define the \emph{freeCxt}\ function that given any typing judge of a term returns a minimal typing context. We say minimal in the sense that it only contains the free variables of the typed term. The type assigned for each variable is the extracted from the typing judge. The previously explained semantic of this function can be resumed in the following properties. 
+
+\begin{prop}
+  \begin{enumerate}
+  \item $freeCxt(\type{\Gamma}{M}{\alpha}) \subseteq \Gamma$
+  \item $x \in freeCxt(\type{\Gamma}{M}{\alpha}) \Leftrightarrow \freer{x}{M}$
+  \item $\type{\Gamma}{M}{\alpha} \Rightarrow \type{freeCxt(\type{\Gamma}{M}{\alpha})}{M}{\alpha} $
+  \end{enumerate}
+\end{prop}
+
+We can now prove the following substitution lemma for the type judge. 
+
+\begin{prop}
+  $\type{\Gamma}{M}{\alpha}, \goes{\sigma}{\Gamma}{\Delta} \Rightarrow \type{\Delta}{M \sigma}{\alpha}$
+\end{prop}
+
+The proof is by induction in the typing judge. The variable and application cases are direct. For the abstraction case we have to prove \type{\Delta}{(\lambda y. M) \sigma}{\alpha}. Where $(\lambda y. M) \sigma$ is equal to $\lambda x . (M (\upd{\sigma}{y}{x}))$, where $y = \chi (\sigma , \lambda y . M)$. We use the last properties of \emph{freeCxt}\ functions to derive that exists a $\Gamma'$, equals to $freeCxt(\type{\Gamma}{\lambda x . (M (\upd{\sigma}{y}{x}))}{\alpha \rightarrow \beta})$, which contains only the free variables of $\lambda x . (M (\upd{\sigma}{y}{x}))$, $\Gamma' \subseteq \Gamma$ and $\type{\Gamma'}{{\lambda x . (M (\upd{\sigma}{y}{x}))}}{\alpha \rightarrow \beta}$. From the last typing judgmente, by syntax directed definition of the typing judge, we derive that $\type{\Gamma', x : \alpha}{M (\upd{\sigma}{y}{x})}{\beta}$. Besides by hypothesis $\goes{\sigma}{\Gamma}{\Delta}$, so by definition \goes{\sigma}{\Gamma'}{\Delta} because of $\Gamma' \subseteq \Gamma$. Then we can prove that $\goes{(\upd{\sigma}{y}{x})}{\Gamma , y : \alpha}{\Delta , x : \alpha}$\ because of the second weakening lemma and that by $\chi$\ lemma \restfresh{y}{\sigma}{\lambda y.M}
+
+Then applying the inductive hypothesis
+
+% obtained from the last \emph{freeCxt} property, that is, we perform the induction over a typing with only the free variables of the typed term.
+
+
+From this result is direct to prove the following one that says that the typing relation is preserved under $\beta$-contraction.
+
+\begin{coro}
+  $\type{\Gamma}{M}{\alpha}, \betacontr{M}{N} \Rightarrow \type{\Gamma}{N}{\alpha}$
+\end{coro}
+
+Finally using that if \type{\Gamma}{M \iota}{\alpha}\ then \type{\Gamma}{M}{\alpha}\ and Corrolary 1 we can directly prove that the typing judge is preserved under $\alpha$-conversion.
+
+\begin{prop}
+  $\type{\Gamma}{M}{\alpha}, M \alpeq N \Rightarrow \type{\Gamma}{N}{\alpha}$
+\end{prop}
+
+\end{document}

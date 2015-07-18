@@ -1,0 +1,129 @@
+\documentclass{article} 
+
+% no margen
+\usepackage[margin=0.1in]{geometry}
+\usepackage{graphicx}
+
+%\usepackage[bw,references]{latex/agda}
+%\usepackage[conor,references]{latex/agda}
+\usepackage[hidelinks]{hyperref}
+\usepackage[references,links]{agda}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{textgreek}
+\usepackage{catchfilebetweentags}
+\usepackage{tipa}
+
+%math
+\newcommand{\alp}{\ensuremath{\alpha}}
+\newcommand{\lamb}{\ensuremath{\lambda}}
+\newcommand{\alphaeqsym}{\ensuremath{\sim_\alpha}}
+\newcommand{\choice}{\ensuremath{\chi}}
+
+%Agda
+\newcommand{\freshin}[2]{\ensuremath{#1 \mathbin{\AgdaDatatype{\#}} #2}}
+\newcommand{\lambAg}[2]{\ensuremath{\AgdaInductiveConstructor{ƛ}\, #1\, #2}}
+\newcommand{\inAg}{\ensuremath{\mathbin{\AgdaFunction{∈}}}}
+\newcommand{\ninAg}{\ensuremath{\mathbin{\AgdaFunction{∉}}}}
+\newcommand{\neqAg}{\ensuremath{\mathbin{\AgdaInductiveConstructor{≢}}}}
+\newcommand{\ap}[2]{#1 \ensuremath{\mathbin{\AgdaInductiveConstructorFunction{·}} #2}}
+\newcommand{\var}[1]{\ensuremath{\AgdaInductiveConstructorFunction{v}\, #1}}
+\newcommand{\fv}{\ensuremath{{\AgdaFunction{fv}}\,}}
+\newcommand{\perm}{\ensuremath{\mathbin{\AgdaFunction{∙}}}}
+\newcommand{\perma}{\ensuremath{\mathbin{\AgdaFunction{∙}_a}}}
+\newcommand{\free}{\ensuremath{\mathbin{\AgdaFunction{*}}}}
+\newcommand{\choiceAg}{\ensuremath{\AgdaFunction{χ}\,}}
+\newcommand{\choiceAgaux}{\ensuremath{\AgdaFunction{χ'}\,}}
+\newcommand{\alpeqAg}{\ensuremath{\mathbin{\AgdaDatatype{∼α}}}}
+\newcommand{\swap}[3]{\ensuremath{(#1 \mathbin{\AgdaFunction{∙}} #2)\, #3}}
+
+% \newcommand{\agdaf}[1]{\ensuremath{\AgdaFunction{#1}\,}}
+% \newcommand{\agdaD}[1]{\ensuremath{\AgdaDatatype{#1}\,}}
+% \newcommand{\agdav}[1]{\ensuremath{\AgdaBound{#1}\,}}
+
+\DeclareUnicodeCharacter{411}{\textipa{\textcrlambda}}
+\DeclareUnicodeCharacter{65288}{(}
+\DeclareUnicodeCharacter{65289}{)}
+\DeclareUnicodeCharacter{8788}{\ensuremath{\coloneqq}}
+\DeclareUnicodeCharacter{8336}{\ensuremath{_a}}
+\DeclareUnicodeCharacter{8799}{\ensuremath{\overset{?}{=}}}
+\DeclareUnicodeCharacter{8759}{\ensuremath{\dblcolon}}
+\DeclareUnicodeCharacter{8718}{\ensuremath{\square}}
+\DeclareUnicodeCharacter{9657}{\ensuremath{\triangleright}}
+
+\begin{document}
+
+\begin{minipage}{0.5\linewidth}
+\AgdaTarget{Λ}
+\ExecuteMetaData[Term.tex]{term} 
+\end{minipage}
+\begin{minipage}{0.5\linewidth}
+\ExecuteMetaData[Term.tex]{cxt} \hspace{0.5px}
+\AgdaTarget{⊢} 
+\ExecuteMetaData[Term.tex]{type} 
+\end{minipage}
+
+\begin{minipage}{0.5\linewidth}
+\AgdaTarget{⇀} \ExecuteMetaData[Substitution.tex]{sigmatype}
+\hspace{0.5px}
+
+\AgdaTarget{lemmaWeakening:⇀}
+\ExecuteMetaData[Substitution.tex]{sigmatypeweakening}
+\end{minipage}
+\begin{minipage}{0.5\linewidth}
+\AgdaTarget{lemmaWeakening⊢}
+\ExecuteMetaData[Term.tex]{typeweakening} \hspace{0.5px}
+
+\AgdaTarget{lemmaWeakening⊢++} \ExecuteMetaData[Term.tex]{type++}
+\hspace{0.5px}
+
+\AgdaTarget{lemmaWeakening⊢∈∷} 
+\ExecuteMetaData[Term.tex]{typein} 
+
+\AgdaTarget{lemma\#⊢} 
+\ExecuteMetaData[Term.tex]{typefresh}
+\end{minipage}
+
+\begin{minipage}{0.5\linewidth}
+  \AgdaTarget{lemma⊢σv∉}
+  \ExecuteMetaData[Substitution.tex]{typesubstvarnotin} \hspace{0.5px}
+
+  \AgdaTarget{lemma⊢σv∈}
+  \ExecuteMetaData[Substitution.tex]{typesubstvarin} \hspace{0.5px}
+
+  \AgdaTarget{lemma⊢σM}
+  \ExecuteMetaData[Substitution.tex]{typesusbstterm} \hspace{0.5px}
+
+  \AgdaTarget{lemmaσχ} \ExecuteMetaData[Substitution.tex]{sigmachi}
+  \hspace{0.5px}
+
+  \AgdaTarget{lemma⊢σ++} \ExecuteMetaData[Substitution.tex]{sigma++}
+\end{minipage}
+\begin{minipage}{0.5\linewidth}
+  \AgdaTarget{▹}
+  \ExecuteMetaData[SubstitutionLemmas.tex]{betacontraction}
+  \hspace{0.5px}
+
+  \AgdaTarget{lemma⊢▹}
+  \ExecuteMetaData[SubstitutionLemmas.tex]{typebeta}
+  \ExecuteMetaData[SubstitutionLemmas.tex]{typebetaproof} 
+\end{minipage}
+
+\begin{minipage}{0.5\linewidth}
+  \AgdaTarget{lemma⊢ι}
+  \ExecuteMetaData[SubstitutionLemmas.tex]{typeiota}
+\end{minipage}
+\begin{minipage}{0.5\linewidth}
+  \ExecuteMetaData[SubstitutionLemmas.tex]{typeiotaproof}
+\end{minipage}
+
+
+\begin{minipage}{0.33\linewidth}
+  \AgdaTarget{lemma⊢α}
+  \ExecuteMetaData[SubstitutionLemmas.tex]{typealpha}
+\end{minipage}
+\begin{minipage}{0.67\linewidth}
+  \ExecuteMetaData[SubstitutionLemmas.tex]{typealphaproof}
+\end{minipage}
+
+\end{document}

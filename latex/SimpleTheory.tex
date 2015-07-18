@@ -1,0 +1,107 @@
+\documentclass{article} 
+
+% no margen
+\usepackage[margin=0.1in]{geometry}
+\usepackage{graphicx}
+
+%\usepackage[bw,references]{latex/agda}
+%\usepackage[conor,references]{latex/agda}
+\usepackage[hidelinks]{hyperref}
+\usepackage[references,links]{agda}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{textgreek}
+\usepackage{catchfilebetweentags}
+\usepackage{tipa}
+
+%math
+\newcommand{\alp}{\ensuremath{\alpha}}
+\newcommand{\lamb}{\ensuremath{\lambda}}
+\newcommand{\alphaeqsym}{\ensuremath{\sim_\alpha}}
+\newcommand{\restfresh}[3]{\ensuremath{#1 \mathbin{\#\!\!\downharpoonright} (#2,#3)}}
+\newcommand{\Nat}{\ensuremath{\mathbb{N}}}
+\newcommand{\Real}{\ensuremath{\mathbb{R}}}
+\newcommand{\Var}{\ensuremath{\mathsf{V}}}
+\newcommand{\Vars}{\Var}
+\newcommand{\Terms}{\ensuremath{\mathsf{\Lambda}}}
+\newcommand{\Subst}{\ensuremath{\mathsf{\Sigma}}}
+\newcommand{\Restr}{\rest}
+
+\newcommand{\ddefs}{\ensuremath{=_{\mathit{def}}}} 
+\newcommand{\ddef}[2]{\ensuremath{#1 \ddefs #2}} 
+% \triangleq
+
+\newcommand{\free}{\textsl{free}}
+\newcommand{\freer}[2]{\ensuremath{#1 *#2}}
+\newcommand{\samefree}[2]{\ensuremath{#1 \sim_{*} #2}}
+\newcommand{\ssamefree}[3]{\ensuremath{\res{\samefree{#1}{#2}}{#3}}}
+\newcommand{\fv}[1]{\ensuremath{\mathit{FV}\,#1}}
+\newcommand{\comm}[1]{\textsf{#1}}
+\newcommand{\cnst}[1]{\textsl{#1}}
+\newcommand{\vart}{\textsf{V}}
+\newcommand{\codom}{range}
+\newcommand{\res}[2]{\ensuremath{#1\downharpoonright#2}}
+\newcommand{\rest}{\textsf{P}}
+\newcommand{\reseqs}{\ensuremath{\equiv}}
+\newcommand{\freshr}[2]{\ensuremath{#1\ \#\,#2}}
+\newcommand{\fresh}[3]{\ensuremath{#1\ \#\,\,\res{#2}{#3}}}
+\newcommand{\subseq}[3]{\ensuremath{\res{#1 \reseqs #2}{#3}}}
+\newcommand{\alpeq}{\ensuremath{\sim_{\alpha}}}
+\newcommand{\subscnv}[3]{\ensuremath{\res{#1\alpeq #2}{#3}}}
+\newcommand{\longred}[2]{\ensuremath{#1\,\mbox{$\to\!\!\!\!\!\to$}\,#2}}
+\newcommand{\idsubst}{\ensuremath{\iota}}
+\newcommand{\upd}[3]{\ensuremath{#1, #2 := #3}}
+%<\!\!\!+
+\newcommand{\subsap}[2]{\ensuremath{#1 #2}}
+\newcommand{\choice}[1]{\ensuremath{\chi\,#1}}
+
+\newtheorem{lema}{Lemma}
+\newtheorem{prop}{Proposition}
+\newcommand{\epf}{\hfill\ensuremath{\Box}}
+\newcommand{\epff}{\ensuremath{\Box}}
+
+
+
+\begin{document}
+
+\section{$\chi$\ Lemmas}
+
+\begin{enumerate}
+\item 
+\item \[\forall \sigma \in \Subst, M \in \Lambda, \restfresh{\choice{(\sigma,M)}}{\sigma}{M}\]
+\end{enumerate}
+
+\section{Corollary 4}
+\begin{enumerate}
+\item 
+\item 
+\[ \forall M \in \Lambda,\sigma \in \Subst, x,y \in \Var, \restfresh{y}{\sigma}{\lambda x M} \Rightarrow (\lambda x M) \sigma \alpeq \lambda y  M(\upd{\sigma}{x}{y})   \]
+\end{enumerate}
+
+\section{Lemma 7}
+
+\[ \forall M,N \in \Lambda, x \in \Vars, \freer{x}{N} \wedge M \rightrightarrows N \Rightarrow \freer{x}{M} \]
+
+\subsection{Corollary Lemma 7}
+
+\[ \forall M,N \in \Lambda, x \in \Vars, \freshr{x}{M} \wedge M \rightrightarrows N \Rightarrow \freshr{x}{N} \]
+
+\section{Substitution Lemma for Parallel Reduction}
+
+Induction in $\rightrightarrows$\ relation.
+
+\begin{itemize}
+\item Case var: Immediate by definition of $\sigma \rightrightarrows \sigma'$.
+\item Case abs: Take $M \rightrightarrows M'$. The induction hypothesis is that for all $\sigma_1,\sigma_1'$ s.t. $\sigma_1 \rightrightarrows \sigma_1'$, $M \sigma_1 \rightrightarrows M' \sigma_1'$. Take now $\sigma,\sigma'$ s.t. $\sigma \rightrightarrows \sigma'$. We have to show $(\lambda x M) \sigma \rightrightarrows (\lambda x M') \sigma'$. The left hand side is $\lambda y (M (\upd{\sigma}{x}{y}))$\ where $y = \choice{(\sigma, \lambda x M)}$. Whatever this $y$ is, we know $(\upd{\sigma}{x}{y}) \rightrightarrows (\upd{\sigma'}{x}{y})$. Then, by virtue of the inductive hypothesis, we get $M (\upd{\sigma}{x}{y}) \rightrightarrows M' (\upd{\sigma'}{x}{y})$\ and, by rule abs of $\rightrightarrows$, $\lambda y M (\upd{\sigma}{x}{y}) \rightrightarrows \lambda y M' (\upd{\sigma'}{x}{y})$. Now we show that this right hand side is \alp-convertible with $(\lambda x M') \sigma'$, which gives the desired result by using the rule \alp\ of $\rightrightarrows$. But this is just Corollary 4 part 2, which we could apply if $\restfresh{y}{\sigma'}{\lambda x M'}$, that is, for any variable $z$\ such that $\freer{z}{\lambda x M'}$\ we must prove that $\freshr{y}{\sigma' z}$. By lemma 7 we know $\freer{z}{\lambda x M}$ because $\lambda x M \rightrightarrows \lambda x M'$\ by abs rule of $\rightrightarrows$\ and $M \rightrightarrows M'$\ hypothesis. We know by the second $\chi$ lemma that $\restfresh{y}{\sigma}{\lambda x M}$, we can apply this result to variable $z$ and get that $\freshr{y}{\sigma z}$. Also, because $\sigma \rightrightarrows \sigma'$, we know $\sigma z \rightrightarrows \sigma' z$. Then, as we already know that $\freshr{y}{\sigma z}$, lemma 7 corollary allows us to conclude that $\freshr{y}{\sigma' z}$, fullfilling the premises of corollary 4 part 2.
+ \item Case app: Immediate using induction hypothesis and rule app of $\rightrightarrows$\ relation.
+ \item Case $\beta$:
+ \item Case $\alpha$: Suppose $M \rightrightarrows N$\ and $N \alphaeqsym N'$. The induction hypothesis is that for all $\sigma , \sigma'$\ s.t. $\sigma \rightrightarrows \sigma'$, $M \sigma \rightrightarrows N \sigma'$. Now take $\sigma,\sigma'$\ s.t.  $\sigma \rightrightarrows \sigma'$. We must show $M \sigma \rightrightarrows N' \sigma'$. But, since $N \alphaeqsym N'$, $N' \sigma' = N \sigma'$ by Lemma 4, and by induction hypothesis $M \sigma \rightrightarrows N \sigma'$, thus getting what was required.
+\end{itemize}
+
+\end{document}
+
+
+
+
+
+
