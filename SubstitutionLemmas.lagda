@@ -449,15 +449,20 @@ infix 1 _≅σ_
 _≅σ_ : Σ → Σ → Set
 σ ≅σ σ' = (x : V) → σ x ≡ σ' x
 
-postulate
-  lemmaι : {σ : Σ} → σ ≅σ σ ∘ ι 
-  lemma≅≺+ : {x : V}{N : Λ}{σ σ' : Σ} → σ ≅σ σ' → σ ≺+ (x , N) ≅σ σ' ≺+ (x , N)
+lemmaι : {σ : Σ} → σ ≅σ σ ∘ ι 
+lemmaι x = refl
+
+lemma≅≺+ : {x : V}{N : Λ}{σ σ' : Σ} → σ ≅σ σ' → σ ≺+ (x , N) ≅σ σ' ≺+ (x , N)
+lemma≅≺+ {x} σ≌σ' y with x ≟ y
+... | yes  _ = refl 
+... | no   _ = σ≌σ' y
 
 prop6 : {σ σ' : Σ}{M : Λ} → σ ≅σ σ' → σ ≅ σ' ⇂ M
 prop6 σ≅σ' = ((λ _ → id) , (λ _ → id)) , λ x _ → σ≅σ' x
 
 postulate  
   prop7 : {x : V}{σ σ' : Σ}{M : Λ} → (σ' ∘ σ) ≺+ (x , M ∙ σ') ≅σ σ' ∘ (σ ≺+ (x , M))
+  prop8 : {x y : V}{σ : Σ}{M N : Λ} → y #⇂ (σ , ƛ x M) → (ι ≺+ (y , N) ∘ σ ≺+ (x , v y)) ≅ σ ≺+ (x , N) ⇂ M
 
 corollary1Prop7 : {M N : Λ}{σ : Σ}{x : V} → M ∙ σ ≺+ (x , N ∙ σ) ≡ (M ∙ ι ≺+ (x , N)) ∙ σ
 corollary1Prop7 {M} {N} {σ} {x}
@@ -471,17 +476,13 @@ corollary1Prop7 {M} {N} {σ} {x}
       (M ∙ ι ≺+ (x , N)) ∙ σ
     ◻
 
-corollary2Prop7 : {x y : V} {σ : Σ}{M N : Λ} → y #⇂ (σ , ƛ x M) → (M ∙ σ ≺+ (x , v y)) ∙ ι ≺+ (y , N) ∼α M ∙ σ ≺+ (x , N)
-corollary2Prop7 {x} {y} {σ} {M} {N} y#⇂σ,ƛxM 
+corollary1SubstLemma : {x y : V} {σ : Σ}{M N : Λ} → y #⇂ (σ , ƛ x M) → (M ∙ σ ≺+ (x , v y)) ∙ ι ≺+ (y , N) ∼α M ∙ σ ≺+ (x , N)
+corollary1SubstLemma {x} {y} {σ} {M} {N} y#⇂σ,ƛxM 
   =  begin
        (M ∙ σ ≺+ (x , v y)) ∙ ι ≺+ (y , N)
      ≈⟨ lemma· {M} ⟩
        M ∙ (ι ≺+ (y , N) ∘ σ ≺+ (x , v y))
-     ≈⟨ sym (lemma1 {M} (prop6 (prop7 {x}))) ⟩
-       M ∙ (ι ≺+ (y , N) ∘ σ) ≺+ (x , v y ∙ ι ≺+ (y , N))
-     ≈⟨ {!!} ⟩
-       M ∙ (ι ≺+ (y , N) ∘ σ) ≺+ (x , N)
-     ∼⟨ {!!} ⟩
+     ≈⟨ lemma1 (prop8 y#⇂σ,ƛxM) ⟩
        M ∙ σ ≺+ (x , N)
      ∎
  \end{code}
@@ -518,7 +519,7 @@ lemma⇉  .{ƛ x M · N} .{M' ∙ ι ≺+ (x , N')} {σ} {σ'}
   lemma∼ : (M' ∙ σ'  ≺+ (x , v y)) ∙  ι ≺+ (y , N' ∙ σ') ∼α (M' ∙ ι ≺+ (x , N')) ∙ σ'
   lemma∼ = begin 
              (M' ∙ σ'  ≺+ (x , v y)) ∙  ι ≺+ (y , N' ∙ σ')
-           ∼⟨ corollary2Prop7 ((λ y y*λxM' → lemma⇉# (y#⇂σ,ƛxM y (lemma⇉* y*λxM' (⇉ƛ x M⇉M'))) (σ⇉σ' y) )) ⟩ -- arriba en (*) es igual, factorizar en lemma ?
+           ∼⟨ corollary1SubstLemma ((λ y y*λxM' → lemma⇉# (y#⇂σ,ƛxM y (lemma⇉* y*λxM' (⇉ƛ x M⇉M'))) (σ⇉σ' y) )) ⟩ -- arriba en (*) es igual, factorizar en lemma ?
               M' ∙ σ'  ≺+ (x , N' ∙ σ')
            ≈⟨ corollary1Prop7 {M'} {N'} {σ'} {x} ⟩
              (M' ∙ ι ≺+ (x , N')) ∙ σ'

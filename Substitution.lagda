@@ -51,6 +51,8 @@ _≺+_ : Σ → V × Λ → Σ
 ... | no  _ = σ y
 \end{code}
 
+
+
 -- %<*sigmatype>
 -- \begin{code}
 -- data _∶_⇀_ : Σ → List V → List V → Set where
@@ -360,6 +362,13 @@ v x    ∙ σ = σ x
 M · N  ∙ σ = (M ∙ σ) · (N ∙ σ)
 ƛ x M  ∙ σ = ƛ y (M ∙ (σ ≺+ (x , v y)))
   where y = χ (σ , ƛ x M)
+\end{code}
+
+\begin{code}
+lemmax∙ι≺+x,N : (x : V)(N : Λ) → v x ∙ ι ≺+ (x , N) ≡ N  
+lemmax∙ι≺+x,N x N with x ≟ x 
+... | yes  _    = refl
+... | no   x≢x  = ⊥-elim (x≢x refl) 
 \end{code}
 
 \begin{code}
