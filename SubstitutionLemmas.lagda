@@ -340,17 +340,18 @@ lemma⊢▹ {Γ} (⊢· .{M = ƛ x M} {N} (⊢ƛ {x} {α} {β} {M} Γ,x:α⊢M:�
 
 %<*typeiota>
 \begin{code}
-lemma⊢ι  :  {Γ : Cxt}{α : Type}{M : Λ} 
-         →  Γ ⊢ M ∙ ι ∶ α → Γ ⊢ M ∶ α
+postulate
+  lemma⊢ι  :  {Γ : Cxt}{α : Type}{M : Λ} 
+           →  Γ ⊢ M ∙ ι ∶ α → Γ ⊢ M ∶ α
 \end{code}
 %</typeiota>
 
-%<*typeiotaproof>
-\begin{code}
-lemma⊢ι Γ⊢M∙ι 
-  = {!!} --lemmaWeakening⊢++ (lemma⊢σ++ Γ⊢M∙ι (∶⇀ι id))
-\end{code}
-%</typeiotaproof>
+-- %<*typeiotaproof>
+-- \begin{code}
+-- lemma⊢ι Γ⊢M∙ι 
+--   = {!!} --lemmaWeakening⊢++ (lemma⊢σ++ Γ⊢M∙ι (∶⇀ι id))
+-- \end{code}
+-- %</typeiotaproof>
 
 %<*typealpha>
 \begin{code}
