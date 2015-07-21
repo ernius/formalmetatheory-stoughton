@@ -303,14 +303,6 @@ lemma-subst {M} {M'} {σ} {σ'} M∼M' σ∼σ'⇂M
      ∎
 \end{code}
 
-Corollary 4
-
-\begin{code}
-postulate
-  corollary4-2  : {x y : V}{M : Λ}{σ : Σ}
-                → y #⇂ (σ , ƛ x M) 
-                → ƛ x M ∙ σ ∼α ƛ y (M ∙ σ ≺+ (x , v y))
-\end{code}
 
 
 \begin{code}
@@ -475,8 +467,10 @@ lemma≅≺+ {x} σ≌σ' y with x ≟ y
 prop6 : {σ σ' : Σ}{M : Λ} → σ ≅σ σ' → σ ≅ σ' ⇂ M
 prop6 σ≅σ' = ((λ _ → id) , (λ _ → id)) , λ x _ → σ≅σ' x
 
-postulate  
-  prop7 : {x : V}{σ σ' : Σ}{M : Λ} → (σ' ∘ σ) ≺+ (x , M ∙ σ') ≅σ σ' ∘ (σ ≺+ (x , M))
+prop7 : {x : V}{σ σ' : Σ}{M : Λ} → (σ' ∘ σ) ≺+ (x , M ∙ σ') ≅σ σ' ∘ (σ ≺+ (x , M))
+prop7 {x} {σ} {σ'} {M} y with x ≟ y
+... | yes _  = refl
+... | no _   = refl
 
 infix 1 _∼ασ_
 _∼ασ_ : Σ → Σ → Set
@@ -526,10 +520,45 @@ corollary1SubstLemma {x} {y} {σ} {M} {N} y#⇂σ,ƛxM
      ≈⟨ lemma· {M} ⟩
        M ∙ (ι ≺+ (y , N) ∘ σ ≺+ (x , v y))
      ∼⟨ lemma-subst-σ∼ (prop8 y#⇂σ,ƛxM) ⟩
-     --≈⟨ lemma1 (prop8 y#⇂σ,ƛxM) ⟩
        M ∙ σ ≺+ (x , N)
      ∎
  \end{code}
+
+
+Corollary 4-2 
+
+\begin{code}
+corollary4-2  : {x y : V}{M : Λ}{σ : Σ}
+              → y #⇂ (σ , ƛ x M) 
+              → ƛ x M ∙ σ ∼α ƛ y (M ∙ σ ≺+ (x , v y))
+corollary4-2 {x} {y} {M} {σ} y#⇂σ,ƛxM 
+  = begin
+      ƛ x M ∙ σ
+    ≈⟨ refl ⟩
+      ƛ z (M ∙ σ ≺+ (x , v z))
+    ∼⟨ ∼ƛ  {y = w} w#ƛzM∙σ≺+x,z w#ƛyM∙σ≺+x,y 
+           (begin
+             (M ∙ σ ≺+ (x , v z)) ∙ ι ≺+ (z , v w)
+           ∼⟨ corollary1SubstLemma z#⇂σ,ƛxM  ⟩
+             M ∙ σ ≺+ (x , v w)
+           ∼⟨ ∼σ (corollary1SubstLemma y#⇂σ,ƛxM) ⟩
+             (M ∙ σ ≺+ (x , v y)) ∙ ι ≺+ (y , v w)
+           ∎)         ⟩
+      ƛ y (M ∙ σ ≺+ (x , v y))
+    ∎
+  where 
+  z = χ (σ , ƛ x M)
+  z#⇂σ,ƛxM : z #⇂ (σ , ƛ x M)
+  z#⇂σ,ƛxM = χ-lemma2 σ (ƛ x M)
+  w : V
+  w = χ' (fv (ƛ z (M ∙ σ ≺+ (x , v z))) ++ fv (ƛ y (M ∙ σ ≺+ (x , v y))))
+  w#ƛzM∙σ≺+x,z : w # ƛ z (M ∙ σ ≺+ (x , v z))
+  w#ƛzM∙σ≺+x,z = lemma∉fv→# (c∉xs++ys→c∉xs  {w} {fv (ƛ z (M ∙ σ ≺+ (x , v z)))} 
+                                            (lemmaχ∉ (fv (ƛ z (M ∙ σ ≺+ (x , v z))) ++ fv (ƛ y (M ∙ σ ≺+ (x , v y))))))
+  w#ƛyM∙σ≺+x,y : w # ƛ y (M ∙ σ ≺+ (x , v y))
+  w#ƛyM∙σ≺+x,y = lemma∉fv→# (c∉xs++ys→c∉ys  {w} {fv (ƛ z (M ∙ σ ≺+ (x , v z)))} {fv (ƛ y (M ∙ σ ≺+ (x , v y)))} 
+                                            (lemmaχ∉ (fv (ƛ z (M ∙ σ ≺+ (x , v z))) ++ fv (ƛ y (M ∙ σ ≺+ (x , v y))))))
+\end{code}
 
 Parallel reduction
 
