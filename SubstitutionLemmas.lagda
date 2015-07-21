@@ -67,28 +67,31 @@ lemma1 (_ , f) = lemmaσ≡σ'→Mσ≡Mσ' f
 \end{code}
 
 \begin{code}
-lemmaσ∘≺+ : (M : Λ)(σ σ' : Σ)(x y' : V) 
+lemmaσ∘≺+ : (M N : Λ)(σ σ' : Σ)(x y : V) 
+       → y #⇂ (σ , ƛ x M)
        → (w : V) → w * M 
-       → ((σ' ≺+ (χ (σ , ƛ x M) , v y')) ∘ (σ ≺+ (x , v (χ (σ , ƛ x M))))) w ≡ ((σ' ∘ σ) ≺+ (x , v y')) w
-lemmaσ∘≺+ M σ σ' x y' w wfreeM with x ≟ w
+       → ((σ' ≺+ (y , N)) ∘ (σ ≺+ (x , v y))) w ≡ ((σ' ∘ σ) ≺+ (x , N)) w
+lemmaσ∘≺+ M N σ σ' x y y#⇂σ,ƛxM w wfreeM with x ≟ w
 ... | no  x≢w = begin≡
-                   ((σ w) ∙ (σ' ≺+ (y , v y')))
-                   ≡⟨ lemmaσ≡σ'→Mσ≡Mσ' {σ w} {σ' ≺+ (y , v y')} {σ'} lemma ⟩
+                   ((σ w) ∙ (σ' ≺+ (y , N)))
+                   ≡⟨ lemmaσ≡σ'→Mσ≡Mσ' {σ w} {σ' ≺+ (y , N)} {σ'} lemma ⟩
                    (σ w) ∙ σ'
                 ◻
     where 
-    y = χ (σ , ƛ x M)
-    lemma : (u : V) → u * σ w → (σ' ≺+ (y , v y')) u ≡ σ' u
-    lemma u ufreeσw with (χ-lemma2 σ (ƛ x M)) w (*ƛ wfreeM x≢w)
+    lemma : (u : V) → u * σ w → (σ' ≺+ (y , N)) u ≡ σ' u
+    lemma u ufreeσw with y#⇂σ,ƛxM w (*ƛ wfreeM x≢w)
     ... | y#σw with y ≟ u
     ...        | no  _    = refl
     lemma .y yfreeσw | y#σw
                | yes refl = ⊥-elim ((lemma-free→¬# yfreeσw) y#σw) 
 ... | yes x≡w with y ≟ y
-    where 
-    y = χ (σ , ƛ x M)
 ...           | yes y≡y = refl 
 ...           | no  y≢y = ⊥-elim (y≢y refl)           
+--
+lemmaχσ∘≺+ : (M N : Λ)(σ σ' : Σ)(x : V) 
+       → (w : V) → w * M 
+       → ((σ' ≺+ (χ (σ , ƛ x M) , N)) ∘ (σ ≺+ (x , v (χ (σ , ƛ x M))))) w ≡ ((σ' ∘ σ) ≺+ (x , N)) w
+lemmaχσ∘≺+ M N σ σ' x = lemmaσ∘≺+ M N σ σ' x (χ (σ , ƛ x M)) (χ-lemma2 σ (ƛ x M)) 
 \end{code}
       
 
@@ -105,7 +108,7 @@ lemma· {ƛ x M} {σ} {σ'}
       ƛ y' ((M ∙ (σ ≺+ (x , v y))) ∙ (σ' ≺+ (y , v y')))
       ≡⟨ cong (λ M → ƛ y' M) (lemma· {M} {σ ≺+ (x , v y)} {σ' ≺+ (y , v y')}) ⟩
       ƛ y' (M ∙ ((σ' ≺+ (y , v y')) ∘ (σ ≺+ (x , v y)))) 
-      ≡⟨ cong (λ M → ƛ y' M) (lemmaσ≡σ'→Mσ≡Mσ' {M} {(σ' ≺+ (y , v y')) ∘ (σ ≺+ (x , v y))} {(σ' ∘ σ) ≺+ (x , v y')} (lemmaσ∘≺+ M σ σ' x y')) ⟩
+      ≡⟨ cong (λ M → ƛ y' M) (lemmaσ≡σ'→Mσ≡Mσ' {M} {(σ' ≺+ (y , v y')) ∘ (σ ≺+ (x , v y))} {(σ' ∘ σ) ≺+ (x , v y')} (lemmaχσ∘≺+ M (v y') σ σ' x)) ⟩
       ƛ y' (M ∙ ((σ' ∘ σ) ≺+ (x , v y')))
       ≡⟨ cong (λ z → ƛ z (M ∙ ((σ' ∘ σ) ≺+ (x , v z)))) lemma ⟩
       ƛ z (M ∙ ((σ' ∘ σ) ≺+ (x , v z)))
@@ -310,6 +313,17 @@ postulate
 \end{code}
 
 
+\begin{code}
+lemma∙ι : {M : Λ} → M ∼α M ∙ ι
+lemma∙ι {M} =  lemmaMι≡M'ι→M∼M' ( begin≡
+                                    M ∙ ι
+                                  ≡⟨ lemma1 {M} {ι} {ι ∘ ι} (((λ _ → id) , λ _ → id) , (λ _ _ → refl) ) ⟩
+                                    M ∙ (ι ∘ ι)
+                                  ≡⟨  sym (lemma· {M} {ι} {ι}) ⟩
+                                    (M ∙ ι) ∙ ι
+                                  ◻)
+\end{code}
+
 Beta contraction
 
 %<*betacontraction>
@@ -463,7 +477,35 @@ prop6 σ≅σ' = ((λ _ → id) , (λ _ → id)) , λ x _ → σ≅σ' x
 
 postulate  
   prop7 : {x : V}{σ σ' : Σ}{M : Λ} → (σ' ∘ σ) ≺+ (x , M ∙ σ') ≅σ σ' ∘ (σ ≺+ (x , M))
-  prop8 : {x y : V}{σ : Σ}{M N : Λ} → y #⇂ (σ , ƛ x M) → (ι ≺+ (y , N) ∘ σ ≺+ (x , v y)) ≅ σ ≺+ (x , N) ⇂ M
+
+infix 1 _∼ασ_
+_∼ασ_ : Σ → Σ → Set
+σ ∼ασ σ' = (x : V) → σ x ∼α σ' x
+
+lemma∼ασ : {σ σ' : Σ}{M : Λ} → σ ∼ασ σ' → σ ∼α σ' ⇂ M
+lemma∼ασ σ∼ασ' x x*M = σ∼ασ' x
+
+lemmaι∘σ : {σ : Σ} → ι ∘ σ ∼ασ σ 
+lemmaι∘σ {σ} x = begin
+                   σ x ∙ ι
+                 ∼⟨ ∼σ (lemma∙ι) ⟩
+                   σ x
+                 ∎
+
+lemma∼≺+ : {x : V}{N : Λ}{σ σ' : Σ} → σ ∼ασ σ' → σ ≺+ (x , N) ∼ασ σ' ≺+ (x , N)
+lemma∼≺+ {x} σ∼σ' y with x ≟ y
+... | yes  _ = ∼ρ
+... | no   _ = σ∼σ' y
+
+prop8 : {x y : V}{σ : Σ}{M N : Λ} → y #⇂ (σ , ƛ x M) → (ι ≺+ (y , N) ∘ σ ≺+ (x , v y)) ∼α σ ≺+ (x , N) ⇂ M
+prop8 {x} {y} {σ} {M} {N} y#⇂ƛxM z z*M =
+                begin
+                  (ι ≺+ (y , N) ∘ σ ≺+ (x , v y)) z
+                ≈⟨ lemmaσ∘≺+ M N σ ι x y y#⇂ƛxM z z*M ⟩
+                  ((ι ∘ σ) ≺+ (x , N)) z
+                ∼⟨ (lemma∼≺+ {x} {N} (lemmaι∘σ {σ})) z ⟩
+                  (σ ≺+ (x , N)) z
+                ∎
 
 corollary1Prop7 : {M N : Λ}{σ : Σ}{x : V} → M ∙ σ ≺+ (x , N ∙ σ) ≡ (M ∙ ι ≺+ (x , N)) ∙ σ
 corollary1Prop7 {M} {N} {σ} {x}
@@ -483,7 +525,8 @@ corollary1SubstLemma {x} {y} {σ} {M} {N} y#⇂σ,ƛxM
        (M ∙ σ ≺+ (x , v y)) ∙ ι ≺+ (y , N)
      ≈⟨ lemma· {M} ⟩
        M ∙ (ι ≺+ (y , N) ∘ σ ≺+ (x , v y))
-     ≈⟨ lemma1 (prop8 y#⇂σ,ƛxM) ⟩
+     ∼⟨ lemma-subst-σ∼ (prop8 y#⇂σ,ƛxM) ⟩
+     --≈⟨ lemma1 (prop8 y#⇂σ,ƛxM) ⟩
        M ∙ σ ≺+ (x , N)
      ∎
  \end{code}
