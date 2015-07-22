@@ -89,6 +89,9 @@ lemma⇉*  (*ƛ x*N y≢x)  (⇉ƛ y M⇉N)
 lemma⇉*  *v (⇉v x)                 
   = *v
 
-postulate
-  lemma⇉# : {x : V}{M N : Λ} → x # M → M ⇉ N → x # N -- corollary of lemma 7 ?
+-- Corolary lemma 7
+lemma⇉# : {x : V}{M N : Λ} → x # M → M ⇉ N → x # N
+lemma⇉# {x} {M} {N} x#M M⇉N with x #? N 
+... | yes x#N   = x#N
+... | no  ¬x#N  = ⊥-elim ((lemma-free→¬# (lemma⇉* (lemma¬#→free ¬x#N) M⇉N)) x#M)
 \end{code}
