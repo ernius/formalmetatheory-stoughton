@@ -54,8 +54,41 @@ _⇉ₛ_ : Σ → Σ → Set
 \end{code}
 
 \begin{code}
+lemma⇉s : {σ σ' : Σ}(x y : V) → σ ⇉ₛ σ' → σ ≺+ (x , v y) ⇉ₛ σ' ≺+ (x , v y)
+lemma⇉s {σ} {σ'} x y σ⇉σ' z with x ≟ z 
+... | yes  _ = ⇉v y
+... | no   _ = σ⇉σ' z
+
+-- Lemma 7
+
+lemma⇉* : {x : V}{M N : Λ} → x * N → M ⇉ N → x * M 
+lemma⇉*  {x} 
+         x*M'∙ι≺+yN'   (⇉β y {M} {M'} {N} {N'} M⇉N M'⇉N')  
+  with lemmafreeσ→ {x} {M'} x*M'∙ι≺+yN'
+... | z , z*M' , z*ι≺+yN'y
+  with y ≟ z
+lemma⇉*  {x} 
+         x*M'∙ι≺+yN'   (⇉β y {M} {M'} {N} {N'} M⇉M' N⇉N')  
+    | .x , x*M' , *v
+    | no   y≢x  
+  = *·l (*ƛ (lemma⇉* x*M' M⇉M') y≢x)
+lemma⇉*  {x} 
+         x*M'∙ι≺+yN'   (⇉β y {M} {M'} {N} {N'} M⇉M' N⇉N')  
+    | .y , y*M' , x*N'
+    | yes  refl  
+  = *·r (lemma⇉* x*N' N⇉N')
+lemma⇉*  {x} 
+         x*N'          (⇉α M⇉N N∼N')      
+  = lemma⇉* (lemmaM∼M'→free← N∼N' x x*N') M⇉N
+lemma⇉*  (*·l x*N)     (⇉· M⇉N M'⇉N')     
+  = *·l (lemma⇉* x*N M⇉N)
+lemma⇉*  (*·r x*N')    (⇉· M⇉N M'⇉N') 
+  = *·r (lemma⇉* x*N' M'⇉N')
+lemma⇉*  (*ƛ x*N y≢x)  (⇉ƛ y M⇉N)   
+  = *ƛ (lemma⇉* x*N M⇉N) y≢x
+lemma⇉*  *v (⇉v x)                 
+  = *v
+
 postulate
-  lemma⇉s : {σ σ' : Σ}(x y : V) → σ ⇉ₛ σ' → σ ≺+ (x , v y) ⇉ₛ σ' ≺+ (x , v y)
-  lemma⇉* : {x : V}{M N : Λ} → x * N → M ⇉ N → x * M -- Lemma 7
   lemma⇉# : {x : V}{M N : Λ} → x # M → M ⇉ N → x # N -- corollary of lemma 7 ?
 \end{code}
