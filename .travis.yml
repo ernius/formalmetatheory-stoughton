@@ -1,0 +1,36 @@
+language: haskell
+
+ghc:
+  - 7.10.1
+
+before_install:
+
+install:
+  - apt-get install zlib1g-dev libncurses5-dev
+  - cabal install cabal-install
+  - export PATH=$HOME/.cabal/bin:$PATH
+
+  # Showing Cabal configuration
+  - echo ' ' >> $HOME/.cabal/config
+  - echo 'program-default-options' >> $HOME/.cabal/config
+  - echo '  ghc-options: -pgmPcpphs -optP--cpp' >> $HOME/.cabal/config
+  - cat $HOME/.cabal/config
+
+  # New Happy needed for haskell-src-exts
+  - cabal install happy
+
+  # New new Alex for us
+  - cabal install alex
+  - cabal install cpphs
+
+  - cabal install Agda-2.4.2.3
+  - wget https://github.com/agda/agda-stdlib/archive/v0.9.tar.gz -O /tmp/v0.9.tar.gz
+  - tar -xzvf /tmp/v0.9.tar.gz -C /tmp/
+
+script:
+  - agda -i . -i /tmp/agda-stdlib-0.9/src/ SubstitutionLemmas.lagda
+
+
+notifications:
+  email: false
+
