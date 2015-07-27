@@ -25,7 +25,7 @@ SubstitutionLemmas : SubstitutionLemmas.lagda
 	$(AGDA) $(AGDALIBRARYFLAGS) SubstitutionLemmas.lagda
 
 html : *.lagda
-	$(AGDA) $(AGDAHTMLFLAGS) $(AGDALIBRARYFLAGS) SubstitutionLemmas.lagda; cp -rf html/ ../gh-pages/formalmetatheory-nominal/
+	$(AGDA) $(AGDAHTMLFLAGS) $(AGDALIBRARYFLAGS) SubstitutionLemmas.lagda; cp -rf html/ ../formalmetatheory-stoughton
 
 clean :
 	rm *.agdai
