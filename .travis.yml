@@ -1,12 +1,13 @@
 language: haskell
 
 ghc:
-  - 7.10.1
+  - 7.8
 
 before_install:
+#  - zlib1g-dev 
+#  - libncurses5-dev
 
 install:
-  - apt-get install zlib1g-dev libncurses5-dev
   - cabal install cabal-install
   - export PATH=$HOME/.cabal/bin:$PATH
 
