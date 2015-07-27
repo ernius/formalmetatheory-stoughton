@@ -1,6 +1,6 @@
 \begin{code}
 open import Relation.Binary
-open import Relation.Binary.PropositionalEquality as PropEq using (_≡_; _≢_ ; refl ; cong ; _≗_ ; sym ; trans ; inspect ; Reveal_is_ ; setoid) renaming ([_] to [_]i)
+open import Relation.Binary.PropositionalEquality as PropEq using (_≡_; _≢_ ; refl ; cong ; _≗_ ; sym ; trans ; inspect ;  setoid) renaming ([_] to [_]i)
 open PropEq.≡-Reasoning
 
 module Context {K : Set}(D : Set)(_≟_ : Decidable (_≡_ {A = K})) where

@@ -228,7 +228,10 @@ Sameness of free variables is an important relation between terms, which is defi
 
 \begin{code}
 _∼*_ : (M M' : Λ) → Set
-_∼*_ M M' = (∀ x → x * M → x * M') × (∀ x → x * M' → x * M)
+M ∼* M' = (∀ x → x * M → x * M') × (∀ x → x * M' → x * M)
+
+∼*ρ : Reflexive _∼*_
+∼*ρ {M} = (λ _ → id) ∶ (λ _ → id) 
 \end{code}
 
 %<*typeweakening#>
@@ -254,6 +257,34 @@ lemmaWeakening⊢# {M = ƛ .x M} {x = x} x#ƛyM (⊢ƛ Γ,x↦β⊢M∶α)
     | _       | yes  refl  
   = ⊢ƛ (lemmaWeakening⊢ lemma⊆x Γ,x↦β⊢M∶α)
 \end{code}
+
+%<*typeweakening#>
+\begin{code}
+lemmaStrengthening⊢#  : {Γ : Cxt}{M : Λ}{x : V}{α β : Type} 
+                      → x # M → Γ ‚ x ∶ β ⊢ M ∶ α → Γ ⊢ M ∶ α
+lemmaStrengthening⊢# (#v x≢x)      (⊢v (here refl))      = ⊥-elim (x≢x refl)
+lemmaStrengthening⊢# x#M           (⊢v (there y≢x y∈Γ))  = ⊢v y∈Γ
+lemmaStrengthening⊢# (#· x#M x#N)  (⊢· Γ,x∶β⊢M∶α'⟶β' Γ,x:β⊢N∶α') 
+  = ⊢·  (lemmaStrengthening⊢# x#M Γ,x∶β⊢M∶α'⟶β') 
+        (lemmaStrengthening⊢# x#N Γ,x:β⊢N∶α')
+lemmaStrengthening⊢# {M = ƛ y M} {x} 
+                     x#ƛyM         (⊢ƛ Γ,x:β,y:α'⊢M∶β') 
+  with x ≟ y
+lemmaStrengthening⊢# {M = ƛ .x M} {x} 
+                     x#ƛxM         (⊢ƛ Γ,x:β,x:α'⊢M∶β') 
+  | yes refl 
+  = ⊢ƛ (lemmaWeakening⊢ lemma⊆xx Γ,x:β,x:α'⊢M∶β')
+lemmaStrengthening⊢# {M = ƛ .x M} {x} 
+                     #ƛ≡           (⊢ƛ Γ,x:β,x:α'⊢M∶β') 
+  | no x≢x   
+  = ⊥-elim (x≢x refl)
+lemmaStrengthening⊢# {M = ƛ y M} {x} 
+                     (#ƛ x#M)      (⊢ƛ Γ,x:β,y:α'⊢M∶β') 
+  | no x≢y   
+  = ⊢ƛ (lemmaStrengthening⊢# x#M (lemmaWeakening⊢ (lemma⊆xy x≢y) Γ,x:β,y:α'⊢M∶β'))
+\end{code}
+%</typeweakening#>
+
 
 -- %<*typeStrengthening> 
 -- \begin{code}

@@ -5,7 +5,7 @@ open import Chi
 open import Term renaming (_⊆_ to _⊆c_ ; _∈_ to _∈c_)
 open import ListProperties
 
-open import Function
+open import Function renaming (_∘_ to _∘f_)
 open import Function.Inverse hiding (sym;_∘_;map;id)
 open Inverse
 import Function.Equality as FE
@@ -41,7 +41,7 @@ Substitutions are functions from variables to terms.
 
 \begin{code}
 ι : Σ 
-ι = id ∘ v
+ι = id ∘f v
 \end{code}
 
 \begin{code}
@@ -67,8 +67,16 @@ _≺+_ : Σ → V × Λ → Σ
 
 %<*sigmatype>
 \begin{code}
+infix 1 _∶_⇀_⇂_
+_∶_⇀_⇂_ : Σ → Cxt → Cxt → Λ → Set
+σ ∶ Γ ⇀ Δ ⇂ M = {z : V} → z * M → (p : z ∈c Γ) → Δ ⊢ σ z ∶ Γ ⟨ p ⟩
+
+infix 1 _∶_⇀_
 _∶_⇀_ : Σ → Cxt → Cxt → Set
 σ ∶ Γ ⇀ Δ = {z : V}(p : z ∈c Γ) → Δ ⊢ σ z ∶ Γ ⟨ p ⟩
+
+lemma⇀ : {σ : Σ}{Γ Δ : Cxt}{M : Λ} → σ ∶ Γ ⇀ Δ → σ ∶ Γ ⇀ Δ ⇂ M 
+lemma⇀ σ:Γ⇀Δ {z} _ z∈Γ = σ:Γ⇀Δ z∈Γ
 \end{code}
 %</sigmatype>
 
@@ -78,7 +86,7 @@ lemmaι⇀ z∈Γ = ⊢v z∈Γ
 \end{code}
 
 \begin{code}
-lemmaι≺+⇀ : {Γ : Cxt}{α : Type}{x : V}{N : Λ} →  Γ ⊢ N ∶ α → (ι ≺+ (x , N)) ∶ (Γ ‚ x ∶ α)  ⇀ Γ
+lemmaι≺+⇀ : {Γ : Cxt}{α : Type}{x : V}{N : Λ} →  Γ ⊢ N ∶ α → (ι ≺+ (x , N)) ∶ (Γ ‚ x ∶ α) ⇀ Γ
 lemmaι≺+⇀ Γ⊢N:α .{x}  (here {x , α} refl) 
   with x ≟ x
 ... | yes _   = Γ⊢N:α
@@ -88,6 +96,8 @@ lemmaι≺+⇀ Γ⊢N:α {y}   (there {x ∶ α} y≢x y∈Γ)
 ... | yes x≡y = ⊥-elim (y≢x (sym x≡y))
 ... | no  _   = ⊢v y∈Γ
 \end{code}
+
+
 
 -- \begin{code}
 -- lemmaWeakening:⇀ x (∶⇀ι Γ⊆Δ) = ∶⇀ι (there ∘ Γ⊆Δ) 
@@ -108,6 +118,7 @@ _#⇂_ : V → R → Set
 x #⇂ (σ , M) = (y : V) → y * M → x # (σ y)
 \end{code}
 
+
 Free
 
 \begin{code}
@@ -118,11 +129,29 @@ x *⇂ (σ , M) = ∃ (λ y  → (y * M) × (x * σ y))
 The right notion of identity of substitutions has to be formulated for restrictions:
 
 \begin{code}
-_≅ρ_ : R → R → Set
-(σ , M) ≅ρ (σ' , M') = (M ∼* M') × ((x : V) → x * M → σ x ≡ σ' x)
+infix 1 _≅σ_
+_≅σ_ : Σ → Σ → Set
+σ ≅σ σ' = (x : V) → σ x ≡ σ' x
+
+lemmaσ≺+x,x≅σ : {x : V} → ι ≺+ (x , v x) ≅σ ι
+lemmaσ≺+x,x≅σ {x} y with x ≟ y
+... | no   _     = refl
+lemmaσ≺+x,x≅σ {x} .x
+    | yes  refl  = refl
+
+_≅⇂_ : R → R → Set
+(σ , M) ≅⇂ (σ' , M') = (M ∼* M') × ((x : V) → x * M → σ x ≡ σ' x)
 
 _≅_⇂_ : Σ → Σ → Λ → Set
-σ ≅ σ' ⇂ M = (σ , M) ≅ρ (σ' , M)
+σ ≅ σ' ⇂ M = (σ , M) ≅⇂ (σ' , M)
+
+lemma≅≺+ : {x : V}{N : Λ}{σ σ' : Σ} → σ ≅σ σ' → σ ≺+ (x , N) ≅σ σ' ≺+ (x , N)
+lemma≅≺+ {x} σ≌σ' y with x ≟ y
+... | yes  _ = refl 
+... | no   _ = σ≌σ' y
+
+prop6 : {σ σ' : Σ}{M : Λ} → σ ≅σ σ' → σ ≅ σ' ⇂ M
+prop6 σ≅σ' = ((λ _ → id) , (λ _ → id)) , λ x _ → σ≅σ' x
 \end{code}
 
 \begin{code}
@@ -279,7 +308,7 @@ Chi encapsulation
 
 \begin{code}
 χ : R → V
-χ (σ , M) = χ' (concat (map (fv ∘ σ) (fv M)))
+χ (σ , M) = χ' (concat (map (fv ∘f σ) (fv M)))
 \end{code}
 
 \begin{code}
@@ -289,29 +318,29 @@ Chi encapsulation
 ... | no ¬χσM#σy = ⊥-elim (χ∉concatmapfv∘σfvM χ∈concatmapfv∘σfvM)
   where
   -- Using lemma lemmaχaux∉ we know χ not in the list (concat (map (fv ∘ σ) (fv M))) passed
-  χ∉concatmapfv∘σfvM : χ (σ , M) ∉ (concat (map (fv ∘ σ) (fv M)))
-  χ∉concatmapfv∘σfvM = lemmaχaux∉ (concat (map (fv ∘ σ) (fv M)))
+  χ∉concatmapfv∘σfvM : χ (σ , M) ∉ (concat (map (fv ∘f σ) (fv M)))
+  χ∉concatmapfv∘σfvM = lemmaχaux∉ (concat (map (fv ∘f σ) (fv M)))
   -- y * M ⇒ y ∈ fv M
   y∈fvM : y ∈ fv M
   y∈fvM = lemmafvfree← y M yfreeM
   -- due to y ∈ fv M we have that fv (σ y) ∈ map (fv ∘ σ) (fv M)
-  fvσy∈mapfv∘σfvM : fv (σ y) ∈ (map (fv ∘ σ) (fv M))
-  fvσy∈mapfv∘σfvM = ((FE.Π._⟨$⟩_ (to (map-∈↔ {f = fv ∘ σ} {y = fv (σ y)} {xs = fv M}))) (y , y∈fvM , refl))
+  fvσy∈mapfv∘σfvM : fv (σ y) ∈ (map (fv ∘f σ) (fv M))
+  fvσy∈mapfv∘σfvM = ((FE.Π._⟨$⟩_ (to (map-∈↔ {f = fv ∘f σ} {y = fv (σ y)} {xs = fv M}))) (y , y∈fvM , refl))
   -- we know ¬ χ # σ y ⇒ χ * (σ y), and then χ ∈ fv (σ y)
   χfreeσy : χ (σ , M) ∈ (fv (σ y))
   χfreeσy = lemmafvfree← (χ (σ , M)) (σ y) (lemma¬#→free ¬χσM#σy)
-  -- χ ∈ fv (σ y) and fv (σ y) ∈ map (fv ∘ σ) (fv M) ⇒ χ ∈ concat (map (fv ∘ σ) (fv M))
-  χ∈concatmapfv∘σfvM : χ (σ , M) ∈ (concat (map (fv ∘ σ) (fv M)))
-  χ∈concatmapfv∘σfvM = (FE.Π._⟨$⟩_ (to (concat-∈↔ {x = χ (σ , M)} {xss = map (fv ∘ σ) (fv M)}))) (fv (σ y) ,  χfreeσy , fvσy∈mapfv∘σfvM)
+  -- χ ∈ fv (σ y) and fv (σ y) ∈ map (fv ∘ σ) (fv M) ⇒ χ ∈ concat (map (fv ∘f σ) (fv M))
+  χ∈concatmapfv∘σfvM : χ (σ , M) ∈ (concat (map (fv ∘f σ) (fv M)))
+  χ∈concatmapfv∘σfvM = (FE.Π._⟨$⟩_ (to (concat-∈↔ {x = χ (σ , M)} {xss = map (fv ∘f σ) (fv M)}))) (fv (σ y) ,  χfreeσy , fvσy∈mapfv∘σfvM)
 --
 χ-lemma4 :  (σ σ' : Σ)(M M' : Λ) → (σ , M) ∼*⇂ (σ' , M') →
             χ (σ , M) ≡ χ  (σ' , M')
 χ-lemma4 σ σ' M M' (h1 , h2) 
-  = lemmaχaux⊆ ((concat (map (fv ∘ σ) (fv M)))) (concat (map (fv ∘ σ') (fv M'))) lemma⊆ lemma⊇
+  = lemmaχaux⊆ ((concat (map (fv ∘f σ) (fv M)))) (concat (map (fv ∘f σ') (fv M'))) lemma⊆ lemma⊇
   where
-  lemma⊆ : ((concat (map (fv ∘ σ) (fv M)))) ⊆ (concat (map (fv ∘ σ') (fv M'))) 
+  lemma⊆ : ((concat (map (fv ∘f σ) (fv M)))) ⊆ (concat (map (fv ∘f σ') (fv M'))) 
   lemma⊆ {y} y∈concat 
-    with (FE.Π._⟨$⟩_ (from (concat-∈↔ {x = y} {xss = map (fv ∘ σ) (fv M)}))) y∈concat 
+    with (FE.Π._⟨$⟩_ (from (concat-∈↔ {x = y} {xss = map (fv ∘f σ) (fv M)}))) y∈concat 
   ... | xs , y∈xs , xs∈map 
     with (FE.Π._⟨$⟩_ (from ((map-∈↔ {y = xs} {xs = fv M})))) xs∈map
   lemma⊆ {y} y∈concat 
@@ -323,12 +352,12 @@ Chi encapsulation
   ... | u , ufreeM' , yfreeσ'u 
     with lemmafvfree← u M' ufreeM' | lemmafvfree← y (σ' u) yfreeσ'u
   ... | u∈fvM' | y∈fvσ'u 
-    with (FE.Π._⟨$⟩_ (to ((map-∈↔ {f = fv ∘ σ'} {y = fv (σ' u)} {xs = fv M'})))) (u , u∈fvM' , refl)
+    with (FE.Π._⟨$⟩_ (to ((map-∈↔ {f = fv ∘f σ'} {y = fv (σ' u)} {xs = fv M'})))) (u , u∈fvM' , refl)
   ... | fvσ'u∈map 
-     = (FE.Π._⟨$⟩_ (to (concat-∈↔ {x = y} {xss = map (fv ∘ σ') (fv M')}))) (fv (σ' u) , y∈fvσ'u , fvσ'u∈map) 
-  lemma⊇ : (concat (map (fv ∘ σ') (fv M'))) ⊆ ((concat (map (fv ∘ σ) (fv M))))
+     = (FE.Π._⟨$⟩_ (to (concat-∈↔ {x = y} {xss = map (fv ∘f σ') (fv M')}))) (fv (σ' u) , y∈fvσ'u , fvσ'u∈map) 
+  lemma⊇ : (concat (map (fv ∘f σ') (fv M'))) ⊆ ((concat (map (fv ∘f σ) (fv M))))
   lemma⊇ {y} y∈concat
-    with (FE.Π._⟨$⟩_ (from (concat-∈↔ {x = y} {xss = map (fv ∘ σ') (fv M')}))) y∈concat 
+    with (FE.Π._⟨$⟩_ (from (concat-∈↔ {x = y} {xss = map (fv ∘f σ') (fv M')}))) y∈concat 
   ... | xs , y∈xs , xs∈map 
     with (FE.Π._⟨$⟩_ (from ((map-∈↔ {y = xs} {xs = fv M'})))) xs∈map
   lemma⊇ {y} y∈concat 
@@ -340,9 +369,9 @@ Chi encapsulation
   ... | u , ufreeM , yfreeσu 
     with lemmafvfree← u M ufreeM | lemmafvfree← y (σ u) yfreeσu
   ... | u∈fvM | y∈fvσu 
-    with (FE.Π._⟨$⟩_ (to ((map-∈↔ {f = fv ∘ σ} {y = fv (σ u)} {xs = fv M})))) (u , u∈fvM , refl)
+    with (FE.Π._⟨$⟩_ (to ((map-∈↔ {f = fv ∘f σ} {y = fv (σ u)} {xs = fv M})))) (u , u∈fvM , refl)
   ... | fvσu∈map 
-     = (FE.Π._⟨$⟩_ (to (concat-∈↔ {x = y} {xss = map (fv ∘ σ) (fv M)}))) (fv (σ u) , y∈fvσu , fvσu∈map) 
+     = (FE.Π._⟨$⟩_ (to (concat-∈↔ {x = y} {xss = map (fv ∘f σ) (fv M)}))) (fv (σ u) , y∈fvσu , fvσu∈map) 
 --
 χ-lemma3 : (σ σ' : Σ)(M M' : Λ) → 
    (∀ x → x * M → σ x ∼* σ' x)   → 
@@ -363,6 +392,26 @@ M · N  ∙ σ = (M ∙ σ) · (N ∙ σ)
 ƛ x M  ∙ σ = ƛ y (M ∙ (σ ≺+ (x , v y)))
   where y = χ (σ , ƛ x M)
 \end{code}
+
+\begin{code}
+infixl  7 _∘_
+_∘_ : Σ → Σ → Σ
+(σ ∘ σ') x = (σ' x) ∙ σ
+
+lemmaι : {σ : Σ} → σ ≅σ σ ∘ ι
+lemmaι x = refl
+\end{code}
+
+\begin{code}
+prop7 : {x : V}{σ σ' : Σ}{M : Λ} → (σ' ∘ σ) ≺+ (x , M ∙ σ') ≅σ σ' ∘ (σ ≺+ (x , M))
+prop7 {x} {σ} {σ'} {M} y with x ≟ y
+... | yes _  = refl
+... | no _   = refl
+
+\end{code}
+
+
+
 
 \begin{code}
 lemmax∙ι≺+x,N : (x : V)(N : Λ) → v x ∙ ι ≺+ (x , N) ≡ N  
@@ -461,9 +510,36 @@ lemmafreeσ← {x} {ƛ z M} {σ} (y  , *ƛ yfreeM z≢y , xfreeσy)
   | .x | x#σy | yes refl = ⊥-elim ((lemma-free→¬# xfreeσy) x#σy)
 \end{code}
 
+
+\begin{code}
+lemmaz*Mι≺+x,y→z≢x : {x y z : V}{M : Λ} → y ≢ z → z * M ∙ ι ≺+ (x , v y) → z ≢ x
+lemmaz*Mι≺+x,y→z≢x {x} {y}  .{x} {M} y≢x x*Mι≺+x,y refl 
+  with lemmafreeσ→ {x} {M} {ι ≺+ (x , v y)} x*Mι≺+x,y 
+... | w , w*M , x*ι≺+x,yw 
+  with x ≟ w
+lemmaz*Mι≺+x,y→z≢x {x} {y}  .{x} {M} y≢x x*Mι≺+x,y refl 
+    | .x , x*M , *v
+    | no   x≢x   = ⊥-elim (x≢x refl)
+lemmaz*Mι≺+x,y→z≢x {x} .{x} .{x} {M} x≢x x*Mι≺+x,x refl 
+    | .x , x*M , *v
+    | yes  refl  = ⊥-elim (x≢x refl)
+
+lemmaι≺+⇀y  : {Γ : Cxt}{α : Type}{x y : V}{M : Λ}
+            → ι ≺+ (y , v x) ∶ (Γ ‚ y ∶ α) ⇀ (Γ ‚ x ∶ α) ⇂ M ∙ ι ≺+ (x , v y)
+lemmaι≺+⇀y  {x = x} {y} {M}  .{y}  z*M∙ι≺+x,y (here refl) 
+  with y ≟ y
+... | yes  _    = ⊢v (here refl)
+... | no   y≢y  = ⊥-elim (y≢y refl)
+lemmaι≺+⇀y  {x = x} {y} {M}  {z}   z*M∙ι≺+x,y (there z≢y z∈Γ) 
+  with y ≟ z
+... | yes  y≡z  = ⊥-elim (z≢y (sym y≡z))
+... | no   y≢z  = lemmaWeakening⊢# (#v (lemmaz*Mι≺+x,y→z≢x {x} {y} {z} {M} y≢z z*M∙ι≺+x,y)) (lemmaι⇀  z∈Γ) 
+\end{code}
+
+
 \begin{code}
 lemma-subst-σ≡ : {M : Λ}{σ σ' : Σ} → 
-   (σ , M) ≅ρ (σ' , M) → (M ∙ σ) ≡ (M ∙ σ')  
+   (σ , M) ≅⇂ (σ' , M) → (M ∙ σ) ≡ (M ∙ σ')  
 lemma-subst-σ≡ {v x}   {σ} {σ'} (_ , f) 
   = f x *v
 lemma-subst-σ≡ {M · N} {σ} {σ'} (_ , f) 
@@ -513,40 +589,39 @@ lemma-length-corolary {x} {y} {M} = lemma-length {M} {ι ≺+ (x , v y)} lemma
 %<*typesusbstterm>
 \begin{code}
 lemma⊢σM  :  {σ : Σ}{Γ Δ : Cxt}{M : Λ}{α : Type}
-          →  Γ ⊢ M ∶ α → σ ∶ Γ ⇀ Δ → Δ ⊢ M ∙ σ ∶ α
+          →  Γ ⊢ M ∶ α → σ ∶ Γ ⇀ Δ ⇂ M → Δ ⊢ M ∙ σ ∶ α
 \end{code}
 %</typesusbstterm>
 
 \begin{code}
-lemma⊢σM  (⊢v p∈)              σ∶Γ⇀Δ
-  = σ∶Γ⇀Δ p∈
-lemma⊢σM  (⊢· Γ⊢M∶α⟶β Γ⊢N∶β)  σ∶Γ⇀Δ
-  = ⊢· (lemma⊢σM Γ⊢M∶α⟶β σ∶Γ⇀Δ) (lemma⊢σM Γ⊢N∶β σ∶Γ⇀Δ)
+lemma⊢σM  (⊢v p∈)              σ∶Γ⇀Δ⇂M
+  = σ∶Γ⇀Δ⇂M *v p∈
+lemma⊢σM  (⊢· Γ⊢M∶α⟶β Γ⊢N∶β)  σ∶Γ⇀Δ⇂M
+  = ⊢·  (lemma⊢σM Γ⊢M∶α⟶β (λ {z} z*M z∈Γ → σ∶Γ⇀Δ⇂M (*·l z*M) z∈Γ)) 
+        (lemma⊢σM Γ⊢N∶β (λ {z} z*M z∈Γ → σ∶Γ⇀Δ⇂M (*·r z*M) z∈Γ))
 lemma⊢σM  {σ} {Σ} {Δ} {M = ƛ y M} {α = α ⟶ β} 
-          Γ⊢ƛyM∶α⟶β           σ∶Γ⇀Δ
+          Γ⊢ƛyM∶α⟶β           σ∶Γ⇀Δ⇂M
   with  freeCxt Γ⊢ƛyM∶α⟶β 
   |     lemmafreeCxt→* Γ⊢ƛyM∶α⟶β 
   |     lemmaStrengthening⊢free Γ⊢ƛyM∶α⟶β 
   |     lemmafreeCxt⊆ Γ⊢ƛyM∶α⟶β
 ... | Γ' | Γ'* | ⊢ƛ Γ',y:α⊢M∶β | Γ'⊆Γ
-  = ⊢ƛ (lemma⊢σM {σ ≺+ (y , v x)} {Γ' ‚ y ∶ α} {Δ ‚ x ∶ α} Γ',y:α⊢M∶β lemma⇀)
+  = ⊢ƛ (lemma⊢σM {σ ≺+ (y , v x)} {Γ' ‚ y ∶ α} {Δ ‚ x ∶ α} Γ',y:α⊢M∶β lemmaaux⇀)
   where 
   x = χ (σ , ƛ y M)
   χ#⇂σƛxM = χ-lemma2 σ (ƛ y M)
-  lemma⇀ : (σ ≺+ (y , v x)) ∶ Γ' ‚ y , α ⇀ (Δ ‚ x , α)
-  lemma⇀ {z} z∈Γ',x with y ≟ z
-  lemma⇀ {z} (there _ z∈Γ')
+  lemmaaux⇀ : (σ ≺+ (y , v x)) ∶ Γ' ‚ y , α ⇀ (Δ ‚ x , α) ⇂ M
+  lemmaaux⇀ {z} z*M z∈Γ',x with y ≟ z
+  lemmaaux⇀ {z} z*M (there _ z∈Γ')
     | no  y≢z  with Γ'⊆Γ z∈Γ'
   ... | z∈Γ , Γ'⟨z∈Γ'⟩≡Γ⟨z∈Γ⟩ 
-    with σ∶Γ⇀Δ z∈Γ
-  ... | Δ⊢σz∶Γ⟨z∈Γ⟩
     rewrite Γ'⟨z∈Γ'⟩≡Γ⟨z∈Γ⟩ 
-    = lemmaWeakening⊢# (χ#⇂σƛxM z (Γ'* z z∈Γ')) (σ∶Γ⇀Δ z∈Γ)
-  lemma⇀ {z} (here z≡y)
+    = lemmaWeakening⊢# (χ#⇂σƛxM z (Γ'* z z∈Γ')) (σ∶Γ⇀Δ⇂M (*ƛ z*M y≢z) z∈Γ)
+  lemmaaux⇀ {z} z*M (here z≡y)
     | no  y≢z   = ⊥-elim (y≢z (sym z≡y))
-  lemma⇀ .{y} (here _) 
+  lemmaaux⇀ .{y} z*M (here _) 
     | yes refl  = ⊢v (here refl)
-  lemma⇀ .{y} (there y≢y _)
+  lemmaaux⇀ .{y} z*M (there y≢y _)
     | yes refl  = ⊥-elim (y≢y refl)
 \end{code}
 
