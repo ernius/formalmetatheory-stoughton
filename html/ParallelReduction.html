@@ -1,0 +1,2528 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+><head
+  ><title
+    >ParallelReduction</title
+    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+     /><meta http-equiv="Content-Style-Type" content="text/css"
+     /><link href="Agda.css" rel="stylesheet" type="text/css"
+     /></head
+  ><body
+  ><pre
+    ><a name="1"
+      >\begin{code}
+</a
+      ><a name="14" class="Keyword"
+      >module</a
+      ><a name="20"
+      > </a
+      ><a name="21" href="ParallelReduction.html#1" class="Module"
+      >ParallelReduction</a
+      ><a name="38"
+      > </a
+      ><a name="39" class="Keyword"
+      >where</a
+      ><a name="44"
+      >
+
+</a
+      ><a name="46" class="Keyword"
+      >open</a
+      ><a name="50"
+      > </a
+      ><a name="51" class="Keyword"
+      >import</a
+      ><a name="57"
+      > </a
+      ><a name="58" href="Chi.html#1" class="Module"
+      >Chi</a
+      ><a name="61"
+      >
+</a
+      ><a name="62" class="Keyword"
+      >open</a
+      ><a name="66"
+      > </a
+      ><a name="67" class="Keyword"
+      >import</a
+      ><a name="73"
+      > </a
+      ><a name="74" href="Term.html#1" class="Module"
+      >Term</a
+      ><a name="78"
+      > </a
+      ><a name="79" class="Keyword"
+      >renaming</a
+      ><a name="87"
+      > </a
+      ><a name="88" class="Symbol"
+      >(</a
+      ><a name="89"
+      >_&#8838;_ </a
+      ><a name="93" class="Symbol"
+      >to</a
+      ><a name="95"
+      > _&#8838;c_ </a
+      ><a name="101" class="Symbol"
+      >;</a
+      ><a name="102"
+      > _&#8712;_ </a
+      ><a name="107" class="Symbol"
+      >to</a
+      ><a name="109"
+      > _&#8712;c_</a
+      ><a name="114" class="Symbol"
+      >)</a
+      ><a name="115"
+      >
+</a
+      ><a name="116" class="Keyword"
+      >open</a
+      ><a name="120"
+      > </a
+      ><a name="121" class="Keyword"
+      >import</a
+      ><a name="127"
+      > </a
+      ><a name="128" href="Substitution.html#1" class="Module"
+      >Substitution</a
+      ><a name="140"
+      >
+</a
+      ><a name="141" class="Keyword"
+      >open</a
+      ><a name="145"
+      > </a
+      ><a name="146" class="Keyword"
+      >import</a
+      ><a name="152"
+      > </a
+      ><a name="153" href="Alpha.html#1" class="Module"
+      >Alpha</a
+      ><a name="158"
+      >
+
+</a
+      ><a name="160" class="Keyword"
+      >open</a
+      ><a name="164"
+      > </a
+      ><a name="165" class="Keyword"
+      >import</a
+      ><a name="171"
+      > </a
+      ><a name="172" href="Function.html#1" class="Module"
+      >Function</a
+      ><a name="180"
+      >
+</a
+      ><a name="181" class="Keyword"
+      >open</a
+      ><a name="185"
+      > </a
+      ><a name="186" class="Keyword"
+      >import</a
+      ><a name="192"
+      > </a
+      ><a name="193" href="Function.Inverse.html#1" class="Module"
+      >Function.Inverse</a
+      ><a name="209"
+      > </a
+      ><a name="210" class="Keyword"
+      >hiding</a
+      ><a name="216"
+      > </a
+      ><a name="217" class="Symbol"
+      >(</a
+      ><a name="218"
+      >sym</a
+      ><a name="221" class="Symbol"
+      >;</a
+      ><a name="222"
+      >_&#8728;_</a
+      ><a name="225" class="Symbol"
+      >;</a
+      ><a name="226"
+      >map</a
+      ><a name="229" class="Symbol"
+      >;</a
+      ><a name="230"
+      >id</a
+      ><a name="232" class="Symbol"
+      >)</a
+      ><a name="233"
+      >
+</a
+      ><a name="234" class="Keyword"
+      >open</a
+      ><a name="238"
+      > </a
+      ><a name="239" href="Function.Inverse.html#961" class="Module"
+      >Inverse</a
+      ><a name="246"
+      >
+</a
+      ><a name="247" class="Keyword"
+      >import</a
+      ><a name="253"
+      > </a
+      ><a name="254" href="Function.Equality.html#1" class="Module"
+      >Function.Equality</a
+      ><a name="271"
+      > </a
+      ><a name="272" class="Symbol"
+      >as</a
+      ><a name="274"
+      > </a
+      ><a name="275" class="Module"
+      >FE</a
+      ><a name="277"
+      >
+</a
+      ><a name="278" class="Keyword"
+      >open</a
+      ><a name="282"
+      > </a
+      ><a name="283" class="Keyword"
+      >import</a
+      ><a name="289"
+      > </a
+      ><a name="290" href="Data.List.html#1" class="Module"
+      >Data.List</a
+      ><a name="299"
+      > </a
+      ><a name="300" class="Keyword"
+      >hiding</a
+      ><a name="306"
+      > </a
+      ><a name="307" class="Symbol"
+      >(</a
+      ><a name="308"
+      >any</a
+      ><a name="311" class="Symbol"
+      >)</a
+      ><a name="312"
+      > </a
+      ><a name="313" class="Keyword"
+      >renaming</a
+      ><a name="321"
+      > </a
+      ><a name="322" class="Symbol"
+      >(</a
+      ><a name="323"
+      >length </a
+      ><a name="330" class="Symbol"
+      >to</a
+      ><a name="332"
+      > length'</a
+      ><a name="340" class="Symbol"
+      >)</a
+      ><a name="341"
+      > 
+</a
+      ><a name="343" class="Keyword"
+      >open</a
+      ><a name="347"
+      > </a
+      ><a name="348" class="Keyword"
+      >import</a
+      ><a name="354"
+      > </a
+      ><a name="355" href="Data.List.Any.html#1" class="Module"
+      >Data.List.Any</a
+      ><a name="368"
+      > </a
+      ><a name="369" class="Symbol"
+      >as</a
+      ><a name="371"
+      > </a
+      ><a name="372" class="Module"
+      >Any</a
+      ><a name="375"
+      > </a
+      ><a name="376" class="Keyword"
+      >hiding</a
+      ><a name="382"
+      > </a
+      ><a name="383" class="Symbol"
+      >(</a
+      ><a name="384"
+      >map</a
+      ><a name="387" class="Symbol"
+      >)</a
+      ><a name="388"
+      >
+</a
+      ><a name="389" class="Keyword"
+      >open</a
+      ><a name="393"
+      > </a
+      ><a name="394" class="Keyword"
+      >import</a
+      ><a name="400"
+      > </a
+      ><a name="401" href="Data.List.Any.Membership.html#1" class="Module"
+      >Data.List.Any.Membership</a
+      ><a name="425"
+      >
+</a
+      ><a name="426" class="Keyword"
+      >open</a
+      ><a name="430"
+      > </a
+      ><a name="431" class="Keyword"
+      >import</a
+      ><a name="437"
+      > </a
+      ><a name="438" href="Data.List.Any.Properties.html#1" class="Module"
+      >Data.List.Any.Properties</a
+      ><a name="462"
+      >
+</a
+      ><a name="463" class="Keyword"
+      >open</a
+      ><a name="467"
+      > </a
+      ><a name="468" href="Data.List.Any.html#260" class="Module"
+      >Any.</a
+      ><a name="472" href="Data.List.Any.html#4577" class="Module"
+      >Membership-&#8801;</a
+      ><a name="484"
+      > 
+</a
+      ><a name="486" class="Keyword"
+      >open</a
+      ><a name="490"
+      > </a
+      ><a name="491" class="Keyword"
+      >import</a
+      ><a name="497"
+      > </a
+      ><a name="498" href="Data.Bool.html#1" class="Module"
+      >Data.Bool</a
+      ><a name="507"
+      > </a
+      ><a name="508" class="Keyword"
+      >hiding</a
+      ><a name="514"
+      > </a
+      ><a name="515" class="Symbol"
+      >(</a
+      ><a name="516"
+      >_&#8799;_</a
+      ><a name="519" class="Symbol"
+      >;</a
+      ><a name="520"
+      >_&#8744;_</a
+      ><a name="523" class="Symbol"
+      >)</a
+      ><a name="524"
+      >
+</a
+      ><a name="525" class="Keyword"
+      >open</a
+      ><a name="529"
+      > </a
+      ><a name="530" class="Keyword"
+      >import</a
+      ><a name="536"
+      > </a
+      ><a name="537" href="Data.Nat.html#1" class="Module"
+      >Data.Nat</a
+      ><a name="545"
+      > </a
+      ><a name="546" class="Symbol"
+      >as</a
+      ><a name="548"
+      > </a
+      ><a name="549" class="Module"
+      >Nat</a
+      ><a name="552"
+      > </a
+      ><a name="553" class="Keyword"
+      >hiding</a
+      ><a name="559"
+      > </a
+      ><a name="560" class="Symbol"
+      >(</a
+      ><a name="561"
+      >_*_</a
+      ><a name="564" class="Symbol"
+      >)</a
+      ><a name="565"
+      >
+</a
+      ><a name="566" class="Keyword"
+      >open</a
+      ><a name="570"
+      > </a
+      ><a name="571" class="Keyword"
+      >import</a
+      ><a name="577"
+      > </a
+      ><a name="578" href="Data.Sum.html#1" class="Module"
+      >Data.Sum</a
+      ><a name="586"
+      > </a
+      ><a name="587" class="Keyword"
+      >hiding</a
+      ><a name="593"
+      > </a
+      ><a name="594" class="Symbol"
+      >(</a
+      ><a name="595"
+      >map</a
+      ><a name="598" class="Symbol"
+      >)</a
+      ><a name="599"
+      > </a
+      ><a name="600" class="Keyword"
+      >renaming</a
+      ><a name="608"
+      > </a
+      ><a name="609" class="Symbol"
+      >(</a
+      ><a name="610"
+      >_&#8846;_ </a
+      ><a name="614" class="Symbol"
+      >to</a
+      ><a name="616"
+      > _&#8744;_</a
+      ><a name="620" class="Symbol"
+      >)</a
+      ><a name="621"
+      >
+</a
+      ><a name="622" class="Keyword"
+      >open</a
+      ><a name="626"
+      > </a
+      ><a name="627" class="Keyword"
+      >import</a
+      ><a name="633"
+      > </a
+      ><a name="634" href="Data.Empty.html#1" class="Module"
+      >Data.Empty</a
+      ><a name="644"
+      >
+</a
+      ><a name="645" class="Keyword"
+      >open</a
+      ><a name="649"
+      > </a
+      ><a name="650" class="Keyword"
+      >import</a
+      ><a name="656"
+      > </a
+      ><a name="657" href="Data.Product.html#1" class="Module"
+      >Data.Product</a
+      ><a name="669"
+      > </a
+      ><a name="670" class="Keyword"
+      >renaming</a
+      ><a name="678"
+      > </a
+      ><a name="679" class="Symbol"
+      >(</a
+      ><a name="680"
+      >&#931; </a
+      ><a name="682" class="Symbol"
+      >to</a
+      ><a name="684"
+      > &#931;&#8339;</a
+      ><a name="687" class="Symbol"
+      >;</a
+      ><a name="688"
+      >map </a
+      ><a name="692" class="Symbol"
+      >to</a
+      ><a name="694"
+      > map&#8339;</a
+      ><a name="699" class="Symbol"
+      >)</a
+      ><a name="700"
+      > 
+</a
+      ><a name="702" class="Keyword"
+      >open</a
+      ><a name="706"
+      > </a
+      ><a name="707" class="Keyword"
+      >import</a
+      ><a name="713"
+      > </a
+      ><a name="714" href="Relation.Binary.html#1" class="Module"
+      >Relation.Binary</a
+      ><a name="729"
+      >
+</a
+      ><a name="730" class="Keyword"
+      >open</a
+      ><a name="734"
+      > </a
+      ><a name="735" class="Keyword"
+      >import</a
+      ><a name="741"
+      > </a
+      ><a name="742" href="Relation.Binary.PropositionalEquality.html#1" class="Module"
+      >Relation.Binary.PropositionalEquality</a
+      ><a name="779"
+      > </a
+      ><a name="780" class="Symbol"
+      >as</a
+      ><a name="782"
+      > </a
+      ><a name="783" class="Module"
+      >PropEq</a
+      ><a name="789"
+      > </a
+      ><a name="790" class="Keyword"
+      >renaming</a
+      ><a name="798"
+      > </a
+      ><a name="799" class="Symbol"
+      >(</a
+      ><a name="800"
+      >[_] </a
+      ><a name="804" class="Symbol"
+      >to</a
+      ><a name="806"
+      > [_]&#7522;</a
+      ><a name="811" class="Symbol"
+      >)</a
+      ><a name="812"
+      > 
+</a
+      ><a name="814" class="Keyword"
+      >open</a
+      ><a name="818"
+      > </a
+      ><a name="819" class="Keyword"
+      >import</a
+      ><a name="825"
+      > </a
+      ><a name="826" href="Relation.Nullary.html#1" class="Module"
+      >Relation.Nullary</a
+      ><a name="842"
+      >
+</a
+      ><a name="843" class="Keyword"
+      >open</a
+      ><a name="847"
+      > </a
+      ><a name="848" class="Keyword"
+      >import</a
+      ><a name="854"
+      > </a
+      ><a name="855" href="Relation.Nullary.Decidable.html#1" class="Module"
+      >Relation.Nullary.Decidable</a
+      ><a name="881"
+      > </a
+      ><a name="882" class="Keyword"
+      >hiding</a
+      ><a name="888"
+      > </a
+      ><a name="889" class="Symbol"
+      >(</a
+      ><a name="890"
+      >map</a
+      ><a name="893" class="Symbol"
+      >)</a
+      ><a name="894"
+      >
+</a
+      ><a name="895" class="Keyword"
+      >open</a
+      ><a name="899"
+      > </a
+      ><a name="900" class="Keyword"
+      >import</a
+      ><a name="906"
+      > </a
+      ><a name="907" href="Algebra.Structures.html#1" class="Module"
+      >Algebra.Structures</a
+      ><a name="925"
+      >
+</a
+      ><a name="926" class="Keyword"
+      >open</a
+      ><a name="930"
+      > </a
+      ><a name="931" href="Relation.Binary.html#9168" class="Module"
+      >DecTotalOrder</a
+      ><a name="944"
+      > </a
+      ><a name="945" href="Data.Nat.html#4487" class="Function"
+      >Nat.decTotalOrder</a
+      ><a name="962"
+      > </a
+      ><a name="963" class="Keyword"
+      >using</a
+      ><a name="968"
+      > </a
+      ><a name="969" class="Symbol"
+      >()</a
+      ><a name="971"
+      > </a
+      ><a name="972" class="Keyword"
+      >renaming</a
+      ><a name="980"
+      > </a
+      ><a name="981" class="Symbol"
+      >(</a
+      ><a name="982"
+      >refl </a
+      ><a name="987" class="Symbol"
+      >to</a
+      ><a name="989"
+      > &#8804;-refl</a
+      ><a name="996" class="Symbol"
+      >)</a
+      ><a name="997"
+      >
+</a
+      ><a name="998" class="Keyword"
+      >open</a
+      ><a name="1002"
+      > </a
+      ><a name="1003" href="Data.Nat.html#5720" class="Module"
+      >&#8804;-Reasoning</a
+      ><a name="1014"
+      >
+  </a
+      ><a name="1017" class="Keyword"
+      >renaming</a
+      ><a name="1025"
+      > </a
+      ><a name="1026" class="Symbol"
+      >(</a
+      ><a name="1027"
+      >begin_ </a
+      ><a name="1034" class="Symbol"
+      >to</a
+      ><a name="1036"
+      > start_</a
+      ><a name="1043" class="Symbol"
+      >;</a
+      ><a name="1044"
+      > _&#8718; </a
+      ><a name="1048" class="Symbol"
+      >to</a
+      ><a name="1050"
+      > _&#9725;</a
+      ><a name="1053" class="Symbol"
+      >;</a
+      ><a name="1054"
+      > _&#8801;&#10216;_&#10217;_ </a
+      ><a name="1062" class="Symbol"
+      >to</a
+      ><a name="1064"
+      > _&#8804;&#10216;_&#10217;'_</a
+      ><a name="1072" class="Symbol"
+      >)</a
+      ><a name="1073"
+      >
+
+</a
+      ><a name="1075" class="Keyword"
+      >infixl</a
+      ><a name="1081"
+      > </a
+      ><a name="1082" class="Number"
+      >2</a
+      ><a name="1083"
+      > _&#8649;_
+</a
+      ><a name="1088" class="Keyword"
+      >infixl</a
+      ><a name="1094"
+      > </a
+      ><a name="1095" class="Number"
+      >2</a
+      ><a name="1096"
+      > _&#8649;&#8347;_
+\end{code}
+
+</a
+      ><a name="1114" class="Comment"
+      >Parallel reduction.</a
+      ><a name="1133"
+      >
+
+\begin{code}
+</a
+      ><a name="1148" class="Keyword"
+      >data</a
+      ><a name="1152"
+      > </a
+      ><a name="1153" href="ParallelReduction.html#1153" class="Datatype Operator"
+      >_&#8649;_</a
+      ><a name="1156"
+      > </a
+      ><a name="1157" class="Symbol"
+      >:</a
+      ><a name="1158"
+      > </a
+      ><a name="1159" href="Term.html#1142" class="Datatype"
+      >&#923;</a
+      ><a name="1160"
+      > </a
+      ><a name="1161" class="Symbol"
+      >&#8594;</a
+      ><a name="1162"
+      > </a
+      ><a name="1163" href="Term.html#1142" class="Datatype"
+      >&#923;</a
+      ><a name="1164"
+      > </a
+      ><a name="1165" class="Symbol"
+      >&#8594;</a
+      ><a name="1166"
+      > </a
+      ><a name="1167" class="PrimitiveType"
+      >Set</a
+      ><a name="1170"
+      > </a
+      ><a name="1171" class="Keyword"
+      >where</a
+      ><a name="1176"
+      >
+  </a
+      ><a name="1179" href="ParallelReduction.html#1179" class="InductiveConstructor"
+      >&#8649;v</a
+      ><a name="1181"
+      > </a
+      ><a name="1182" class="Symbol"
+      >:</a
+      ><a name="1183"
+      > </a
+      ><a name="1184" class="Symbol"
+      >(</a
+      ><a name="1185" href="ParallelReduction.html#1185" class="Bound"
+      >x</a
+      ><a name="1186"
+      > </a
+      ><a name="1187" class="Symbol"
+      >:</a
+      ><a name="1188"
+      > </a
+      ><a name="1189" href="Chi.html#1141" class="Function"
+      >V</a
+      ><a name="1190" class="Symbol"
+      >)</a
+      ><a name="1191"
+      >                               </a
+      ><a name="1222" class="Symbol"
+      >&#8594;</a
+      ><a name="1223"
+      > </a
+      ><a name="1224" href="Term.html#1158" class="InductiveConstructor"
+      >v</a
+      ><a name="1225"
+      > </a
+      ><a name="1226" href="ParallelReduction.html#1185" class="Bound"
+      >x</a
+      ><a name="1227"
+      > </a
+      ><a name="1228" href="ParallelReduction.html#1153" class="Datatype Operator"
+      >&#8649;</a
+      ><a name="1229"
+      > </a
+      ><a name="1230" href="Term.html#1158" class="InductiveConstructor"
+      >v</a
+      ><a name="1231"
+      > </a
+      ><a name="1232" href="ParallelReduction.html#1185" class="Bound"
+      >x</a
+      ><a name="1233"
+      >
+  </a
+      ><a name="1236" href="ParallelReduction.html#1236" class="InductiveConstructor"
+      >&#8649;&#411;</a
+      ><a name="1238"
+      > </a
+      ><a name="1239" class="Symbol"
+      >:</a
+      ><a name="1240"
+      > </a
+      ><a name="1241" class="Symbol"
+      >(</a
+      ><a name="1242" href="ParallelReduction.html#1242" class="Bound"
+      >x</a
+      ><a name="1243"
+      > </a
+      ><a name="1244" class="Symbol"
+      >:</a
+      ><a name="1245"
+      > </a
+      ><a name="1246" href="Chi.html#1141" class="Function"
+      >V</a
+      ><a name="1247" class="Symbol"
+      >){</a
+      ><a name="1249" href="ParallelReduction.html#1249" class="Bound"
+      >M</a
+      ><a name="1250"
+      > </a
+      ><a name="1251" href="ParallelReduction.html#1251" class="Bound"
+      >M'</a
+      ><a name="1253"
+      > </a
+      ><a name="1254" class="Symbol"
+      >:</a
+      ><a name="1255"
+      > </a
+      ><a name="1256" href="Term.html#1142" class="Datatype"
+      >&#923;</a
+      ><a name="1257" class="Symbol"
+      >}</a
+      ><a name="1258"
+      >  </a
+      ><a name="1260" class="Symbol"
+      >&#8594;</a
+      ><a name="1261"
+      > </a
+      ><a name="1262" href="ParallelReduction.html#1249" class="Bound"
+      >M</a
+      ><a name="1263"
+      > </a
+      ><a name="1264" href="ParallelReduction.html#1153" class="Datatype Operator"
+      >&#8649;</a
+      ><a name="1265"
+      > </a
+      ><a name="1266" href="ParallelReduction.html#1251" class="Bound"
+      >M'</a
+      ><a name="1268"
+      >           </a
+      ><a name="1279" class="Symbol"
+      >&#8594;</a
+      ><a name="1280"
+      > </a
+      ><a name="1281" href="Term.html#1194" class="InductiveConstructor"
+      >&#411;</a
+      ><a name="1282"
+      > </a
+      ><a name="1283" href="ParallelReduction.html#1242" class="Bound"
+      >x</a
+      ><a name="1284"
+      > </a
+      ><a name="1285" href="ParallelReduction.html#1249" class="Bound"
+      >M</a
+      ><a name="1286"
+      > </a
+      ><a name="1287" href="ParallelReduction.html#1153" class="Datatype Operator"
+      >&#8649;</a
+      ><a name="1288"
+      > </a
+      ><a name="1289" href="Term.html#1194" class="InductiveConstructor"
+      >&#411;</a
+      ><a name="1290"
+      > </a
+      ><a name="1291" href="ParallelReduction.html#1242" class="Bound"
+      >x</a
+      ><a name="1292"
+      > </a
+      ><a name="1293" href="ParallelReduction.html#1251" class="Bound"
+      >M'</a
+      ><a name="1295"
+      >
+  </a
+      ><a name="1298" href="ParallelReduction.html#1298" class="InductiveConstructor"
+      >&#8649;&#183;</a
+      ><a name="1300"
+      > </a
+      ><a name="1301" class="Symbol"
+      >:</a
+      ><a name="1302"
+      > </a
+      ><a name="1303" class="Symbol"
+      >{</a
+      ><a name="1304" href="ParallelReduction.html#1304" class="Bound"
+      >M</a
+      ><a name="1305"
+      > </a
+      ><a name="1306" href="ParallelReduction.html#1306" class="Bound"
+      >M'</a
+      ><a name="1308"
+      > </a
+      ><a name="1309" href="ParallelReduction.html#1309" class="Bound"
+      >N</a
+      ><a name="1310"
+      > </a
+      ><a name="1311" href="ParallelReduction.html#1311" class="Bound"
+      >N'</a
+      ><a name="1313"
+      > </a
+      ><a name="1314" class="Symbol"
+      >:</a
+      ><a name="1315"
+      > </a
+      ><a name="1316" href="Term.html#1142" class="Datatype"
+      >&#923;</a
+      ><a name="1317" class="Symbol"
+      >}</a
+      ><a name="1318"
+      >    </a
+      ><a name="1322" class="Symbol"
+      >&#8594;</a
+      ><a name="1323"
+      > </a
+      ><a name="1324" href="ParallelReduction.html#1304" class="Bound"
+      >M</a
+      ><a name="1325"
+      > </a
+      ><a name="1326" href="ParallelReduction.html#1153" class="Datatype Operator"
+      >&#8649;</a
+      ><a name="1327"
+      > </a
+      ><a name="1328" href="ParallelReduction.html#1306" class="Bound"
+      >M'</a
+      ><a name="1330"
+      > </a
+      ><a name="1331" class="Symbol"
+      >&#8594;</a
+      ><a name="1332"
+      > </a
+      ><a name="1333" href="ParallelReduction.html#1309" class="Bound"
+      >N</a
+      ><a name="1334"
+      > </a
+      ><a name="1335" href="ParallelReduction.html#1153" class="Datatype Operator"
+      >&#8649;</a
+      ><a name="1336"
+      > </a
+      ><a name="1337" href="ParallelReduction.html#1311" class="Bound"
+      >N'</a
+      ><a name="1339"
+      >  </a
+      ><a name="1341" class="Symbol"
+      >&#8594;</a
+      ><a name="1342"
+      > </a
+      ><a name="1343" href="ParallelReduction.html#1304" class="Bound"
+      >M</a
+      ><a name="1344"
+      > </a
+      ><a name="1345" href="Term.html#1174" class="InductiveConstructor Operator"
+      >&#183;</a
+      ><a name="1346"
+      > </a
+      ><a name="1347" href="ParallelReduction.html#1309" class="Bound"
+      >N</a
+      ><a name="1348"
+      > </a
+      ><a name="1349" href="ParallelReduction.html#1153" class="Datatype Operator"
+      >&#8649;</a
+      ><a name="1350"
+      > </a
+      ><a name="1351" href="ParallelReduction.html#1306" class="Bound"
+      >M'</a
+      ><a name="1353"
+      > </a
+      ><a name="1354" href="Term.html#1174" class="InductiveConstructor Operator"
+      >&#183;</a
+      ><a name="1355"
+      > </a
+      ><a name="1356" href="ParallelReduction.html#1311" class="Bound"
+      >N'</a
+      ><a name="1358"
+      >
+  </a
+      ><a name="1361" href="ParallelReduction.html#1361" class="InductiveConstructor"
+      >&#8649;&#946;</a
+      ><a name="1363"
+      > </a
+      ><a name="1364" class="Symbol"
+      >:</a
+      ><a name="1365"
+      > </a
+      ><a name="1366" class="Symbol"
+      >(</a
+      ><a name="1367" href="ParallelReduction.html#1367" class="Bound"
+      >x</a
+      ><a name="1368"
+      > </a
+      ><a name="1369" class="Symbol"
+      >:</a
+      ><a name="1370"
+      > </a
+      ><a name="1371" href="Chi.html#1141" class="Function"
+      >V</a
+      ><a name="1372" class="Symbol"
+      >){</a
+      ><a name="1374" href="ParallelReduction.html#1374" class="Bound"
+      >M</a
+      ><a name="1375"
+      > </a
+      ><a name="1376" href="ParallelReduction.html#1376" class="Bound"
+      >M'</a
+      ><a name="1378"
+      > </a
+      ><a name="1379" href="ParallelReduction.html#1379" class="Bound"
+      >N</a
+      ><a name="1380"
+      > </a
+      ><a name="1381" href="ParallelReduction.html#1381" class="Bound"
+      >N'</a
+      ><a name="1383"
+      > </a
+      ><a name="1384" class="Symbol"
+      >:</a
+      ><a name="1385"
+      > </a
+      ><a name="1386" href="Term.html#1142" class="Datatype"
+      >&#923;</a
+      ><a name="1387" class="Symbol"
+      >}</a
+      ><a name="1388"
+      >
+                          </a
+      ><a name="1415" class="Symbol"
+      >&#8594;</a
+      ><a name="1416"
+      > </a
+      ><a name="1417" href="ParallelReduction.html#1374" class="Bound"
+      >M</a
+      ><a name="1418"
+      > </a
+      ><a name="1419" href="ParallelReduction.html#1153" class="Datatype Operator"
+      >&#8649;</a
+      ><a name="1420"
+      > </a
+      ><a name="1421" href="ParallelReduction.html#1376" class="Bound"
+      >M'</a
+      ><a name="1423"
+      > </a
+      ><a name="1424" class="Symbol"
+      >&#8594;</a
+      ><a name="1425"
+      > </a
+      ><a name="1426" href="ParallelReduction.html#1379" class="Bound"
+      >N</a
+      ><a name="1427"
+      > </a
+      ><a name="1428" href="ParallelReduction.html#1153" class="Datatype Operator"
+      >&#8649;</a
+      ><a name="1429"
+      > </a
+      ><a name="1430" href="ParallelReduction.html#1381" class="Bound"
+      >N'</a
+      ><a name="1432"
+      >  </a
+      ><a name="1434" class="Symbol"
+      >&#8594;</a
+      ><a name="1435"
+      > </a
+      ><a name="1436" href="Term.html#1194" class="InductiveConstructor"
+      >&#411;</a
+      ><a name="1437"
+      > </a
+      ><a name="1438" href="ParallelReduction.html#1367" class="Bound"
+      >x</a
+      ><a name="1439"
+      > </a
+      ><a name="1440" href="ParallelReduction.html#1374" class="Bound"
+      >M</a
+      ><a name="1441"
+      > </a
+      ><a name="1442" href="Term.html#1174" class="InductiveConstructor Operator"
+      >&#183;</a
+      ><a name="1443"
+      > </a
+      ><a name="1444" href="ParallelReduction.html#1379" class="Bound"
+      >N</a
+      ><a name="1445"
+      > </a
+      ><a name="1446" href="ParallelReduction.html#1153" class="Datatype Operator"
+      >&#8649;</a
+      ><a name="1447"
+      > </a
+      ><a name="1448" href="ParallelReduction.html#1376" class="Bound"
+      >M'</a
+      ><a name="1450"
+      > </a
+      ><a name="1451" href="Substitution.html#13705" class="Function Operator"
+      >&#8729;</a
+      ><a name="1452"
+      > </a
+      ><a name="1453" href="Substitution.html#1233" class="Function"
+      >&#953;</a
+      ><a name="1454"
+      > </a
+      ><a name="1455" href="Substitution.html#1277" class="Function Operator"
+      >&#8826;+</a
+      ><a name="1457"
+      > </a
+      ><a name="1458" class="Symbol"
+      >(</a
+      ><a name="1459" href="ParallelReduction.html#1367" class="Bound"
+      >x</a
+      ><a name="1460"
+      > </a
+      ><a name="1461" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="1462"
+      > </a
+      ><a name="1463" href="ParallelReduction.html#1381" class="Bound"
+      >N'</a
+      ><a name="1465" class="Symbol"
+      >)</a
+      ><a name="1466"
+      > 
+  </a
+      ><a name="1470" href="ParallelReduction.html#1470" class="InductiveConstructor"
+      >&#8649;&#945;</a
+      ><a name="1472"
+      > </a
+      ><a name="1473" class="Symbol"
+      >:</a
+      ><a name="1474"
+      > </a
+      ><a name="1475" class="Symbol"
+      >{</a
+      ><a name="1476" href="ParallelReduction.html#1476" class="Bound"
+      >M</a
+      ><a name="1477"
+      > </a
+      ><a name="1478" href="ParallelReduction.html#1478" class="Bound"
+      >N</a
+      ><a name="1479"
+      > </a
+      ><a name="1480" href="ParallelReduction.html#1480" class="Bound"
+      >N'</a
+      ><a name="1482"
+      > </a
+      ><a name="1483" class="Symbol"
+      >:</a
+      ><a name="1484"
+      > </a
+      ><a name="1485" href="Term.html#1142" class="Datatype"
+      >&#923;</a
+      ><a name="1486" class="Symbol"
+      >}</a
+      ><a name="1487"
+      >
+                          </a
+      ><a name="1514" class="Symbol"
+      >&#8594;</a
+      ><a name="1515"
+      > </a
+      ><a name="1516" href="ParallelReduction.html#1476" class="Bound"
+      >M</a
+      ><a name="1517"
+      > </a
+      ><a name="1518" href="ParallelReduction.html#1153" class="Datatype Operator"
+      >&#8649;</a
+      ><a name="1519"
+      > </a
+      ><a name="1520" href="ParallelReduction.html#1478" class="Bound"
+      >N</a
+      ><a name="1521"
+      > </a
+      ><a name="1522" class="Symbol"
+      >&#8594;</a
+      ><a name="1523"
+      > </a
+      ><a name="1524" href="ParallelReduction.html#1478" class="Bound"
+      >N</a
+      ><a name="1525"
+      > </a
+      ><a name="1526" href="Alpha.html#464" class="Datatype Operator"
+      >&#8764;&#945;</a
+      ><a name="1528"
+      > </a
+      ><a name="1529" href="ParallelReduction.html#1480" class="Bound"
+      >N'</a
+      ><a name="1531"
+      >  </a
+      ><a name="1533" class="Symbol"
+      >&#8594;</a
+      ><a name="1534"
+      > </a
+      ><a name="1535" href="ParallelReduction.html#1476" class="Bound"
+      >M</a
+      ><a name="1536"
+      > </a
+      ><a name="1537" href="ParallelReduction.html#1153" class="Datatype Operator"
+      >&#8649;</a
+      ><a name="1538"
+      > </a
+      ><a name="1539" href="ParallelReduction.html#1480" class="Bound"
+      >N'</a
+      ><a name="1541"
+      >
+\end{code}
+
+</a
+      ><a name="1554" class="Comment"
+      >Parallel substitution.</a
+      ><a name="1576"
+      >
+
+\begin{code}
+</a
+      ><a name="1591" href="ParallelReduction.html#1591" class="Function Operator"
+      >_&#8649;&#8347;_</a
+      ><a name="1595"
+      > </a
+      ><a name="1596" class="Symbol"
+      >:</a
+      ><a name="1597"
+      > </a
+      ><a name="1598" href="Substitution.html#1198" class="Function"
+      >&#931;</a
+      ><a name="1599"
+      > </a
+      ><a name="1600" class="Symbol"
+      >&#8594;</a
+      ><a name="1601"
+      > </a
+      ><a name="1602" href="Substitution.html#1198" class="Function"
+      >&#931;</a
+      ><a name="1603"
+      > </a
+      ><a name="1604" class="Symbol"
+      >&#8594;</a
+      ><a name="1605"
+      > </a
+      ><a name="1606" class="PrimitiveType"
+      >Set</a
+      ><a name="1609"
+      >
+</a
+      ><a name="1610" href="ParallelReduction.html#1610" class="Bound"
+      >&#963;</a
+      ><a name="1611"
+      > </a
+      ><a name="1612" href="ParallelReduction.html#1591" class="Function Operator"
+      >&#8649;&#8347;</a
+      ><a name="1614"
+      > </a
+      ><a name="1615" href="ParallelReduction.html#1615" class="Bound"
+      >&#963;'</a
+      ><a name="1617"
+      > </a
+      ><a name="1618" class="Symbol"
+      >=</a
+      ><a name="1619"
+      > </a
+      ><a name="1620" class="Symbol"
+      >(</a
+      ><a name="1621" href="ParallelReduction.html#1621" class="Bound"
+      >x</a
+      ><a name="1622"
+      > </a
+      ><a name="1623" class="Symbol"
+      >:</a
+      ><a name="1624"
+      > </a
+      ><a name="1625" href="Chi.html#1141" class="Function"
+      >V</a
+      ><a name="1626" class="Symbol"
+      >)</a
+      ><a name="1627"
+      > </a
+      ><a name="1628" class="Symbol"
+      >&#8594;</a
+      ><a name="1629"
+      > </a
+      ><a name="1630" href="ParallelReduction.html#1610" class="Bound"
+      >&#963;</a
+      ><a name="1631"
+      > </a
+      ><a name="1632" href="ParallelReduction.html#1621" class="Bound"
+      >x</a
+      ><a name="1633"
+      > </a
+      ><a name="1634" href="ParallelReduction.html#1153" class="Datatype Operator"
+      >&#8649;</a
+      ><a name="1635"
+      > </a
+      ><a name="1636" href="ParallelReduction.html#1615" class="Bound"
+      >&#963;'</a
+      ><a name="1638"
+      > </a
+      ><a name="1639" href="ParallelReduction.html#1621" class="Bound"
+      >x</a
+      ><a name="1640"
+      >
+\end{code}
+
+\begin{code}
+</a
+      ><a name="1666" href="ParallelReduction.html#1666" class="Function"
+      >lemma&#8649;s</a
+      ><a name="1673"
+      > </a
+      ><a name="1674" class="Symbol"
+      >:</a
+      ><a name="1675"
+      > </a
+      ><a name="1676" class="Symbol"
+      >{</a
+      ><a name="1677" href="ParallelReduction.html#1677" class="Bound"
+      >&#963;</a
+      ><a name="1678"
+      > </a
+      ><a name="1679" href="ParallelReduction.html#1679" class="Bound"
+      >&#963;'</a
+      ><a name="1681"
+      > </a
+      ><a name="1682" class="Symbol"
+      >:</a
+      ><a name="1683"
+      > </a
+      ><a name="1684" href="Substitution.html#1198" class="Function"
+      >&#931;</a
+      ><a name="1685" class="Symbol"
+      >}(</a
+      ><a name="1687" href="ParallelReduction.html#1687" class="Bound"
+      >x</a
+      ><a name="1688"
+      > </a
+      ><a name="1689" href="ParallelReduction.html#1689" class="Bound"
+      >y</a
+      ><a name="1690"
+      > </a
+      ><a name="1691" class="Symbol"
+      >:</a
+      ><a name="1692"
+      > </a
+      ><a name="1693" href="Chi.html#1141" class="Function"
+      >V</a
+      ><a name="1694" class="Symbol"
+      >)</a
+      ><a name="1695"
+      > </a
+      ><a name="1696" class="Symbol"
+      >&#8594;</a
+      ><a name="1697"
+      > </a
+      ><a name="1698" href="ParallelReduction.html#1677" class="Bound"
+      >&#963;</a
+      ><a name="1699"
+      > </a
+      ><a name="1700" href="ParallelReduction.html#1591" class="Function Operator"
+      >&#8649;&#8347;</a
+      ><a name="1702"
+      > </a
+      ><a name="1703" href="ParallelReduction.html#1679" class="Bound"
+      >&#963;'</a
+      ><a name="1705"
+      > </a
+      ><a name="1706" class="Symbol"
+      >&#8594;</a
+      ><a name="1707"
+      > </a
+      ><a name="1708" href="ParallelReduction.html#1677" class="Bound"
+      >&#963;</a
+      ><a name="1709"
+      > </a
+      ><a name="1710" href="Substitution.html#1277" class="Function Operator"
+      >&#8826;+</a
+      ><a name="1712"
+      > </a
+      ><a name="1713" class="Symbol"
+      >(</a
+      ><a name="1714" href="ParallelReduction.html#1687" class="Bound"
+      >x</a
+      ><a name="1715"
+      > </a
+      ><a name="1716" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="1717"
+      > </a
+      ><a name="1718" href="Term.html#1158" class="InductiveConstructor"
+      >v</a
+      ><a name="1719"
+      > </a
+      ><a name="1720" href="ParallelReduction.html#1689" class="Bound"
+      >y</a
+      ><a name="1721" class="Symbol"
+      >)</a
+      ><a name="1722"
+      > </a
+      ><a name="1723" href="ParallelReduction.html#1591" class="Function Operator"
+      >&#8649;&#8347;</a
+      ><a name="1725"
+      > </a
+      ><a name="1726" href="ParallelReduction.html#1679" class="Bound"
+      >&#963;'</a
+      ><a name="1728"
+      > </a
+      ><a name="1729" href="Substitution.html#1277" class="Function Operator"
+      >&#8826;+</a
+      ><a name="1731"
+      > </a
+      ><a name="1732" class="Symbol"
+      >(</a
+      ><a name="1733" href="ParallelReduction.html#1687" class="Bound"
+      >x</a
+      ><a name="1734"
+      > </a
+      ><a name="1735" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="1736"
+      > </a
+      ><a name="1737" href="Term.html#1158" class="InductiveConstructor"
+      >v</a
+      ><a name="1738"
+      > </a
+      ><a name="1739" href="ParallelReduction.html#1689" class="Bound"
+      >y</a
+      ><a name="1740" class="Symbol"
+      >)</a
+      ><a name="1741"
+      >
+</a
+      ><a name="1742" href="ParallelReduction.html#1666" class="Function"
+      >lemma&#8649;s</a
+      ><a name="1749"
+      > </a
+      ><a name="1750" class="Symbol"
+      >{</a
+      ><a name="1751" href="ParallelReduction.html#1751" class="Bound"
+      >&#963;</a
+      ><a name="1752" class="Symbol"
+      >}</a
+      ><a name="1753"
+      > </a
+      ><a name="1754" class="Symbol"
+      >{</a
+      ><a name="1755" href="ParallelReduction.html#1755" class="Bound"
+      >&#963;'</a
+      ><a name="1757" class="Symbol"
+      >}</a
+      ><a name="1758"
+      > </a
+      ><a name="1759" href="ParallelReduction.html#1759" class="Bound"
+      >x</a
+      ><a name="1760"
+      > </a
+      ><a name="1761" href="ParallelReduction.html#1761" class="Bound"
+      >y</a
+      ><a name="1762"
+      > </a
+      ><a name="1763" href="ParallelReduction.html#1763" class="Bound"
+      >&#963;&#8649;&#963;'</a
+      ><a name="1767"
+      > </a
+      ><a name="1768" href="ParallelReduction.html#1768" class="Bound"
+      >z</a
+      ><a name="1769"
+      > </a
+      ><a name="1770" class="Keyword"
+      >with</a
+      ><a name="1774"
+      > </a
+      ><a name="1775" href="ParallelReduction.html#1759" class="Bound"
+      >x</a
+      ><a name="1776"
+      > </a
+      ><a name="1777" href="Data.Nat.html#3049" class="Function Operator"
+      >&#8799;</a
+      ><a name="1778"
+      > </a
+      ><a name="1779" href="ParallelReduction.html#1768" class="Bound"
+      >z</a
+      ><a name="1780"
+      > 
+</a
+      ><a name="1782" class="Symbol"
+      >...</a
+      ><a name="1785"
+      > </a
+      ><a name="1786" class="Symbol"
+      >|</a
+      ><a name="1787"
+      > </a
+      ><a name="1788" href="Relation.Nullary.Core.html#504" class="InductiveConstructor"
+      >yes</a
+      ><a name="1791"
+      >  </a
+      ><a name="1793" class="Symbol"
+      >_</a
+      ><a name="1794"
+      > </a
+      ><a name="1795" class="Symbol"
+      >=</a
+      ><a name="1796"
+      > </a
+      ><a name="1797" href="ParallelReduction.html#1179" class="InductiveConstructor"
+      >&#8649;v</a
+      ><a name="1799"
+      > </a
+      ><a name="1800" href="ParallelReduction.html#1761" class="Bound"
+      >y</a
+      ><a name="1801"
+      >
+</a
+      ><a name="1802" class="Symbol"
+      >...</a
+      ><a name="1805"
+      > </a
+      ><a name="1806" class="Symbol"
+      >|</a
+      ><a name="1807"
+      > </a
+      ><a name="1808" href="Relation.Nullary.Core.html#531" class="InductiveConstructor"
+      >no</a
+      ><a name="1810"
+      >   </a
+      ><a name="1813" class="Symbol"
+      >_</a
+      ><a name="1814"
+      > </a
+      ><a name="1815" class="Symbol"
+      >=</a
+      ><a name="1816"
+      > </a
+      ><a name="1817" href="ParallelReduction.html#1763" class="Bound"
+      >&#963;&#8649;&#963;'</a
+      ><a name="1821"
+      > </a
+      ><a name="1822" href="ParallelReduction.html#1768" class="Bound"
+      >z</a
+      ><a name="1823"
+      >
+
+</a
+      ><a name="1825" class="Comment"
+      >-- Lemma 7</a
+      ><a name="1835"
+      >
+
+</a
+      ><a name="1837" href="ParallelReduction.html#1837" class="Function"
+      >lemma&#8649;*</a
+      ><a name="1844"
+      > </a
+      ><a name="1845" class="Symbol"
+      >:</a
+      ><a name="1846"
+      > </a
+      ><a name="1847" class="Symbol"
+      >{</a
+      ><a name="1848" href="ParallelReduction.html#1848" class="Bound"
+      >x</a
+      ><a name="1849"
+      > </a
+      ><a name="1850" class="Symbol"
+      >:</a
+      ><a name="1851"
+      > </a
+      ><a name="1852" href="Chi.html#1141" class="Function"
+      >V</a
+      ><a name="1853" class="Symbol"
+      >}{</a
+      ><a name="1855" href="ParallelReduction.html#1855" class="Bound"
+      >M</a
+      ><a name="1856"
+      > </a
+      ><a name="1857" href="ParallelReduction.html#1857" class="Bound"
+      >N</a
+      ><a name="1858"
+      > </a
+      ><a name="1859" class="Symbol"
+      >:</a
+      ><a name="1860"
+      > </a
+      ><a name="1861" href="Term.html#1142" class="Datatype"
+      >&#923;</a
+      ><a name="1862" class="Symbol"
+      >}</a
+      ><a name="1863"
+      > </a
+      ><a name="1864" class="Symbol"
+      >&#8594;</a
+      ><a name="1865"
+      > </a
+      ><a name="1866" href="ParallelReduction.html#1848" class="Bound"
+      >x</a
+      ><a name="1867"
+      > </a
+      ><a name="1868" href="Term.html#4416" class="Datatype Operator"
+      >*</a
+      ><a name="1869"
+      > </a
+      ><a name="1870" href="ParallelReduction.html#1857" class="Bound"
+      >N</a
+      ><a name="1871"
+      > </a
+      ><a name="1872" class="Symbol"
+      >&#8594;</a
+      ><a name="1873"
+      > </a
+      ><a name="1874" href="ParallelReduction.html#1855" class="Bound"
+      >M</a
+      ><a name="1875"
+      > </a
+      ><a name="1876" href="ParallelReduction.html#1153" class="Datatype Operator"
+      >&#8649;</a
+      ><a name="1877"
+      > </a
+      ><a name="1878" href="ParallelReduction.html#1857" class="Bound"
+      >N</a
+      ><a name="1879"
+      > </a
+      ><a name="1880" class="Symbol"
+      >&#8594;</a
+      ><a name="1881"
+      > </a
+      ><a name="1882" href="ParallelReduction.html#1848" class="Bound"
+      >x</a
+      ><a name="1883"
+      > </a
+      ><a name="1884" href="Term.html#4416" class="Datatype Operator"
+      >*</a
+      ><a name="1885"
+      > </a
+      ><a name="1886" href="ParallelReduction.html#1855" class="Bound"
+      >M</a
+      ><a name="1887"
+      > 
+</a
+      ><a name="1889" href="ParallelReduction.html#1837" class="Function"
+      >lemma&#8649;*</a
+      ><a name="1896"
+      >  </a
+      ><a name="1898" class="Symbol"
+      >{</a
+      ><a name="1899" href="ParallelReduction.html#1899" class="Bound"
+      >x</a
+      ><a name="1900" class="Symbol"
+      >}</a
+      ><a name="1901"
+      > 
+         </a
+      ><a name="1912" href="ParallelReduction.html#1912" class="Bound"
+      >x*M'&#8729;&#953;&#8826;+yN'</a
+      ><a name="1923"
+      >   </a
+      ><a name="1926" class="Symbol"
+      >(</a
+      ><a name="1927" href="ParallelReduction.html#1361" class="InductiveConstructor"
+      >&#8649;&#946;</a
+      ><a name="1929"
+      > </a
+      ><a name="1930" href="ParallelReduction.html#1930" class="Bound"
+      >y</a
+      ><a name="1931"
+      > </a
+      ><a name="1932" class="Symbol"
+      >{</a
+      ><a name="1933" href="ParallelReduction.html#1933" class="Bound"
+      >M</a
+      ><a name="1934" class="Symbol"
+      >}</a
+      ><a name="1935"
+      > </a
+      ><a name="1936" class="Symbol"
+      >{</a
+      ><a name="1937" href="ParallelReduction.html#1937" class="Bound"
+      >M'</a
+      ><a name="1939" class="Symbol"
+      >}</a
+      ><a name="1940"
+      > </a
+      ><a name="1941" class="Symbol"
+      >{</a
+      ><a name="1942" href="ParallelReduction.html#1942" class="Bound"
+      >N</a
+      ><a name="1943" class="Symbol"
+      >}</a
+      ><a name="1944"
+      > </a
+      ><a name="1945" class="Symbol"
+      >{</a
+      ><a name="1946" href="ParallelReduction.html#1946" class="Bound"
+      >N'</a
+      ><a name="1948" class="Symbol"
+      >}</a
+      ><a name="1949"
+      > </a
+      ><a name="1950" href="ParallelReduction.html#1950" class="Bound"
+      >M&#8649;N</a
+      ><a name="1953"
+      > </a
+      ><a name="1954" href="ParallelReduction.html#1954" class="Bound"
+      >M'&#8649;N'</a
+      ><a name="1959" class="Symbol"
+      >)</a
+      ><a name="1960"
+      >  
+  </a
+      ><a name="1965" class="Keyword"
+      >with</a
+      ><a name="1969"
+      > </a
+      ><a name="1970" href="Substitution.html#16307" class="Function"
+      >lemmafree&#963;&#8594;</a
+      ><a name="1981"
+      > </a
+      ><a name="1982" class="Symbol"
+      >{</a
+      ><a name="1983" href="ParallelReduction.html#1899" class="Bound"
+      >x</a
+      ><a name="1984" class="Symbol"
+      >}</a
+      ><a name="1985"
+      > </a
+      ><a name="1986" class="Symbol"
+      >{</a
+      ><a name="1987" href="ParallelReduction.html#1937" class="Bound"
+      >M'</a
+      ><a name="1989" class="Symbol"
+      >}</a
+      ><a name="1990"
+      > </a
+      ><a name="1991" href="ParallelReduction.html#1912" class="Bound"
+      >x*M'&#8729;&#953;&#8826;+yN'</a
+      ><a name="2002"
+      >
+</a
+      ><a name="2003" class="Symbol"
+      >...</a
+      ><a name="2006"
+      > </a
+      ><a name="2007" class="Symbol"
+      >|</a
+      ><a name="2008"
+      > </a
+      ><a name="2009" href="ParallelReduction.html#2009" class="Bound"
+      >z</a
+      ><a name="2010"
+      > </a
+      ><a name="2011" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="2012"
+      > </a
+      ><a name="2013" href="ParallelReduction.html#2013" class="Bound"
+      >z*M'</a
+      ><a name="2017"
+      > </a
+      ><a name="2018" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="2019"
+      > </a
+      ><a name="2020" href="ParallelReduction.html#2020" class="Bound"
+      >z*&#953;&#8826;+yN'y</a
+      ><a name="2029"
+      >
+  </a
+      ><a name="2032" class="Keyword"
+      >with</a
+      ><a name="2036"
+      > </a
+      ><a name="2037" href="ParallelReduction.html#1930" class="Bound"
+      >y</a
+      ><a name="2038"
+      > </a
+      ><a name="2039" href="Data.Nat.html#3049" class="Function Operator"
+      >&#8799;</a
+      ><a name="2040"
+      > </a
+      ><a name="2041" href="ParallelReduction.html#2009" class="Bound"
+      >z</a
+      ><a name="2042"
+      >
+</a
+      ><a name="2043" href="ParallelReduction.html#1837" class="Function"
+      >lemma&#8649;*</a
+      ><a name="2050"
+      >  </a
+      ><a name="2052" class="Symbol"
+      >{</a
+      ><a name="2053" href="ParallelReduction.html#2053" class="Bound"
+      >x</a
+      ><a name="2054" class="Symbol"
+      >}</a
+      ><a name="2055"
+      > 
+         </a
+      ><a name="2066" href="ParallelReduction.html#2066" class="Bound"
+      >x*M'&#8729;&#953;&#8826;+yN'</a
+      ><a name="2077"
+      >   </a
+      ><a name="2080" class="Symbol"
+      >(</a
+      ><a name="2081" href="ParallelReduction.html#1361" class="InductiveConstructor"
+      >&#8649;&#946;</a
+      ><a name="2083"
+      > </a
+      ><a name="2084" href="ParallelReduction.html#2084" class="Bound"
+      >y</a
+      ><a name="2085"
+      > </a
+      ><a name="2086" class="Symbol"
+      >{</a
+      ><a name="2087" href="ParallelReduction.html#2087" class="Bound"
+      >M</a
+      ><a name="2088" class="Symbol"
+      >}</a
+      ><a name="2089"
+      > </a
+      ><a name="2090" class="Symbol"
+      >{</a
+      ><a name="2091" href="ParallelReduction.html#2091" class="Bound"
+      >M'</a
+      ><a name="2093" class="Symbol"
+      >}</a
+      ><a name="2094"
+      > </a
+      ><a name="2095" class="Symbol"
+      >{</a
+      ><a name="2096" href="ParallelReduction.html#2096" class="Bound"
+      >N</a
+      ><a name="2097" class="Symbol"
+      >}</a
+      ><a name="2098"
+      > </a
+      ><a name="2099" class="Symbol"
+      >{</a
+      ><a name="2100" href="ParallelReduction.html#2100" class="Bound"
+      >N'</a
+      ><a name="2102" class="Symbol"
+      >}</a
+      ><a name="2103"
+      > </a
+      ><a name="2104" href="ParallelReduction.html#2104" class="Bound"
+      >M&#8649;M'</a
+      ><a name="2108"
+      > </a
+      ><a name="2109" href="ParallelReduction.html#2109" class="Bound"
+      >N&#8649;N'</a
+      ><a name="2113" class="Symbol"
+      >)</a
+      ><a name="2114"
+      >  
+    </a
+      ><a name="2121" class="Symbol"
+      >|</a
+      ><a name="2122"
+      > </a
+      ><a name="2123" class="DottedPattern Symbol"
+      >.</a
+      ><a name="2124" href="ParallelReduction.html#2053" class="DottedPattern Bound"
+      >x</a
+      ><a name="2125"
+      > </a
+      ><a name="2126" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="2127"
+      > </a
+      ><a name="2128" href="ParallelReduction.html#2128" class="Bound"
+      >x*M'</a
+      ><a name="2132"
+      > </a
+      ><a name="2133" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="2134"
+      > </a
+      ><a name="2135" href="Term.html#4442" class="InductiveConstructor"
+      >*v</a
+      ><a name="2137"
+      >
+    </a
+      ><a name="2142" class="Symbol"
+      >|</a
+      ><a name="2143"
+      > </a
+      ><a name="2144" href="Relation.Nullary.Core.html#531" class="InductiveConstructor"
+      >no</a
+      ><a name="2146"
+      >   </a
+      ><a name="2149" href="ParallelReduction.html#2149" class="Bound"
+      >y&#8802;x</a
+      ><a name="2152"
+      >  
+  </a
+      ><a name="2157" class="Symbol"
+      >=</a
+      ><a name="2158"
+      > </a
+      ><a name="2159" href="Term.html#4496" class="InductiveConstructor"
+      >*&#183;l</a
+      ><a name="2162"
+      > </a
+      ><a name="2163" class="Symbol"
+      >(</a
+      ><a name="2164" href="Term.html#4608" class="InductiveConstructor"
+      >*&#411;</a
+      ><a name="2166"
+      > </a
+      ><a name="2167" class="Symbol"
+      >(</a
+      ><a name="2168" href="ParallelReduction.html#1837" class="Function"
+      >lemma&#8649;*</a
+      ><a name="2175"
+      > </a
+      ><a name="2176" href="ParallelReduction.html#2128" class="Bound"
+      >x*M'</a
+      ><a name="2180"
+      > </a
+      ><a name="2181" href="ParallelReduction.html#2104" class="Bound"
+      >M&#8649;M'</a
+      ><a name="2185" class="Symbol"
+      >)</a
+      ><a name="2186"
+      > </a
+      ><a name="2187" href="ParallelReduction.html#2149" class="Bound"
+      >y&#8802;x</a
+      ><a name="2190" class="Symbol"
+      >)</a
+      ><a name="2191"
+      >
+</a
+      ><a name="2192" href="ParallelReduction.html#1837" class="Function"
+      >lemma&#8649;*</a
+      ><a name="2199"
+      >  </a
+      ><a name="2201" class="Symbol"
+      >{</a
+      ><a name="2202" href="ParallelReduction.html#2202" class="Bound"
+      >x</a
+      ><a name="2203" class="Symbol"
+      >}</a
+      ><a name="2204"
+      > 
+         </a
+      ><a name="2215" href="ParallelReduction.html#2215" class="Bound"
+      >x*M'&#8729;&#953;&#8826;+yN'</a
+      ><a name="2226"
+      >   </a
+      ><a name="2229" class="Symbol"
+      >(</a
+      ><a name="2230" href="ParallelReduction.html#1361" class="InductiveConstructor"
+      >&#8649;&#946;</a
+      ><a name="2232"
+      > </a
+      ><a name="2233" href="ParallelReduction.html#2233" class="Bound"
+      >y</a
+      ><a name="2234"
+      > </a
+      ><a name="2235" class="Symbol"
+      >{</a
+      ><a name="2236" href="ParallelReduction.html#2236" class="Bound"
+      >M</a
+      ><a name="2237" class="Symbol"
+      >}</a
+      ><a name="2238"
+      > </a
+      ><a name="2239" class="Symbol"
+      >{</a
+      ><a name="2240" href="ParallelReduction.html#2240" class="Bound"
+      >M'</a
+      ><a name="2242" class="Symbol"
+      >}</a
+      ><a name="2243"
+      > </a
+      ><a name="2244" class="Symbol"
+      >{</a
+      ><a name="2245" href="ParallelReduction.html#2245" class="Bound"
+      >N</a
+      ><a name="2246" class="Symbol"
+      >}</a
+      ><a name="2247"
+      > </a
+      ><a name="2248" class="Symbol"
+      >{</a
+      ><a name="2249" href="ParallelReduction.html#2249" class="Bound"
+      >N'</a
+      ><a name="2251" class="Symbol"
+      >}</a
+      ><a name="2252"
+      > </a
+      ><a name="2253" href="ParallelReduction.html#2253" class="Bound"
+      >M&#8649;M'</a
+      ><a name="2257"
+      > </a
+      ><a name="2258" href="ParallelReduction.html#2258" class="Bound"
+      >N&#8649;N'</a
+      ><a name="2262" class="Symbol"
+      >)</a
+      ><a name="2263"
+      >  
+    </a
+      ><a name="2270" class="Symbol"
+      >|</a
+      ><a name="2271"
+      > </a
+      ><a name="2272" class="DottedPattern Symbol"
+      >.</a
+      ><a name="2273" href="ParallelReduction.html#2233" class="DottedPattern Bound"
+      >y</a
+      ><a name="2274"
+      > </a
+      ><a name="2275" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="2276"
+      > </a
+      ><a name="2277" href="ParallelReduction.html#2277" class="Bound"
+      >y*M'</a
+      ><a name="2281"
+      > </a
+      ><a name="2282" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="2283"
+      > </a
+      ><a name="2284" href="ParallelReduction.html#2284" class="Bound"
+      >x*N'</a
+      ><a name="2288"
+      >
+    </a
+      ><a name="2293" class="Symbol"
+      >|</a
+      ><a name="2294"
+      > </a
+      ><a name="2295" href="Relation.Nullary.Core.html#504" class="InductiveConstructor"
+      >yes</a
+      ><a name="2298"
+      >  </a
+      ><a name="2300" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="2304"
+      >  
+  </a
+      ><a name="2309" class="Symbol"
+      >=</a
+      ><a name="2310"
+      > </a
+      ><a name="2311" href="Term.html#4552" class="InductiveConstructor"
+      >*&#183;r</a
+      ><a name="2314"
+      > </a
+      ><a name="2315" class="Symbol"
+      >(</a
+      ><a name="2316" href="ParallelReduction.html#1837" class="Function"
+      >lemma&#8649;*</a
+      ><a name="2323"
+      > </a
+      ><a name="2324" href="ParallelReduction.html#2284" class="Bound"
+      >x*N'</a
+      ><a name="2328"
+      > </a
+      ><a name="2329" href="ParallelReduction.html#2258" class="Bound"
+      >N&#8649;N'</a
+      ><a name="2333" class="Symbol"
+      >)</a
+      ><a name="2334"
+      >
+</a
+      ><a name="2335" href="ParallelReduction.html#1837" class="Function"
+      >lemma&#8649;*</a
+      ><a name="2342"
+      >  </a
+      ><a name="2344" class="Symbol"
+      >{</a
+      ><a name="2345" href="ParallelReduction.html#2345" class="Bound"
+      >x</a
+      ><a name="2346" class="Symbol"
+      >}</a
+      ><a name="2347"
+      > 
+         </a
+      ><a name="2358" href="ParallelReduction.html#2358" class="Bound"
+      >x*N'</a
+      ><a name="2362"
+      >          </a
+      ><a name="2372" class="Symbol"
+      >(</a
+      ><a name="2373" href="ParallelReduction.html#1470" class="InductiveConstructor"
+      >&#8649;&#945;</a
+      ><a name="2375"
+      > </a
+      ><a name="2376" href="ParallelReduction.html#2376" class="Bound"
+      >M&#8649;N</a
+      ><a name="2379"
+      > </a
+      ><a name="2380" href="ParallelReduction.html#2380" class="Bound"
+      >N&#8764;N'</a
+      ><a name="2384" class="Symbol"
+      >)</a
+      ><a name="2385"
+      >      
+  </a
+      ><a name="2394" class="Symbol"
+      >=</a
+      ><a name="2395"
+      > </a
+      ><a name="2396" href="ParallelReduction.html#1837" class="Function"
+      >lemma&#8649;*</a
+      ><a name="2403"
+      > </a
+      ><a name="2404" class="Symbol"
+      >(</a
+      ><a name="2405" href="Alpha.html#3718" class="Function"
+      >lemmaM&#8764;M'&#8594;free&#8592;</a
+      ><a name="2420"
+      > </a
+      ><a name="2421" href="ParallelReduction.html#2380" class="Bound"
+      >N&#8764;N'</a
+      ><a name="2425"
+      > </a
+      ><a name="2426" href="ParallelReduction.html#2345" class="Bound"
+      >x</a
+      ><a name="2427"
+      > </a
+      ><a name="2428" href="ParallelReduction.html#2358" class="Bound"
+      >x*N'</a
+      ><a name="2432" class="Symbol"
+      >)</a
+      ><a name="2433"
+      > </a
+      ><a name="2434" href="ParallelReduction.html#2376" class="Bound"
+      >M&#8649;N</a
+      ><a name="2437"
+      >
+</a
+      ><a name="2438" href="ParallelReduction.html#1837" class="Function"
+      >lemma&#8649;*</a
+      ><a name="2445"
+      >  </a
+      ><a name="2447" class="Symbol"
+      >(</a
+      ><a name="2448" href="Term.html#4496" class="InductiveConstructor"
+      >*&#183;l</a
+      ><a name="2451"
+      > </a
+      ><a name="2452" href="ParallelReduction.html#2452" class="Bound"
+      >x*N</a
+      ><a name="2455" class="Symbol"
+      >)</a
+      ><a name="2456"
+      >     </a
+      ><a name="2461" class="Symbol"
+      >(</a
+      ><a name="2462" href="ParallelReduction.html#1298" class="InductiveConstructor"
+      >&#8649;&#183;</a
+      ><a name="2464"
+      > </a
+      ><a name="2465" href="ParallelReduction.html#2465" class="Bound"
+      >M&#8649;N</a
+      ><a name="2468"
+      > </a
+      ><a name="2469" href="ParallelReduction.html#2469" class="Bound"
+      >M'&#8649;N'</a
+      ><a name="2474" class="Symbol"
+      >)</a
+      ><a name="2475"
+      >     
+  </a
+      ><a name="2483" class="Symbol"
+      >=</a
+      ><a name="2484"
+      > </a
+      ><a name="2485" href="Term.html#4496" class="InductiveConstructor"
+      >*&#183;l</a
+      ><a name="2488"
+      > </a
+      ><a name="2489" class="Symbol"
+      >(</a
+      ><a name="2490" href="ParallelReduction.html#1837" class="Function"
+      >lemma&#8649;*</a
+      ><a name="2497"
+      > </a
+      ><a name="2498" href="ParallelReduction.html#2452" class="Bound"
+      >x*N</a
+      ><a name="2501"
+      > </a
+      ><a name="2502" href="ParallelReduction.html#2465" class="Bound"
+      >M&#8649;N</a
+      ><a name="2505" class="Symbol"
+      >)</a
+      ><a name="2506"
+      >
+</a
+      ><a name="2507" href="ParallelReduction.html#1837" class="Function"
+      >lemma&#8649;*</a
+      ><a name="2514"
+      >  </a
+      ><a name="2516" class="Symbol"
+      >(</a
+      ><a name="2517" href="Term.html#4552" class="InductiveConstructor"
+      >*&#183;r</a
+      ><a name="2520"
+      > </a
+      ><a name="2521" href="ParallelReduction.html#2521" class="Bound"
+      >x*N'</a
+      ><a name="2525" class="Symbol"
+      >)</a
+      ><a name="2526"
+      >    </a
+      ><a name="2530" class="Symbol"
+      >(</a
+      ><a name="2531" href="ParallelReduction.html#1298" class="InductiveConstructor"
+      >&#8649;&#183;</a
+      ><a name="2533"
+      > </a
+      ><a name="2534" href="ParallelReduction.html#2534" class="Bound"
+      >M&#8649;N</a
+      ><a name="2537"
+      > </a
+      ><a name="2538" href="ParallelReduction.html#2538" class="Bound"
+      >M'&#8649;N'</a
+      ><a name="2543" class="Symbol"
+      >)</a
+      ><a name="2544"
+      > 
+  </a
+      ><a name="2548" class="Symbol"
+      >=</a
+      ><a name="2549"
+      > </a
+      ><a name="2550" href="Term.html#4552" class="InductiveConstructor"
+      >*&#183;r</a
+      ><a name="2553"
+      > </a
+      ><a name="2554" class="Symbol"
+      >(</a
+      ><a name="2555" href="ParallelReduction.html#1837" class="Function"
+      >lemma&#8649;*</a
+      ><a name="2562"
+      > </a
+      ><a name="2563" href="ParallelReduction.html#2521" class="Bound"
+      >x*N'</a
+      ><a name="2567"
+      > </a
+      ><a name="2568" href="ParallelReduction.html#2538" class="Bound"
+      >M'&#8649;N'</a
+      ><a name="2573" class="Symbol"
+      >)</a
+      ><a name="2574"
+      >
+</a
+      ><a name="2575" href="ParallelReduction.html#1837" class="Function"
+      >lemma&#8649;*</a
+      ><a name="2582"
+      >  </a
+      ><a name="2584" class="Symbol"
+      >(</a
+      ><a name="2585" href="Term.html#4608" class="InductiveConstructor"
+      >*&#411;</a
+      ><a name="2587"
+      > </a
+      ><a name="2588" href="ParallelReduction.html#2588" class="Bound"
+      >x*N</a
+      ><a name="2591"
+      > </a
+      ><a name="2592" href="ParallelReduction.html#2592" class="Bound"
+      >y&#8802;x</a
+      ><a name="2595" class="Symbol"
+      >)</a
+      ><a name="2596"
+      >  </a
+      ><a name="2598" class="Symbol"
+      >(</a
+      ><a name="2599" href="ParallelReduction.html#1236" class="InductiveConstructor"
+      >&#8649;&#411;</a
+      ><a name="2601"
+      > </a
+      ><a name="2602" href="ParallelReduction.html#2602" class="Bound"
+      >y</a
+      ><a name="2603"
+      > </a
+      ><a name="2604" href="ParallelReduction.html#2604" class="Bound"
+      >M&#8649;N</a
+      ><a name="2607" class="Symbol"
+      >)</a
+      ><a name="2608"
+      >   
+  </a
+      ><a name="2614" class="Symbol"
+      >=</a
+      ><a name="2615"
+      > </a
+      ><a name="2616" href="Term.html#4608" class="InductiveConstructor"
+      >*&#411;</a
+      ><a name="2618"
+      > </a
+      ><a name="2619" class="Symbol"
+      >(</a
+      ><a name="2620" href="ParallelReduction.html#1837" class="Function"
+      >lemma&#8649;*</a
+      ><a name="2627"
+      > </a
+      ><a name="2628" href="ParallelReduction.html#2588" class="Bound"
+      >x*N</a
+      ><a name="2631"
+      > </a
+      ><a name="2632" href="ParallelReduction.html#2604" class="Bound"
+      >M&#8649;N</a
+      ><a name="2635" class="Symbol"
+      >)</a
+      ><a name="2636"
+      > </a
+      ><a name="2637" href="ParallelReduction.html#2592" class="Bound"
+      >y&#8802;x</a
+      ><a name="2640"
+      >
+</a
+      ><a name="2641" href="ParallelReduction.html#1837" class="Function"
+      >lemma&#8649;*</a
+      ><a name="2648"
+      >  </a
+      ><a name="2650" href="Term.html#4442" class="InductiveConstructor"
+      >*v</a
+      ><a name="2652"
+      > </a
+      ><a name="2653" class="Symbol"
+      >(</a
+      ><a name="2654" href="ParallelReduction.html#1179" class="InductiveConstructor"
+      >&#8649;v</a
+      ><a name="2656"
+      > </a
+      ><a name="2657" href="ParallelReduction.html#2657" class="Bound"
+      >x</a
+      ><a name="2658" class="Symbol"
+      >)</a
+      ><a name="2659"
+      >                 
+  </a
+      ><a name="2679" class="Symbol"
+      >=</a
+      ><a name="2680"
+      > </a
+      ><a name="2681" href="Term.html#4442" class="InductiveConstructor"
+      >*v</a
+      ><a name="2683"
+      >
+
+</a
+      ><a name="2685" class="Comment"
+      >-- Corolary lemma 7</a
+      ><a name="2704"
+      >
+</a
+      ><a name="2705" href="ParallelReduction.html#2705" class="Function"
+      >lemma&#8649;#</a
+      ><a name="2712"
+      > </a
+      ><a name="2713" class="Symbol"
+      >:</a
+      ><a name="2714"
+      > </a
+      ><a name="2715" class="Symbol"
+      >{</a
+      ><a name="2716" href="ParallelReduction.html#2716" class="Bound"
+      >x</a
+      ><a name="2717"
+      > </a
+      ><a name="2718" class="Symbol"
+      >:</a
+      ><a name="2719"
+      > </a
+      ><a name="2720" href="Chi.html#1141" class="Function"
+      >V</a
+      ><a name="2721" class="Symbol"
+      >}{</a
+      ><a name="2723" href="ParallelReduction.html#2723" class="Bound"
+      >M</a
+      ><a name="2724"
+      > </a
+      ><a name="2725" href="ParallelReduction.html#2725" class="Bound"
+      >N</a
+      ><a name="2726"
+      > </a
+      ><a name="2727" class="Symbol"
+      >:</a
+      ><a name="2728"
+      > </a
+      ><a name="2729" href="Term.html#1142" class="Datatype"
+      >&#923;</a
+      ><a name="2730" class="Symbol"
+      >}</a
+      ><a name="2731"
+      > </a
+      ><a name="2732" class="Symbol"
+      >&#8594;</a
+      ><a name="2733"
+      > </a
+      ><a name="2734" href="ParallelReduction.html#2716" class="Bound"
+      >x</a
+      ><a name="2735"
+      > </a
+      ><a name="2736" href="Term.html#3409" class="Datatype Operator"
+      >#</a
+      ><a name="2737"
+      > </a
+      ><a name="2738" href="ParallelReduction.html#2723" class="Bound"
+      >M</a
+      ><a name="2739"
+      > </a
+      ><a name="2740" class="Symbol"
+      >&#8594;</a
+      ><a name="2741"
+      > </a
+      ><a name="2742" href="ParallelReduction.html#2723" class="Bound"
+      >M</a
+      ><a name="2743"
+      > </a
+      ><a name="2744" href="ParallelReduction.html#1153" class="Datatype Operator"
+      >&#8649;</a
+      ><a name="2745"
+      > </a
+      ><a name="2746" href="ParallelReduction.html#2725" class="Bound"
+      >N</a
+      ><a name="2747"
+      > </a
+      ><a name="2748" class="Symbol"
+      >&#8594;</a
+      ><a name="2749"
+      > </a
+      ><a name="2750" href="ParallelReduction.html#2716" class="Bound"
+      >x</a
+      ><a name="2751"
+      > </a
+      ><a name="2752" href="Term.html#3409" class="Datatype Operator"
+      >#</a
+      ><a name="2753"
+      > </a
+      ><a name="2754" href="ParallelReduction.html#2725" class="Bound"
+      >N</a
+      ><a name="2755"
+      >
+</a
+      ><a name="2756" href="ParallelReduction.html#2705" class="Function"
+      >lemma&#8649;#</a
+      ><a name="2763"
+      > </a
+      ><a name="2764" class="Symbol"
+      >{</a
+      ><a name="2765" href="ParallelReduction.html#2765" class="Bound"
+      >x</a
+      ><a name="2766" class="Symbol"
+      >}</a
+      ><a name="2767"
+      > </a
+      ><a name="2768" class="Symbol"
+      >{</a
+      ><a name="2769" href="ParallelReduction.html#2769" class="Bound"
+      >M</a
+      ><a name="2770" class="Symbol"
+      >}</a
+      ><a name="2771"
+      > </a
+      ><a name="2772" class="Symbol"
+      >{</a
+      ><a name="2773" href="ParallelReduction.html#2773" class="Bound"
+      >N</a
+      ><a name="2774" class="Symbol"
+      >}</a
+      ><a name="2775"
+      > </a
+      ><a name="2776" href="ParallelReduction.html#2776" class="Bound"
+      >x#M</a
+      ><a name="2779"
+      > </a
+      ><a name="2780" href="ParallelReduction.html#2780" class="Bound"
+      >M&#8649;N</a
+      ><a name="2783"
+      > </a
+      ><a name="2784" class="Keyword"
+      >with</a
+      ><a name="2788"
+      > </a
+      ><a name="2789" href="ParallelReduction.html#2765" class="Bound"
+      >x</a
+      ><a name="2790"
+      > </a
+      ><a name="2791" href="Term.html#4781" class="Function Operator"
+      >#?</a
+      ><a name="2793"
+      > </a
+      ><a name="2794" href="ParallelReduction.html#2773" class="Bound"
+      >N</a
+      ><a name="2795"
+      > 
+</a
+      ><a name="2797" class="Symbol"
+      >...</a
+      ><a name="2800"
+      > </a
+      ><a name="2801" class="Symbol"
+      >|</a
+      ><a name="2802"
+      > </a
+      ><a name="2803" href="Relation.Nullary.Core.html#504" class="InductiveConstructor"
+      >yes</a
+      ><a name="2806"
+      > </a
+      ><a name="2807" href="ParallelReduction.html#2807" class="Bound"
+      >x#N</a
+      ><a name="2810"
+      >   </a
+      ><a name="2813" class="Symbol"
+      >=</a
+      ><a name="2814"
+      > </a
+      ><a name="2815" href="ParallelReduction.html#2807" class="Bound"
+      >x#N</a
+      ><a name="2818"
+      >
+</a
+      ><a name="2819" class="Symbol"
+      >...</a
+      ><a name="2822"
+      > </a
+      ><a name="2823" class="Symbol"
+      >|</a
+      ><a name="2824"
+      > </a
+      ><a name="2825" href="Relation.Nullary.Core.html#531" class="InductiveConstructor"
+      >no</a
+      ><a name="2827"
+      >  </a
+      ><a name="2829" href="ParallelReduction.html#2829" class="Bound"
+      >&#172;x#N</a
+      ><a name="2833"
+      >  </a
+      ><a name="2835" class="Symbol"
+      >=</a
+      ><a name="2836"
+      > </a
+      ><a name="2837" href="Data.Empty.html#326" class="Function"
+      >&#8869;-elim</a
+      ><a name="2843"
+      > </a
+      ><a name="2844" class="Symbol"
+      >((</a
+      ><a name="2846" href="Term.html#6197" class="Function"
+      >lemma-free&#8594;&#172;#</a
+      ><a name="2859"
+      > </a
+      ><a name="2860" class="Symbol"
+      >(</a
+      ><a name="2861" href="ParallelReduction.html#1837" class="Function"
+      >lemma&#8649;*</a
+      ><a name="2868"
+      > </a
+      ><a name="2869" class="Symbol"
+      >(</a
+      ><a name="2870" href="Term.html#5532" class="Function"
+      >lemma&#172;#&#8594;free</a
+      ><a name="2882"
+      > </a
+      ><a name="2883" href="ParallelReduction.html#2829" class="Bound"
+      >&#172;x#N</a
+      ><a name="2887" class="Symbol"
+      >)</a
+      ><a name="2888"
+      > </a
+      ><a name="2889" href="ParallelReduction.html#2780" class="Bound"
+      >M&#8649;N</a
+      ><a name="2892" class="Symbol"
+      >))</a
+      ><a name="2894"
+      > </a
+      ><a name="2895" href="ParallelReduction.html#2776" class="Bound"
+      >x#M</a
+      ><a name="2898" class="Symbol"
+      >)</a
+      ><a name="2899"
+      >
+\end{code}
+</a
+      ></pre
+    ></body
+  ></html
+>

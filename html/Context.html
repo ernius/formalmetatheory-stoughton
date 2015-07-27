@@ -1,0 +1,3904 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+><head
+  ><title
+    >Context</title
+    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+     /><meta http-equiv="Content-Style-Type" content="text/css"
+     /><link href="Agda.css" rel="stylesheet" type="text/css"
+     /></head
+  ><body
+  ><pre
+    ><a name="1"
+      >\begin{code}
+</a
+      ><a name="14" class="Keyword"
+      >open</a
+      ><a name="18"
+      > </a
+      ><a name="19" class="Keyword"
+      >import</a
+      ><a name="25"
+      > </a
+      ><a name="26" href="Relation.Binary.html#1" class="Module"
+      >Relation.Binary</a
+      ><a name="41"
+      >
+</a
+      ><a name="42" class="Keyword"
+      >open</a
+      ><a name="46"
+      > </a
+      ><a name="47" class="Keyword"
+      >import</a
+      ><a name="53"
+      > </a
+      ><a name="54" href="Relation.Binary.PropositionalEquality.html#1" class="Module"
+      >Relation.Binary.PropositionalEquality</a
+      ><a name="91"
+      > </a
+      ><a name="92" class="Symbol"
+      >as</a
+      ><a name="94"
+      > </a
+      ><a name="95" class="Module"
+      >PropEq</a
+      ><a name="101"
+      > </a
+      ><a name="102" class="Keyword"
+      >using</a
+      ><a name="107"
+      > </a
+      ><a name="108" class="Symbol"
+      >(</a
+      ><a name="109"
+      >_&#8801;_</a
+      ><a name="112" class="Symbol"
+      >;</a
+      ><a name="113"
+      > _&#8802;_ </a
+      ><a name="118" class="Symbol"
+      >;</a
+      ><a name="119"
+      > refl </a
+      ><a name="125" class="Symbol"
+      >;</a
+      ><a name="126"
+      > cong </a
+      ><a name="132" class="Symbol"
+      >;</a
+      ><a name="133"
+      > _&#8791;_ </a
+      ><a name="138" class="Symbol"
+      >;</a
+      ><a name="139"
+      > sym </a
+      ><a name="144" class="Symbol"
+      >;</a
+      ><a name="145"
+      > trans </a
+      ><a name="152" class="Symbol"
+      >;</a
+      ><a name="153"
+      > inspect </a
+      ><a name="162" class="Symbol"
+      >;</a
+      ><a name="163"
+      >  setoid</a
+      ><a name="171" class="Symbol"
+      >)</a
+      ><a name="172"
+      > </a
+      ><a name="173" class="Keyword"
+      >renaming</a
+      ><a name="181"
+      > </a
+      ><a name="182" class="Symbol"
+      >(</a
+      ><a name="183"
+      >[_] </a
+      ><a name="187" class="Symbol"
+      >to</a
+      ><a name="189"
+      > [_]i</a
+      ><a name="194" class="Symbol"
+      >)</a
+      ><a name="195"
+      >
+</a
+      ><a name="196" class="Keyword"
+      >open</a
+      ><a name="200"
+      > </a
+      ><a name="201" href="Relation.Binary.PropositionalEquality.html#243" class="Module"
+      >PropEq.</a
+      ><a name="208" href="Relation.Binary.PropositionalEquality.html#4851" class="Module"
+      >&#8801;-Reasoning</a
+      ><a name="219"
+      >
+
+</a
+      ><a name="221" class="Keyword"
+      >module</a
+      ><a name="227"
+      > </a
+      ><a name="228" href="Context.html#1" class="Module"
+      >Context</a
+      ><a name="235"
+      > </a
+      ><a name="236" class="Symbol"
+      >{</a
+      ><a name="237" href="Context.html#237" class="Bound"
+      >K</a
+      ><a name="238"
+      > </a
+      ><a name="239" class="Symbol"
+      >:</a
+      ><a name="240"
+      > </a
+      ><a name="241" class="PrimitiveType"
+      >Set</a
+      ><a name="244" class="Symbol"
+      >}(</a
+      ><a name="246" href="Context.html#246" class="Bound"
+      >D</a
+      ><a name="247"
+      > </a
+      ><a name="248" class="Symbol"
+      >:</a
+      ><a name="249"
+      > </a
+      ><a name="250" class="PrimitiveType"
+      >Set</a
+      ><a name="253" class="Symbol"
+      >)(</a
+      ><a name="255" href="Context.html#255" class="Bound Operator"
+      >_&#8799;_</a
+      ><a name="258"
+      > </a
+      ><a name="259" class="Symbol"
+      >:</a
+      ><a name="260"
+      > </a
+      ><a name="261" href="Relation.Binary.Core.html#3511" class="Function"
+      >Decidable</a
+      ><a name="270"
+      > </a
+      ><a name="271" class="Symbol"
+      >(</a
+      ><a name="272" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >_&#8801;_</a
+      ><a name="275"
+      > </a
+      ><a name="276" class="Symbol"
+      >{</a
+      ><a name="277" class="Argument"
+      >A</a
+      ><a name="278"
+      > </a
+      ><a name="279" class="Symbol"
+      >=</a
+      ><a name="280"
+      > </a
+      ><a name="281" href="Context.html#237" class="Bound"
+      >K</a
+      ><a name="282" class="Symbol"
+      >}))</a
+      ><a name="285"
+      > </a
+      ><a name="286" class="Keyword"
+      >where</a
+      ><a name="291"
+      >
+
+</a
+      ><a name="293" class="Keyword"
+      >open</a
+      ><a name="297"
+      > </a
+      ><a name="298" class="Keyword"
+      >import</a
+      ><a name="304"
+      > </a
+      ><a name="305" href="ListProperties.html#1" class="Module"
+      >ListProperties</a
+      ><a name="319"
+      >
+
+</a
+      ><a name="321" class="Keyword"
+      >open</a
+      ><a name="325"
+      > </a
+      ><a name="326" class="Keyword"
+      >import</a
+      ><a name="332"
+      > </a
+      ><a name="333" href="Data.Empty.html#1" class="Module"
+      >Data.Empty</a
+      ><a name="343"
+      >
+</a
+      ><a name="344" class="Keyword"
+      >open</a
+      ><a name="348"
+      > </a
+      ><a name="349" class="Keyword"
+      >import</a
+      ><a name="355"
+      > </a
+      ><a name="356" href="Data.Bool.html#1" class="Module"
+      >Data.Bool</a
+      ><a name="365"
+      > </a
+      ><a name="366" class="Keyword"
+      >hiding</a
+      ><a name="372"
+      > </a
+      ><a name="373" class="Symbol"
+      >(</a
+      ><a name="374"
+      >_&#8799;_</a
+      ><a name="377" class="Symbol"
+      >)</a
+      ><a name="378"
+      >
+</a
+      ><a name="379" class="Keyword"
+      >open</a
+      ><a name="383"
+      > </a
+      ><a name="384" class="Keyword"
+      >import</a
+      ><a name="390"
+      > </a
+      ><a name="391" href="Data.Nat.html#1" class="Module"
+      >Data.Nat</a
+      ><a name="399"
+      > </a
+      ><a name="400" class="Keyword"
+      >hiding</a
+      ><a name="406"
+      > </a
+      ><a name="407" class="Symbol"
+      >(</a
+      ><a name="408"
+      >_&#8799;_</a
+      ><a name="411" class="Symbol"
+      >)</a
+      ><a name="412"
+      >
+</a
+      ><a name="413" class="Keyword"
+      >open</a
+      ><a name="417"
+      > </a
+      ><a name="418" class="Keyword"
+      >import</a
+      ><a name="424"
+      > </a
+      ><a name="425" href="Data.List.html#1" class="Module"
+      >Data.List</a
+      ><a name="434"
+      > </a
+      ><a name="435" class="Keyword"
+      >hiding</a
+      ><a name="441"
+      > </a
+      ><a name="442" class="Symbol"
+      >(</a
+      ><a name="443"
+      >any</a
+      ><a name="446" class="Symbol"
+      >;</a
+      ><a name="447"
+      >all</a
+      ><a name="450" class="Symbol"
+      >)</a
+      ><a name="451"
+      >
+</a
+      ><a name="452" class="Keyword"
+      >open</a
+      ><a name="456"
+      > </a
+      ><a name="457" class="Keyword"
+      >import</a
+      ><a name="463"
+      > </a
+      ><a name="464" href="Function.html#1" class="Module"
+      >Function</a
+      ><a name="472"
+      >
+</a
+      ><a name="473" class="Keyword"
+      >open</a
+      ><a name="477"
+      > </a
+      ><a name="478" class="Keyword"
+      >import</a
+      ><a name="484"
+      > </a
+      ><a name="485" href="Data.List.Any.html#1" class="Module"
+      >Data.List.Any</a
+      ><a name="498"
+      > </a
+      ><a name="499" class="Symbol"
+      >as</a
+      ><a name="501"
+      > </a
+      ><a name="502" class="Module"
+      >Any</a
+      ><a name="505"
+      > </a
+      ><a name="506" class="Keyword"
+      >hiding</a
+      ><a name="512"
+      > </a
+      ><a name="513" class="Symbol"
+      >(</a
+      ><a name="514"
+      >map</a
+      ><a name="517" class="Symbol"
+      >;</a
+      ><a name="518"
+      >tail</a
+      ><a name="522" class="Symbol"
+      >)</a
+      ><a name="523"
+      >
+</a
+      ><a name="524" class="Keyword"
+      >open</a
+      ><a name="528"
+      > </a
+      ><a name="529" class="Keyword"
+      >import</a
+      ><a name="535"
+      > </a
+      ><a name="536" href="Data.List.Any.Membership.html#1" class="Module"
+      >Data.List.Any.Membership</a
+      ><a name="560"
+      >
+</a
+      ><a name="561" class="Keyword"
+      >open</a
+      ><a name="565"
+      > </a
+      ><a name="566" href="Data.List.Any.html#260" class="Module"
+      >Any.</a
+      ><a name="570" href="Data.List.Any.html#4577" class="Module"
+      >Membership-&#8801;</a
+      ><a name="582"
+      >  </a
+      ><a name="584" class="Keyword"
+      >renaming</a
+      ><a name="592"
+      > </a
+      ><a name="593" class="Symbol"
+      >(</a
+      ><a name="594"
+      >_&#8712;_ </a
+      ><a name="598" class="Symbol"
+      >to</a
+      ><a name="600"
+      > _&#8712;l_</a
+      ><a name="605" class="Symbol"
+      >;</a
+      ><a name="606"
+      >_&#8838;_ </a
+      ><a name="610" class="Symbol"
+      >to</a
+      ><a name="612"
+      > _&#8838;l_</a
+      ><a name="617" class="Symbol"
+      >)</a
+      ><a name="618"
+      >
+</a
+      ><a name="619" class="Keyword"
+      >open</a
+      ><a name="623"
+      > </a
+      ><a name="624" class="Keyword"
+      >import</a
+      ><a name="630"
+      > </a
+      ><a name="631" href="Data.Product.html#1" class="Module"
+      >Data.Product</a
+      ><a name="643"
+      > </a
+      ><a name="644" class="Keyword"
+      >renaming</a
+      ><a name="652"
+      > </a
+      ><a name="653" class="Symbol"
+      >(</a
+      ><a name="654"
+      >map </a
+      ><a name="658" class="Symbol"
+      >to</a
+      ><a name="660"
+      > map&#215;</a
+      ><a name="665" class="Symbol"
+      >)</a
+      ><a name="666"
+      >
+</a
+      ><a name="667" class="Keyword"
+      >open</a
+      ><a name="671"
+      > </a
+      ><a name="672" class="Keyword"
+      >import</a
+      ><a name="678"
+      > </a
+      ><a name="679" href="Data.Sum.html#1" class="Module"
+      >Data.Sum</a
+      ><a name="687"
+      > </a
+      ><a name="688" class="Keyword"
+      >hiding</a
+      ><a name="694"
+      > </a
+      ><a name="695" class="Symbol"
+      >(</a
+      ><a name="696"
+      >map</a
+      ><a name="699" class="Symbol"
+      >)</a
+      ><a name="700"
+      > </a
+      ><a name="701" class="Keyword"
+      >renaming</a
+      ><a name="709"
+      > </a
+      ><a name="710" class="Symbol"
+      >(</a
+      ><a name="711"
+      >_&#8846;_ </a
+      ><a name="715" class="Symbol"
+      >to</a
+      ><a name="717"
+      > _&#8744;_</a
+      ><a name="721" class="Symbol"
+      >)</a
+      ><a name="722"
+      >
+</a
+      ><a name="723" class="Keyword"
+      >open</a
+      ><a name="727"
+      > </a
+      ><a name="728" class="Keyword"
+      >import</a
+      ><a name="734"
+      > </a
+      ><a name="735" href="Data.Maybe.html#1" class="Module"
+      >Data.Maybe</a
+      ><a name="745"
+      > </a
+      ><a name="746" class="Keyword"
+      >hiding</a
+      ><a name="752"
+      > </a
+      ><a name="753" class="Symbol"
+      >(</a
+      ><a name="754"
+      >Any</a
+      ><a name="757" class="Symbol"
+      >;</a
+      ><a name="758"
+      >All</a
+      ><a name="761" class="Symbol"
+      >;</a
+      ><a name="762"
+      >map</a
+      ><a name="765" class="Symbol"
+      >;</a
+      ><a name="766"
+      >setoid</a
+      ><a name="772" class="Symbol"
+      >)</a
+      ><a name="773"
+      > </a
+      ><a name="774" class="Comment"
+      >--(Any;All;setoid) --</a
+      ><a name="795"
+      >
+</a
+      ><a name="796" class="Keyword"
+      >open</a
+      ><a name="800"
+      > </a
+      ><a name="801" class="Keyword"
+      >import</a
+      ><a name="807"
+      > </a
+      ><a name="808" href="Relation.Nullary.html#1" class="Module"
+      >Relation.Nullary</a
+      ><a name="824"
+      >
+</a
+      ><a name="825" class="Keyword"
+      >open</a
+      ><a name="829"
+      > </a
+      ><a name="830" class="Keyword"
+      >import</a
+      ><a name="836"
+      > </a
+      ><a name="837" href="Relation.Nullary.Decidable.html#1" class="Module"
+      >Relation.Nullary.Decidable</a
+      ><a name="863"
+      > </a
+      ><a name="864" class="Keyword"
+      >hiding</a
+      ><a name="870"
+      > </a
+      ><a name="871" class="Symbol"
+      >(</a
+      ><a name="872"
+      >map</a
+      ><a name="875" class="Symbol"
+      >)</a
+      ><a name="876"
+      >
+</a
+      ><a name="877" class="Keyword"
+      >open</a
+      ><a name="881"
+      > </a
+      ><a name="882" class="Keyword"
+      >import</a
+      ><a name="888"
+      > </a
+      ><a name="889" href="Relation.Binary.PropositionalEquality.html#1" class="Module"
+      >Relation.Binary.PropositionalEquality</a
+      ><a name="926"
+      > </a
+      ><a name="927" class="Symbol"
+      >as</a
+      ><a name="929"
+      > </a
+      ><a name="930" class="Module"
+      >PropEq</a
+      ><a name="936"
+      > </a
+      ><a name="937" class="Keyword"
+      >renaming</a
+      ><a name="945"
+      > </a
+      ><a name="946" class="Symbol"
+      >(</a
+      ><a name="947"
+      >[_] </a
+      ><a name="951" class="Symbol"
+      >to</a
+      ><a name="953"
+      > [_]&#7522;</a
+      ><a name="958" class="Symbol"
+      >)</a
+      ><a name="959"
+      > 
+</a
+      ><a name="961" class="Comment"
+      >--private open module M   = Membership (PropEq.setoid K) using (_&#8712;_) </a
+      ><a name="1030"
+      >
+</a
+      ><a name="1031" class="Comment"
+      >--private open module M&#8801;  = Membership (PropEq.setoid (K &#215; D)) renaming (_&#8712;_ to _&#8712;&#215;_) </a
+      ><a name="1117"
+      >
+</a
+      ><a name="1118" class="Keyword"
+      >infixl</a
+      ><a name="1124"
+      > </a
+      ><a name="1125" class="Number"
+      >3</a
+      ><a name="1126"
+      > _&#8218;_ 
+</a
+      ><a name="1132" class="Keyword"
+      >infix</a
+      ><a name="1137"
+      > </a
+      ><a name="1138" class="Number"
+      >2</a
+      ><a name="1139"
+      > _&#8838;_
+</a
+      ><a name="1144" class="Keyword"
+      >infix</a
+      ><a name="1149"
+      > </a
+      ><a name="1150" class="Number"
+      >3</a
+      ><a name="1151"
+      > _&#8712;_
+\end{code}
+
+\begin{code}
+</a
+      ><a name="1181" href="Context.html#1181" class="Function"
+      >Cxt</a
+      ><a name="1184"
+      > </a
+      ><a name="1185" class="Symbol"
+      >:</a
+      ><a name="1186"
+      > </a
+      ><a name="1187" class="PrimitiveType"
+      >Set</a
+      ><a name="1190"
+      >
+</a
+      ><a name="1191" href="Context.html#1181" class="Function"
+      >Cxt</a
+      ><a name="1194"
+      > </a
+      ><a name="1195" class="Symbol"
+      >=</a
+      ><a name="1196"
+      > </a
+      ><a name="1197" href="Data.List.html#659" class="Datatype"
+      >List</a
+      ><a name="1201"
+      > </a
+      ><a name="1202" class="Symbol"
+      >(</a
+      ><a name="1203" href="Context.html#237" class="Bound"
+      >K</a
+      ><a name="1204"
+      > </a
+      ><a name="1205" href="Data.Product.html#1055" class="Function Operator"
+      >&#215;</a
+      ><a name="1206"
+      > </a
+      ><a name="1207" href="Context.html#246" class="Bound"
+      >D</a
+      ><a name="1208" class="Symbol"
+      >)</a
+      ><a name="1209"
+      >
+
+</a
+      ><a name="1211" href="Context.html#1211" class="Function"
+      >&#8709;</a
+      ><a name="1212"
+      > </a
+      ><a name="1213" class="Symbol"
+      >:</a
+      ><a name="1214"
+      > </a
+      ><a name="1215" href="Context.html#1181" class="Function"
+      >Cxt</a
+      ><a name="1218"
+      >
+</a
+      ><a name="1219" href="Context.html#1211" class="Function"
+      >&#8709;</a
+      ><a name="1220"
+      > </a
+      ><a name="1221" class="Symbol"
+      >=</a
+      ><a name="1222"
+      > </a
+      ><a name="1223" href="Data.List.html#696" class="InductiveConstructor"
+      >[]</a
+      ><a name="1225"
+      >
+
+</a
+      ><a name="1227" href="Context.html#1227" class="Function"
+      >dom</a
+      ><a name="1230"
+      > </a
+      ><a name="1231" class="Symbol"
+      >:</a
+      ><a name="1232"
+      > </a
+      ><a name="1233" href="Context.html#1181" class="Function"
+      >Cxt</a
+      ><a name="1236"
+      > </a
+      ><a name="1237" class="Symbol"
+      >&#8594;</a
+      ><a name="1238"
+      > </a
+      ><a name="1239" href="Data.List.html#659" class="Datatype"
+      >List</a
+      ><a name="1243"
+      > </a
+      ><a name="1244" href="Context.html#237" class="Bound"
+      >K</a
+      ><a name="1245"
+      >
+</a
+      ><a name="1246" href="Context.html#1227" class="Function"
+      >dom</a
+      ><a name="1249"
+      > </a
+      ><a name="1250" class="Symbol"
+      >=</a
+      ><a name="1251"
+      > </a
+      ><a name="1252" href="Data.List.html#1385" class="Function"
+      >map</a
+      ><a name="1255"
+      > </a
+      ><a name="1256" href="Data.Product.html#525" class="Field"
+      >proj&#8321;</a
+      ><a name="1261"
+      >
+
+</a
+      ><a name="1263" href="Context.html#1263" class="Function Operator"
+      >_&#8712;_</a
+      ><a name="1266"
+      > </a
+      ><a name="1267" class="Symbol"
+      >:</a
+      ><a name="1268"
+      > </a
+      ><a name="1269" href="Context.html#237" class="Bound"
+      >K</a
+      ><a name="1270"
+      > </a
+      ><a name="1271" class="Symbol"
+      >&#8594;</a
+      ><a name="1272"
+      > </a
+      ><a name="1273" href="Context.html#1181" class="Function"
+      >Cxt</a
+      ><a name="1276"
+      > </a
+      ><a name="1277" class="Symbol"
+      >&#8594;</a
+      ><a name="1278"
+      > </a
+      ><a name="1279" class="PrimitiveType"
+      >Set</a
+      ><a name="1282"
+      >
+</a
+      ><a name="1283" href="Context.html#1283" class="Bound"
+      >x</a
+      ><a name="1284"
+      > </a
+      ><a name="1285" href="Context.html#1263" class="Function Operator"
+      >&#8712;</a
+      ><a name="1286"
+      > </a
+      ><a name="1287" href="Context.html#1287" class="Bound"
+      >cxt</a
+      ><a name="1290"
+      > </a
+      ><a name="1291" class="Symbol"
+      >=</a
+      ><a name="1292"
+      > </a
+      ><a name="1293" href="ListProperties.html#5240" class="Datatype"
+      >First</a
+      ><a name="1298"
+      > </a
+      ><a name="1299" class="Symbol"
+      >(</a
+      ><a name="1300" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >_&#8801;_</a
+      ><a name="1303"
+      > </a
+      ><a name="1304" href="Context.html#1283" class="Bound"
+      >x</a
+      ><a name="1305"
+      > </a
+      ><a name="1306" href="Function.html#713" class="Function Operator"
+      >&#8728;</a
+      ><a name="1307"
+      > </a
+      ><a name="1308" href="Data.Product.html#525" class="Field"
+      >proj&#8321;</a
+      ><a name="1313" class="Symbol"
+      >)</a
+      ><a name="1314"
+      > </a
+      ><a name="1315" href="Context.html#1287" class="Bound"
+      >cxt</a
+      ><a name="1318"
+      >
+
+
+</a
+      ><a name="1321" class="Comment"
+      >-- _&#8712;?_ : Decidable _&#8712;_</a
+      ><a name="1344"
+      >
+</a
+      ><a name="1345" class="Comment"
+      >-- k &#8712;? []        = no (&#955; ())</a
+      ><a name="1374"
+      >
+</a
+      ><a name="1375" class="Comment"
+      >-- k &#8712;? (k' &#8759; ks) with k &#8799; k'</a
+      ><a name="1404"
+      >
+</a
+      ><a name="1405" class="Comment"
+      >-- ... | yes k&#8801;k' = yes (here k&#8801;k')</a
+      ><a name="1440"
+      >
+</a
+      ><a name="1441" class="Comment"
+      >-- ... | no  k&#8802;k' with k &#8712;? ks</a
+      ><a name="1471"
+      >
+</a
+      ><a name="1472" class="Comment"
+      >-- ...            | yes k&#8712;ks </a
+      ><a name="1501"
+      >
+</a
+      ><a name="1502" class="Comment"
+      >--   = yes (there k&#8712;ks)  </a
+      ><a name="1527"
+      >
+</a
+      ><a name="1528" class="Comment"
+      >-- ...            | no  k&#8713;ks </a
+      ><a name="1557"
+      >
+</a
+      ><a name="1558" class="Comment"
+      >--   = no (&#955; {  (here k&#8801;k')   &#8594; &#8869;-elim (k&#8802;k' k&#8801;k'); </a
+      ><a name="1610"
+      >
+</a
+      ><a name="1611" class="Comment"
+      >--              (there k&#8712;ks)  &#8594; &#8869;-elim (k&#8713;ks k&#8712;ks)})</a
+      ><a name="1663"
+      >
+</a
+      ><a name="1664" href="Context.html#1664" class="Function Operator"
+      >_&#10216;_&#10217;</a
+      ><a name="1668"
+      > </a
+      ><a name="1669" class="Symbol"
+      >:</a
+      ><a name="1670"
+      > </a
+      ><a name="1671" class="Symbol"
+      >{</a
+      ><a name="1672" href="Context.html#1672" class="Bound"
+      >k</a
+      ><a name="1673"
+      > </a
+      ><a name="1674" class="Symbol"
+      >:</a
+      ><a name="1675"
+      > </a
+      ><a name="1676" href="Context.html#237" class="Bound"
+      >K</a
+      ><a name="1677" class="Symbol"
+      >}</a
+      ><a name="1678"
+      > </a
+      ><a name="1679" class="Symbol"
+      >&#8594;</a
+      ><a name="1680"
+      > </a
+      ><a name="1681" class="Symbol"
+      >(</a
+      ><a name="1682" href="Context.html#1682" class="Bound"
+      >cxt</a
+      ><a name="1685"
+      > </a
+      ><a name="1686" class="Symbol"
+      >:</a
+      ><a name="1687"
+      > </a
+      ><a name="1688" href="Context.html#1181" class="Function"
+      >Cxt</a
+      ><a name="1691" class="Symbol"
+      >)</a
+      ><a name="1692"
+      > </a
+      ><a name="1693" class="Symbol"
+      >&#8594;</a
+      ><a name="1694"
+      > </a
+      ><a name="1695" href="Context.html#1672" class="Bound"
+      >k</a
+      ><a name="1696"
+      > </a
+      ><a name="1697" href="Context.html#1263" class="Function Operator"
+      >&#8712;</a
+      ><a name="1698"
+      > </a
+      ><a name="1699" href="Context.html#1682" class="Bound"
+      >cxt</a
+      ><a name="1702"
+      > </a
+      ><a name="1703" class="Symbol"
+      >&#8594;</a
+      ><a name="1704"
+      > </a
+      ><a name="1705" href="Context.html#246" class="Bound"
+      >D</a
+      ><a name="1706"
+      >
+</a
+      ><a name="1707" href="Data.List.html#696" class="InductiveConstructor"
+      >[]</a
+      ><a name="1709"
+      >             </a
+      ><a name="1722" href="Context.html#1664" class="Function Operator"
+      >&#10216;</a
+      ><a name="1723"
+      > </a
+      ><a name="1724" class="Symbol"
+      >()</a
+      ><a name="1726"
+      >            </a
+      ><a name="1738" href="Context.html#1664" class="Function Operator"
+      >&#10217;</a
+      ><a name="1739"
+      > 
+</a
+      ><a name="1741" class="Symbol"
+      >((</a
+      ><a name="1743" href="Context.html#1743" class="Bound"
+      >k</a
+      ><a name="1744"
+      > </a
+      ><a name="1745" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="1746"
+      > </a
+      ><a name="1747" href="Context.html#1747" class="Bound"
+      >d</a
+      ><a name="1748" class="Symbol"
+      >)</a
+      ><a name="1749"
+      > </a
+      ><a name="1750" href="Data.List.html#711" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="1751"
+      > </a
+      ><a name="1752" href="Context.html#1752" class="Bound"
+      >xs</a
+      ><a name="1754" class="Symbol"
+      >)</a
+      ><a name="1755"
+      > </a
+      ><a name="1756" href="Context.html#1664" class="Function Operator"
+      >&#10216;</a
+      ><a name="1757"
+      > </a
+      ><a name="1758" href="ListProperties.html#5302" class="InductiveConstructor"
+      >here</a
+      ><a name="1762"
+      >  </a
+      ><a name="1764" class="Symbol"
+      >_</a
+      ><a name="1765"
+      >       </a
+      ><a name="1772" href="Context.html#1664" class="Function Operator"
+      >&#10217;</a
+      ><a name="1773"
+      > </a
+      ><a name="1774" class="Symbol"
+      >=</a
+      ><a name="1775"
+      > </a
+      ><a name="1776" href="Context.html#1747" class="Bound"
+      >d</a
+      ><a name="1777"
+      >
+</a
+      ><a name="1778" class="Symbol"
+      >((</a
+      ><a name="1780" href="Context.html#1780" class="Bound"
+      >k</a
+      ><a name="1781"
+      > </a
+      ><a name="1782" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="1783"
+      > </a
+      ><a name="1784" href="Context.html#1784" class="Bound"
+      >d</a
+      ><a name="1785" class="Symbol"
+      >)</a
+      ><a name="1786"
+      > </a
+      ><a name="1787" href="Data.List.html#711" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="1788"
+      > </a
+      ><a name="1789" href="Context.html#1789" class="Bound"
+      >xs</a
+      ><a name="1791" class="Symbol"
+      >)</a
+      ><a name="1792"
+      > </a
+      ><a name="1793" href="Context.html#1664" class="Function Operator"
+      >&#10216;</a
+      ><a name="1794"
+      > </a
+      ><a name="1795" href="ListProperties.html#5375" class="InductiveConstructor"
+      >there</a
+      ><a name="1800"
+      > </a
+      ><a name="1801" class="Symbol"
+      >_</a
+      ><a name="1802"
+      > </a
+      ><a name="1803" href="Context.html#1803" class="Bound"
+      >k&#8712;xs</a
+      ><a name="1807"
+      >  </a
+      ><a name="1809" href="Context.html#1664" class="Function Operator"
+      >&#10217;</a
+      ><a name="1810"
+      > </a
+      ><a name="1811" class="Symbol"
+      >=</a
+      ><a name="1812"
+      > </a
+      ><a name="1813" href="Context.html#1789" class="Bound"
+      >xs</a
+      ><a name="1815"
+      > </a
+      ><a name="1816" href="Context.html#1664" class="Function Operator"
+      >&#10216;</a
+      ><a name="1817"
+      > </a
+      ><a name="1818" href="Context.html#1803" class="Bound"
+      >k&#8712;xs</a
+      ><a name="1822"
+      > </a
+      ><a name="1823" href="Context.html#1664" class="Function Operator"
+      >&#10217;</a
+      ><a name="1824"
+      >
+
+
+</a
+      ><a name="1827" href="Context.html#1827" class="Function"
+      >lemma&#8712;&#8594;&#8712;[]</a
+      ><a name="1837"
+      >  </a
+      ><a name="1839" class="Symbol"
+      >:</a
+      ><a name="1840"
+      > </a
+      ><a name="1841" class="Symbol"
+      >{</a
+      ><a name="1842" href="Context.html#1842" class="Bound"
+      >xs</a
+      ><a name="1844"
+      > </a
+      ><a name="1845" class="Symbol"
+      >:</a
+      ><a name="1846"
+      > </a
+      ><a name="1847" href="Context.html#1181" class="Function"
+      >Cxt</a
+      ><a name="1850" class="Symbol"
+      >}{</a
+      ><a name="1852" href="Context.html#1852" class="Bound"
+      >x</a
+      ><a name="1853"
+      > </a
+      ><a name="1854" class="Symbol"
+      >:</a
+      ><a name="1855"
+      > </a
+      ><a name="1856" href="Context.html#237" class="Bound"
+      >K</a
+      ><a name="1857" class="Symbol"
+      >}</a
+      ><a name="1858"
+      > </a
+      ><a name="1859" class="Symbol"
+      >&#8594;</a
+      ><a name="1860"
+      > </a
+      ><a name="1861" class="Symbol"
+      >(</a
+      ><a name="1862" href="Context.html#1862" class="Bound"
+      >p</a
+      ><a name="1863"
+      > </a
+      ><a name="1864" class="Symbol"
+      >:</a
+      ><a name="1865"
+      > </a
+      ><a name="1866" href="Context.html#1852" class="Bound"
+      >x</a
+      ><a name="1867"
+      > </a
+      ><a name="1868" href="Context.html#1263" class="Function Operator"
+      >&#8712;</a
+      ><a name="1869"
+      > </a
+      ><a name="1870" href="Context.html#1842" class="Bound"
+      >xs</a
+      ><a name="1872" class="Symbol"
+      >)</a
+      ><a name="1873"
+      > </a
+      ><a name="1874" class="Symbol"
+      >&#8594;</a
+      ><a name="1875"
+      > </a
+      ><a name="1876" href="Data.Product.html#439" class="Record"
+      >&#931;</a
+      ><a name="1877"
+      > </a
+      ><a name="1878" href="Context.html#246" class="Bound"
+      >D</a
+      ><a name="1879"
+      > </a
+      ><a name="1880" class="Symbol"
+      >(&#955;</a
+      ><a name="1882"
+      > </a
+      ><a name="1883" href="Context.html#1883" class="Bound"
+      >d</a
+      ><a name="1884"
+      > </a
+      ><a name="1885" class="Symbol"
+      >&#8594;</a
+      ><a name="1886"
+      > </a
+      ><a name="1887" class="Symbol"
+      >((</a
+      ><a name="1889" href="Context.html#1852" class="Bound"
+      >x</a
+      ><a name="1890"
+      > </a
+      ><a name="1891" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="1892"
+      > </a
+      ><a name="1893" href="Context.html#1883" class="Bound"
+      >d</a
+      ><a name="1894" class="Symbol"
+      >)</a
+      ><a name="1895"
+      > </a
+      ><a name="1896" href="Data.List.Any.html#2915" class="Function Operator"
+      >&#8712;l</a
+      ><a name="1898"
+      > </a
+      ><a name="1899" href="Context.html#1842" class="Bound"
+      >xs</a
+      ><a name="1901" class="Symbol"
+      >)</a
+      ><a name="1902"
+      > </a
+      ><a name="1903" href="Data.Product.html#1055" class="Function Operator"
+      >&#215;</a
+      ><a name="1904"
+      > </a
+      ><a name="1905" class="Symbol"
+      >(</a
+      ><a name="1906" href="Context.html#1842" class="Bound"
+      >xs</a
+      ><a name="1908"
+      > </a
+      ><a name="1909" href="Context.html#1664" class="Function Operator"
+      >&#10216;</a
+      ><a name="1910"
+      > </a
+      ><a name="1911" href="Context.html#1862" class="Bound"
+      >p</a
+      ><a name="1912"
+      > </a
+      ><a name="1913" href="Context.html#1664" class="Function Operator"
+      >&#10217;</a
+      ><a name="1914"
+      > </a
+      ><a name="1915" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="1916"
+      > </a
+      ><a name="1917" href="Context.html#1883" class="Bound"
+      >d</a
+      ><a name="1918" class="Symbol"
+      >))</a
+      ><a name="1920"
+      >
+</a
+      ><a name="1921" href="Context.html#1827" class="Function"
+      >lemma&#8712;&#8594;&#8712;[]</a
+      ><a name="1931"
+      > </a
+      ><a name="1932" class="Symbol"
+      >{(</a
+      ><a name="1934" href="Context.html#1934" class="Bound"
+      >y</a
+      ><a name="1935"
+      > </a
+      ><a name="1936" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="1937"
+      > </a
+      ><a name="1938" href="Context.html#1938" class="Bound"
+      >d</a
+      ><a name="1939" class="Symbol"
+      >)</a
+      ><a name="1940"
+      > </a
+      ><a name="1941" href="Data.List.html#711" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="1942"
+      > </a
+      ><a name="1943" href="Context.html#1943" class="Bound"
+      >xs</a
+      ><a name="1945" class="Symbol"
+      >}</a
+      ><a name="1946"
+      >  </a
+      ><a name="1948" class="Symbol"
+      >(</a
+      ><a name="1949" href="ListProperties.html#5302" class="InductiveConstructor"
+      >here</a
+      ><a name="1953"
+      > </a
+      ><a name="1954" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="1958" class="Symbol"
+      >)</a
+      ><a name="1959"
+      >  </a
+      ><a name="1961" class="Symbol"
+      >=</a
+      ><a name="1962"
+      >  </a
+      ><a name="1964" href="Context.html#1938" class="Bound"
+      >d</a
+      ><a name="1965"
+      >   </a
+      ><a name="1968" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="1969"
+      > </a
+      ><a name="1970" href="Data.List.Any.html#1169" class="InductiveConstructor"
+      >here</a
+      ><a name="1974"
+      > </a
+      ><a name="1975" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="1979"
+      >      </a
+      ><a name="1985" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="1986"
+      > </a
+      ><a name="1987" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="1991"
+      >
+</a
+      ><a name="1992" href="Context.html#1827" class="Function"
+      >lemma&#8712;&#8594;&#8712;[]</a
+      ><a name="2002"
+      >                 </a
+      ><a name="2019" class="Symbol"
+      >(</a
+      ><a name="2020" href="ListProperties.html#5375" class="InductiveConstructor"
+      >there</a
+      ><a name="2025"
+      > </a
+      ><a name="2026" href="Context.html#2026" class="Bound"
+      >x&#8802;y</a
+      ><a name="2029"
+      > </a
+      ><a name="2030" href="Context.html#2030" class="Bound"
+      >x&#8712;xs</a
+      ><a name="2034" class="Symbol"
+      >)</a
+      ><a name="2035"
+      >  
+  </a
+      ><a name="2040" class="Keyword"
+      >with</a
+      ><a name="2044"
+      > </a
+      ><a name="2045" href="Context.html#1827" class="Function"
+      >lemma&#8712;&#8594;&#8712;[]</a
+      ><a name="2055"
+      > </a
+      ><a name="2056" href="Context.html#2030" class="Bound"
+      >x&#8712;xs</a
+      ><a name="2060"
+      >
+</a
+      ><a name="2061" class="Symbol"
+      >...</a
+      ><a name="2064"
+      > </a
+      ><a name="2065" class="Symbol"
+      >|</a
+      ><a name="2066"
+      > </a
+      ><a name="2067" href="Context.html#2067" class="Bound"
+      >d'</a
+      ><a name="2069"
+      > </a
+      ><a name="2070" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="2071"
+      > </a
+      ><a name="2072" href="Context.html#2072" class="Bound"
+      >x,d'&#8712;xs</a
+      ><a name="2079"
+      > </a
+      ><a name="2080" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="2081"
+      > </a
+      ><a name="2082" href="Context.html#2082" class="Bound"
+      >xs&#10216;x&#8712;xs&#10217;&#8801;d</a
+      ><a name="2092"
+      >         </a
+      ><a name="2101" class="Symbol"
+      >=</a
+      ><a name="2102"
+      >  </a
+      ><a name="2104" href="Context.html#2067" class="Bound"
+      >d'</a
+      ><a name="2106"
+      >  </a
+      ><a name="2108" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="2109"
+      > </a
+      ><a name="2110" href="Data.List.Any.html#1222" class="InductiveConstructor"
+      >there</a
+      ><a name="2115"
+      > </a
+      ><a name="2116" href="Context.html#2072" class="Bound"
+      >x,d'&#8712;xs</a
+      ><a name="2123"
+      >  </a
+      ><a name="2125" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="2126"
+      > </a
+      ><a name="2127" href="Context.html#2082" class="Bound"
+      >xs&#10216;x&#8712;xs&#10217;&#8801;d</a
+      ><a name="2137"
+      >
+
+</a
+      ><a name="2139" href="Context.html#2139" class="Function"
+      >lemma&#8712;[]&#8594;&#8712;</a
+      ><a name="2149"
+      >  </a
+      ><a name="2151" class="Symbol"
+      >:</a
+      ><a name="2152"
+      > </a
+      ><a name="2153" class="Symbol"
+      >{</a
+      ><a name="2154" href="Context.html#2154" class="Bound"
+      >xs</a
+      ><a name="2156"
+      > </a
+      ><a name="2157" class="Symbol"
+      >:</a
+      ><a name="2158"
+      > </a
+      ><a name="2159" href="Context.html#1181" class="Function"
+      >Cxt</a
+      ><a name="2162" class="Symbol"
+      >}{</a
+      ><a name="2164" href="Context.html#2164" class="Bound"
+      >x</a
+      ><a name="2165"
+      > </a
+      ><a name="2166" class="Symbol"
+      >:</a
+      ><a name="2167"
+      > </a
+      ><a name="2168" href="Context.html#237" class="Bound"
+      >K</a
+      ><a name="2169" class="Symbol"
+      >}{</a
+      ><a name="2171" href="Context.html#2171" class="Bound"
+      >d</a
+      ><a name="2172"
+      > </a
+      ><a name="2173" class="Symbol"
+      >:</a
+      ><a name="2174"
+      > </a
+      ><a name="2175" href="Context.html#246" class="Bound"
+      >D</a
+      ><a name="2176" class="Symbol"
+      >}</a
+      ><a name="2177"
+      > </a
+      ><a name="2178" class="Symbol"
+      >&#8594;</a
+      ><a name="2179"
+      > </a
+      ><a name="2180" class="Symbol"
+      >(</a
+      ><a name="2181" href="Context.html#2181" class="Bound"
+      >p</a
+      ><a name="2182"
+      > </a
+      ><a name="2183" class="Symbol"
+      >:</a
+      ><a name="2184"
+      > </a
+      ><a name="2185" class="Symbol"
+      >(</a
+      ><a name="2186" href="Context.html#2164" class="Bound"
+      >x</a
+      ><a name="2187"
+      > </a
+      ><a name="2188" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="2189"
+      > </a
+      ><a name="2190" href="Context.html#2171" class="Bound"
+      >d</a
+      ><a name="2191" class="Symbol"
+      >)</a
+      ><a name="2192"
+      > </a
+      ><a name="2193" href="Data.List.Any.html#2915" class="Function Operator"
+      >&#8712;l</a
+      ><a name="2195"
+      > </a
+      ><a name="2196" href="Context.html#2154" class="Bound"
+      >xs</a
+      ><a name="2198" class="Symbol"
+      >)</a
+      ><a name="2199"
+      > </a
+      ><a name="2200" class="Symbol"
+      >&#8594;</a
+      ><a name="2201"
+      > </a
+      ><a name="2202" href="Context.html#2164" class="Bound"
+      >x</a
+      ><a name="2203"
+      > </a
+      ><a name="2204" href="Context.html#1263" class="Function Operator"
+      >&#8712;</a
+      ><a name="2205"
+      > </a
+      ><a name="2206" href="Context.html#2154" class="Bound"
+      >xs</a
+      ><a name="2208"
+      >
+</a
+      ><a name="2209" href="Context.html#2139" class="Function"
+      >lemma&#8712;[]&#8594;&#8712;</a
+      ><a name="2219"
+      >          </a
+      ><a name="2229" class="Symbol"
+      >(</a
+      ><a name="2230" href="Data.List.Any.html#1169" class="InductiveConstructor"
+      >here</a
+      ><a name="2234"
+      > </a
+      ><a name="2235" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="2239" class="Symbol"
+      >)</a
+      ><a name="2240"
+      >  </a
+      ><a name="2242" class="Symbol"
+      >=</a
+      ><a name="2243"
+      >  </a
+      ><a name="2245" href="ListProperties.html#5302" class="InductiveConstructor"
+      >here</a
+      ><a name="2249"
+      > </a
+      ><a name="2250" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="2254"
+      >
+</a
+      ><a name="2255" href="Context.html#2139" class="Function"
+      >lemma&#8712;[]&#8594;&#8712;</a
+      ><a name="2265"
+      > </a
+      ><a name="2266" class="Symbol"
+      >{</a
+      ><a name="2267" class="Argument"
+      >x</a
+      ><a name="2268"
+      > </a
+      ><a name="2269" class="Symbol"
+      >=</a
+      ><a name="2270"
+      > </a
+      ><a name="2271" href="Context.html#2271" class="Bound"
+      >x</a
+      ><a name="2272" class="Symbol"
+      >}</a
+      ><a name="2273"
+      >  </a
+      ><a name="2275" class="Symbol"
+      >(</a
+      ><a name="2276" href="Data.List.Any.html#1222" class="InductiveConstructor"
+      >there</a
+      ><a name="2281"
+      > </a
+      ><a name="2282" class="Symbol"
+      >{</a
+      ><a name="2283" href="Context.html#2283" class="Bound"
+      >y</a
+      ><a name="2284"
+      > </a
+      ><a name="2285" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="2286"
+      > </a
+      ><a name="2287" href="Context.html#2287" class="Bound"
+      >d</a
+      ><a name="2288" class="Symbol"
+      >}</a
+      ><a name="2289"
+      > </a
+      ><a name="2290" href="Context.html#2290" class="Bound"
+      >p&#8712;xs</a
+      ><a name="2294" class="Symbol"
+      >)</a
+      ><a name="2295"
+      > </a
+      ><a name="2296" class="Keyword"
+      >with</a
+      ><a name="2300"
+      > </a
+      ><a name="2301" href="Context.html#2271" class="Bound"
+      >x</a
+      ><a name="2302"
+      > </a
+      ><a name="2303" href="Context.html#255" class="Bound Operator"
+      >&#8799;</a
+      ><a name="2304"
+      > </a
+      ><a name="2305" href="Context.html#2283" class="Bound"
+      >y</a
+      ><a name="2306"
+      >
+</a
+      ><a name="2307" class="Symbol"
+      >...</a
+      ><a name="2310"
+      > </a
+      ><a name="2311" class="Symbol"
+      >|</a
+      ><a name="2312"
+      > </a
+      ><a name="2313" href="Relation.Nullary.Core.html#504" class="InductiveConstructor"
+      >yes</a
+      ><a name="2316"
+      >  </a
+      ><a name="2318" href="Context.html#2318" class="Bound"
+      >x&#8801;y</a
+      ><a name="2321"
+      >                   </a
+      ><a name="2340" class="Symbol"
+      >=</a
+      ><a name="2341"
+      > </a
+      ><a name="2342" href="ListProperties.html#5302" class="InductiveConstructor"
+      >here</a
+      ><a name="2346"
+      > </a
+      ><a name="2347" href="Context.html#2318" class="Bound"
+      >x&#8801;y</a
+      ><a name="2350"
+      >
+</a
+      ><a name="2351" class="Symbol"
+      >...</a
+      ><a name="2354"
+      > </a
+      ><a name="2355" class="Symbol"
+      >|</a
+      ><a name="2356"
+      > </a
+      ><a name="2357" href="Relation.Nullary.Core.html#531" class="InductiveConstructor"
+      >no</a
+      ><a name="2359"
+      >   </a
+      ><a name="2362" href="Context.html#2362" class="Bound"
+      >x&#8802;y</a
+      ><a name="2365"
+      >                   </a
+      ><a name="2384" class="Symbol"
+      >=</a
+      ><a name="2385"
+      > </a
+      ><a name="2386" href="ListProperties.html#5375" class="InductiveConstructor"
+      >there</a
+      ><a name="2391"
+      > </a
+      ><a name="2392" href="Context.html#2362" class="Bound"
+      >x&#8802;y</a
+      ><a name="2395"
+      > </a
+      ><a name="2396" class="Symbol"
+      >(</a
+      ><a name="2397" href="Context.html#2139" class="Function"
+      >lemma&#8712;[]&#8594;&#8712;</a
+      ><a name="2407"
+      > </a
+      ><a name="2408" href="Context.html#2290" class="Bound"
+      >p&#8712;xs</a
+      ><a name="2412" class="Symbol"
+      >)</a
+      ><a name="2413"
+      >
+
+</a
+      ><a name="2415" href="Context.html#2415" class="Function"
+      >lemma&#8712;!&#10216;&#10217;</a
+      ><a name="2424"
+      > </a
+      ><a name="2425" class="Symbol"
+      >:</a
+      ><a name="2426"
+      > </a
+      ><a name="2427" class="Symbol"
+      >{</a
+      ><a name="2428" href="Context.html#2428" class="Bound"
+      >xs</a
+      ><a name="2430"
+      > </a
+      ><a name="2431" class="Symbol"
+      >:</a
+      ><a name="2432"
+      > </a
+      ><a name="2433" href="Context.html#1181" class="Function"
+      >Cxt</a
+      ><a name="2436" class="Symbol"
+      >}{</a
+      ><a name="2438" href="Context.html#2438" class="Bound"
+      >x</a
+      ><a name="2439"
+      > </a
+      ><a name="2440" class="Symbol"
+      >:</a
+      ><a name="2441"
+      > </a
+      ><a name="2442" href="Context.html#237" class="Bound"
+      >K</a
+      ><a name="2443" class="Symbol"
+      >}</a
+      ><a name="2444"
+      > </a
+      ><a name="2445" class="Symbol"
+      >&#8594;</a
+      ><a name="2446"
+      > </a
+      ><a name="2447" class="Symbol"
+      >(</a
+      ><a name="2448" href="Context.html#2448" class="Bound"
+      >p</a
+      ><a name="2449"
+      > </a
+      ><a name="2450" href="Context.html#2450" class="Bound"
+      >p'</a
+      ><a name="2452"
+      > </a
+      ><a name="2453" class="Symbol"
+      >:</a
+      ><a name="2454"
+      > </a
+      ><a name="2455" href="Context.html#2438" class="Bound"
+      >x</a
+      ><a name="2456"
+      > </a
+      ><a name="2457" href="Context.html#1263" class="Function Operator"
+      >&#8712;</a
+      ><a name="2458"
+      > </a
+      ><a name="2459" href="Context.html#2428" class="Bound"
+      >xs</a
+      ><a name="2461" class="Symbol"
+      >)</a
+      ><a name="2462"
+      > </a
+      ><a name="2463" class="Symbol"
+      >&#8594;</a
+      ><a name="2464"
+      > </a
+      ><a name="2465" href="Context.html#2428" class="Bound"
+      >xs</a
+      ><a name="2467"
+      > </a
+      ><a name="2468" href="Context.html#1664" class="Function Operator"
+      >&#10216;</a
+      ><a name="2469"
+      > </a
+      ><a name="2470" href="Context.html#2448" class="Bound"
+      >p</a
+      ><a name="2471"
+      > </a
+      ><a name="2472" href="Context.html#1664" class="Function Operator"
+      >&#10217;</a
+      ><a name="2473"
+      > </a
+      ><a name="2474" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="2475"
+      > </a
+      ><a name="2476" href="Context.html#2428" class="Bound"
+      >xs</a
+      ><a name="2478"
+      > </a
+      ><a name="2479" href="Context.html#1664" class="Function Operator"
+      >&#10216;</a
+      ><a name="2480"
+      > </a
+      ><a name="2481" href="Context.html#2450" class="Bound"
+      >p'</a
+      ><a name="2483"
+      > </a
+      ><a name="2484" href="Context.html#1664" class="Function Operator"
+      >&#10217;</a
+      ><a name="2485"
+      >
+</a
+      ><a name="2486" href="Context.html#2415" class="Function"
+      >lemma&#8712;!&#10216;&#10217;</a
+      ><a name="2495"
+      > </a
+      ><a name="2496" class="Symbol"
+      >(</a
+      ><a name="2497" href="ListProperties.html#5302" class="InductiveConstructor"
+      >here</a
+      ><a name="2501"
+      >  </a
+      ><a name="2503" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="2507" class="Symbol"
+      >)</a
+      ><a name="2508"
+      >        </a
+      ><a name="2516" class="Symbol"
+      >(</a
+      ><a name="2517" href="ListProperties.html#5302" class="InductiveConstructor"
+      >here</a
+      ><a name="2521"
+      > </a
+      ><a name="2522" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="2526" class="Symbol"
+      >)</a
+      ><a name="2527"
+      >        </a
+      ><a name="2535" class="Symbol"
+      >=</a
+      ><a name="2536"
+      > </a
+      ><a name="2537" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="2541"
+      >
+</a
+      ><a name="2542" href="Context.html#2415" class="Function"
+      >lemma&#8712;!&#10216;&#10217;</a
+      ><a name="2551"
+      > </a
+      ><a name="2552" class="Symbol"
+      >(</a
+      ><a name="2553" href="ListProperties.html#5302" class="InductiveConstructor"
+      >here</a
+      ><a name="2557"
+      >  </a
+      ><a name="2559" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="2563" class="Symbol"
+      >)</a
+      ><a name="2564"
+      >        </a
+      ><a name="2572" class="Symbol"
+      >(</a
+      ><a name="2573" href="ListProperties.html#5375" class="InductiveConstructor"
+      >there</a
+      ><a name="2578"
+      > </a
+      ><a name="2579" href="Context.html#2579" class="Bound"
+      >x&#8802;y</a
+      ><a name="2582"
+      > </a
+      ><a name="2583" class="Symbol"
+      >_)</a
+      ><a name="2585"
+      >      </a
+      ><a name="2591" class="Symbol"
+      >=</a
+      ><a name="2592"
+      > </a
+      ><a name="2593" href="Data.Empty.html#326" class="Function"
+      >&#8869;-elim</a
+      ><a name="2599"
+      > </a
+      ><a name="2600" class="Symbol"
+      >(</a
+      ><a name="2601" href="Context.html#2579" class="Bound"
+      >x&#8802;y</a
+      ><a name="2604"
+      > </a
+      ><a name="2605" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="2609" class="Symbol"
+      >)</a
+      ><a name="2610"
+      >
+</a
+      ><a name="2611" href="Context.html#2415" class="Function"
+      >lemma&#8712;!&#10216;&#10217;</a
+      ><a name="2620"
+      > </a
+      ><a name="2621" class="Symbol"
+      >(</a
+      ><a name="2622" href="ListProperties.html#5375" class="InductiveConstructor"
+      >there</a
+      ><a name="2627"
+      > </a
+      ><a name="2628" href="Context.html#2628" class="Bound"
+      >x&#8802;x</a
+      ><a name="2631"
+      > </a
+      ><a name="2632" href="Context.html#2632" class="Bound"
+      >x&#8712;x&#8759;xs</a
+      ><a name="2638" class="Symbol"
+      >)</a
+      ><a name="2639"
+      >  </a
+      ><a name="2641" class="Symbol"
+      >(</a
+      ><a name="2642" href="ListProperties.html#5302" class="InductiveConstructor"
+      >here</a
+      ><a name="2646"
+      > </a
+      ><a name="2647" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="2651" class="Symbol"
+      >)</a
+      ><a name="2652"
+      >        </a
+      ><a name="2660" class="Symbol"
+      >=</a
+      ><a name="2661"
+      > </a
+      ><a name="2662" href="Data.Empty.html#326" class="Function"
+      >&#8869;-elim</a
+      ><a name="2668"
+      > </a
+      ><a name="2669" class="Symbol"
+      >(</a
+      ><a name="2670" href="Context.html#2628" class="Bound"
+      >x&#8802;x</a
+      ><a name="2673"
+      > </a
+      ><a name="2674" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="2678" class="Symbol"
+      >)</a
+      ><a name="2679"
+      >
+</a
+      ><a name="2680" href="Context.html#2415" class="Function"
+      >lemma&#8712;!&#10216;&#10217;</a
+      ><a name="2689"
+      > </a
+      ><a name="2690" class="Symbol"
+      >(</a
+      ><a name="2691" href="ListProperties.html#5375" class="InductiveConstructor"
+      >there</a
+      ><a name="2696"
+      > </a
+      ><a name="2697" href="Context.html#2697" class="Bound"
+      >x&#8802;y</a
+      ><a name="2700"
+      > </a
+      ><a name="2701" href="Context.html#2701" class="Bound"
+      >x&#8712;y&#8759;xs</a
+      ><a name="2707" class="Symbol"
+      >)</a
+      ><a name="2708"
+      >  </a
+      ><a name="2710" class="Symbol"
+      >(</a
+      ><a name="2711" href="ListProperties.html#5375" class="InductiveConstructor"
+      >there</a
+      ><a name="2716"
+      > </a
+      ><a name="2717" class="Symbol"
+      >_</a
+      ><a name="2718"
+      > </a
+      ><a name="2719" href="Context.html#2719" class="Bound"
+      >x&#8712;y&#8759;xs'</a
+      ><a name="2726" class="Symbol"
+      >)</a
+      ><a name="2727"
+      >  </a
+      ><a name="2729" class="Symbol"
+      >=</a
+      ><a name="2730"
+      > </a
+      ><a name="2731" href="Context.html#2415" class="Function"
+      >lemma&#8712;!&#10216;&#10217;</a
+      ><a name="2740"
+      > </a
+      ><a name="2741" href="Context.html#2701" class="Bound"
+      >x&#8712;y&#8759;xs</a
+      ><a name="2747"
+      > </a
+      ><a name="2748" href="Context.html#2719" class="Bound"
+      >x&#8712;y&#8759;xs'</a
+      ><a name="2755"
+      >
+
+</a
+      ><a name="2757" href="Context.html#2757" class="Function Operator"
+      >_&#8838;_</a
+      ><a name="2760"
+      > </a
+      ><a name="2761" class="Symbol"
+      >:</a
+      ><a name="2762"
+      > </a
+      ><a name="2763" href="Context.html#1181" class="Function"
+      >Cxt</a
+      ><a name="2766"
+      > </a
+      ><a name="2767" class="Symbol"
+      >&#8594;</a
+      ><a name="2768"
+      > </a
+      ><a name="2769" href="Context.html#1181" class="Function"
+      >Cxt</a
+      ><a name="2772"
+      > </a
+      ><a name="2773" class="Symbol"
+      >&#8594;</a
+      ><a name="2774"
+      > </a
+      ><a name="2775" class="PrimitiveType"
+      >Set</a
+      ><a name="2778"
+      >
+</a
+      ><a name="2779" href="Context.html#2779" class="Bound"
+      >&#915;</a
+      ><a name="2780"
+      > </a
+      ><a name="2781" href="Context.html#2757" class="Function Operator"
+      >&#8838;</a
+      ><a name="2782"
+      > </a
+      ><a name="2783" href="Context.html#2783" class="Bound"
+      >&#916;</a
+      ><a name="2784"
+      > </a
+      ><a name="2785" class="Symbol"
+      >=</a
+      ><a name="2786"
+      > </a
+      ><a name="2787" class="Symbol"
+      >{</a
+      ><a name="2788" href="Context.html#2788" class="Bound"
+      >x</a
+      ><a name="2789"
+      > </a
+      ><a name="2790" class="Symbol"
+      >:</a
+      ><a name="2791"
+      > </a
+      ><a name="2792" href="Context.html#237" class="Bound"
+      >K</a
+      ><a name="2793" class="Symbol"
+      >}(</a
+      ><a name="2795" href="Context.html#2795" class="Bound"
+      >x&#8712;&#915;</a
+      ><a name="2798"
+      > </a
+      ><a name="2799" class="Symbol"
+      >:</a
+      ><a name="2800"
+      > </a
+      ><a name="2801" href="Context.html#2788" class="Bound"
+      >x</a
+      ><a name="2802"
+      > </a
+      ><a name="2803" href="Context.html#1263" class="Function Operator"
+      >&#8712;</a
+      ><a name="2804"
+      > </a
+      ><a name="2805" href="Context.html#2779" class="Bound"
+      >&#915;</a
+      ><a name="2806" class="Symbol"
+      >)</a
+      ><a name="2807"
+      > </a
+      ><a name="2808" class="Symbol"
+      >&#8594;</a
+      ><a name="2809"
+      > </a
+      ><a name="2810" href="Data.Product.html#439" class="Record"
+      >&#931;</a
+      ><a name="2811"
+      > </a
+      ><a name="2812" class="Symbol"
+      >(</a
+      ><a name="2813" href="Context.html#2788" class="Bound"
+      >x</a
+      ><a name="2814"
+      > </a
+      ><a name="2815" href="Context.html#1263" class="Function Operator"
+      >&#8712;</a
+      ><a name="2816"
+      > </a
+      ><a name="2817" href="Context.html#2783" class="Bound"
+      >&#916;</a
+      ><a name="2818" class="Symbol"
+      >)</a
+      ><a name="2819"
+      > </a
+      ><a name="2820" class="Symbol"
+      >(&#955;</a
+      ><a name="2822"
+      > </a
+      ><a name="2823" href="Context.html#2823" class="Bound"
+      >x&#8712;&#916;</a
+      ><a name="2826"
+      > </a
+      ><a name="2827" class="Symbol"
+      >&#8594;</a
+      ><a name="2828"
+      > </a
+      ><a name="2829" href="Context.html#2779" class="Bound"
+      >&#915;</a
+      ><a name="2830"
+      > </a
+      ><a name="2831" href="Context.html#1664" class="Function Operator"
+      >&#10216;</a
+      ><a name="2832"
+      > </a
+      ><a name="2833" href="Context.html#2795" class="Bound"
+      >x&#8712;&#915;</a
+      ><a name="2836"
+      > </a
+      ><a name="2837" href="Context.html#1664" class="Function Operator"
+      >&#10217;</a
+      ><a name="2838"
+      > </a
+      ><a name="2839" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >&#8801;</a
+      ><a name="2840"
+      > </a
+      ><a name="2841" href="Context.html#2783" class="Bound"
+      >&#916;</a
+      ><a name="2842"
+      > </a
+      ><a name="2843" href="Context.html#1664" class="Function Operator"
+      >&#10216;</a
+      ><a name="2844"
+      > </a
+      ><a name="2845" href="Context.html#2823" class="Bound"
+      >x&#8712;&#916;</a
+      ><a name="2848"
+      > </a
+      ><a name="2849" href="Context.html#1664" class="Function Operator"
+      >&#10217;</a
+      ><a name="2850"
+      > </a
+      ><a name="2851" class="Symbol"
+      >)</a
+      ><a name="2852"
+      >
+
+</a
+      ><a name="2854" href="Context.html#2854" class="Function"
+      >&#961;&#8838;</a
+      ><a name="2856"
+      > </a
+      ><a name="2857" class="Symbol"
+      >:</a
+      ><a name="2858"
+      > </a
+      ><a name="2859" href="Relation.Binary.Core.html#1891" class="Function"
+      >Reflexive</a
+      ><a name="2868"
+      > </a
+      ><a name="2869" href="Context.html#2757" class="Function Operator"
+      >_&#8838;_</a
+      ><a name="2872"
+      >
+</a
+      ><a name="2873" href="Context.html#2854" class="Function"
+      >&#961;&#8838;</a
+      ><a name="2875"
+      > </a
+      ><a name="2876" href="Context.html#2876" class="Bound"
+      >x&#8712;&#915;</a
+      ><a name="2879"
+      > </a
+      ><a name="2880" class="Symbol"
+      >=</a
+      ><a name="2881"
+      > </a
+      ><a name="2882" href="Context.html#2876" class="Bound"
+      >x&#8712;&#915;</a
+      ><a name="2885"
+      > </a
+      ><a name="2886" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="2887"
+      > </a
+      ><a name="2888" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="2892"
+      >
+
+</a
+      ><a name="2894" href="Context.html#2894" class="Function"
+      >&#964;&#8838;</a
+      ><a name="2896"
+      > </a
+      ><a name="2897" class="Symbol"
+      >:</a
+      ><a name="2898"
+      > </a
+      ><a name="2899" href="Relation.Binary.Core.html#2793" class="Function"
+      >Transitive</a
+      ><a name="2909"
+      > </a
+      ><a name="2910" href="Context.html#2757" class="Function Operator"
+      >_&#8838;_</a
+      ><a name="2913"
+      >
+</a
+      ><a name="2914" href="Context.html#2894" class="Function"
+      >&#964;&#8838;</a
+      ><a name="2916"
+      > </a
+      ><a name="2917" href="Context.html#2917" class="Bound"
+      >&#915;&#8838;&#916;</a
+      ><a name="2920"
+      > </a
+      ><a name="2921" href="Context.html#2921" class="Bound"
+      >&#916;&#8838;&#917;</a
+      ><a name="2924"
+      > </a
+      ><a name="2925" href="Context.html#2925" class="Bound"
+      >x&#8712;&#915;</a
+      ><a name="2928"
+      > </a
+      ><a name="2929" class="Keyword"
+      >with</a
+      ><a name="2933"
+      > </a
+      ><a name="2934" href="Context.html#2917" class="Bound"
+      >&#915;&#8838;&#916;</a
+      ><a name="2937"
+      > </a
+      ><a name="2938" href="Context.html#2925" class="Bound"
+      >x&#8712;&#915;</a
+      ><a name="2941"
+      >
+</a
+      ><a name="2942" class="Symbol"
+      >...</a
+      ><a name="2945"
+      > </a
+      ><a name="2946" class="Symbol"
+      >|</a
+      ><a name="2947"
+      > </a
+      ><a name="2948" href="Context.html#2948" class="Bound"
+      >x&#8712;&#916;</a
+      ><a name="2951"
+      > </a
+      ><a name="2952" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="2953"
+      > </a
+      ><a name="2954" href="Context.html#2954" class="Bound"
+      >&#915;&#10216;x&#8712;&#915;&#10217;&#8801;&#916;&#10216;x&#8712;&#916;&#10217;</a
+      ><a name="2967"
+      > </a
+      ><a name="2968" class="Keyword"
+      >with</a
+      ><a name="2972"
+      > </a
+      ><a name="2973" href="Context.html#2921" class="Bound"
+      >&#916;&#8838;&#917;</a
+      ><a name="2976"
+      > </a
+      ><a name="2977" href="Context.html#2948" class="Bound"
+      >x&#8712;&#916;</a
+      ><a name="2980"
+      >
+</a
+      ><a name="2981" class="Symbol"
+      >...</a
+      ><a name="2984"
+      > </a
+      ><a name="2985" class="Symbol"
+      >|</a
+      ><a name="2986"
+      > </a
+      ><a name="2987" href="Context.html#2987" class="Bound"
+      >x&#8712;&#917;</a
+      ><a name="2990"
+      > </a
+      ><a name="2991" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="2992"
+      > </a
+      ><a name="2993" href="Context.html#2993" class="Bound"
+      >&#916;&#10216;x&#8712;&#916;&#10217;&#8801;&#917;&#10216;x&#8712;&#917;&#10217;</a
+      ><a name="3006"
+      > </a
+      ><a name="3007" class="Symbol"
+      >=</a
+      ><a name="3008"
+      > </a
+      ><a name="3009" href="Context.html#2987" class="Bound"
+      >x&#8712;&#917;</a
+      ><a name="3012"
+      > </a
+      ><a name="3013" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="3014"
+      > </a
+      ><a name="3015" href="Relation.Binary.PropositionalEquality.Core.html#632" class="Function"
+      >trans</a
+      ><a name="3020"
+      > </a
+      ><a name="3021" href="Context.html#2954" class="Bound"
+      >&#915;&#10216;x&#8712;&#915;&#10217;&#8801;&#916;&#10216;x&#8712;&#916;&#10217;</a
+      ><a name="3034"
+      > </a
+      ><a name="3035" href="Context.html#2993" class="Bound"
+      >&#916;&#10216;x&#8712;&#916;&#10217;&#8801;&#917;&#10216;x&#8712;&#917;&#10217;</a
+      ><a name="3048"
+      >
+
+</a
+      ><a name="3050" href="Context.html#3050" class="Function"
+      >&#8776;-preorder</a
+      ><a name="3060"
+      > </a
+      ><a name="3061" class="Symbol"
+      >:</a
+      ><a name="3062"
+      > </a
+      ><a name="3063" href="Relation.Binary.html#1414" class="Record"
+      >Preorder</a
+      ><a name="3071"
+      > </a
+      ><a name="3072" class="Symbol"
+      >_</a
+      ><a name="3073"
+      > </a
+      ><a name="3074" class="Symbol"
+      >_</a
+      ><a name="3075"
+      > </a
+      ><a name="3076" class="Symbol"
+      >_</a
+      ><a name="3077"
+      >
+</a
+      ><a name="3078" href="Context.html#3050" class="Function"
+      >&#8776;-preorder</a
+      ><a name="3088"
+      > </a
+      ><a name="3089" class="Symbol"
+      >=</a
+      ><a name="3090"
+      >  
+    </a
+      ><a name="3097" class="Keyword"
+      >record</a
+      ><a name="3103"
+      > </a
+      ><a name="3104" class="Symbol"
+      >{</a
+      ><a name="3105"
+      > 
+      </a
+      ><a name="3113" class="Field"
+      >Carrier</a
+      ><a name="3120"
+      > </a
+      ><a name="3121" class="Symbol"
+      >=</a
+      ><a name="3122"
+      > </a
+      ><a name="3123" href="Context.html#1181" class="Function"
+      >Cxt</a
+      ><a name="3126" class="Symbol"
+      >;</a
+      ><a name="3127"
+      >
+      </a
+      ><a name="3134" class="Field Operator"
+      >_&#8776;_</a
+      ><a name="3137"
+      > </a
+      ><a name="3138" class="Symbol"
+      >=</a
+      ><a name="3139"
+      > </a
+      ><a name="3140" href="Relation.Binary.Core.html#4603" class="Datatype Operator"
+      >_&#8801;_</a
+      ><a name="3143" class="Symbol"
+      >;</a
+      ><a name="3144"
+      >
+      </a
+      ><a name="3151" class="Field Operator"
+      >_&#8764;_</a
+      ><a name="3154"
+      > </a
+      ><a name="3155" class="Symbol"
+      >=</a
+      ><a name="3156"
+      > </a
+      ><a name="3157" href="Context.html#2757" class="Function Operator"
+      >_&#8838;_</a
+      ><a name="3160" class="Symbol"
+      >;</a
+      ><a name="3161"
+      >
+      </a
+      ><a name="3168" class="Field"
+      >isPreorder</a
+      ><a name="3178"
+      > </a
+      ><a name="3179" class="Symbol"
+      >=</a
+      ><a name="3180"
+      >  </a
+      ><a name="3182" class="Keyword"
+      >record</a
+      ><a name="3188"
+      > </a
+      ><a name="3189" class="Symbol"
+      >{</a
+      ><a name="3190"
+      >
+        </a
+      ><a name="3199" class="Field"
+      >isEquivalence</a
+      ><a name="3212"
+      > </a
+      ><a name="3213" class="Symbol"
+      >=</a
+      ><a name="3214"
+      > </a
+      ><a name="3215" href="Relation.Binary.html#1975" class="Field"
+      >Relation.Binary.Setoid.isEquivalence</a
+      ><a name="3251"
+      > </a
+      ><a name="3252" class="Symbol"
+      >(</a
+      ><a name="3253" href="Relation.Binary.PropositionalEquality.html#1524" class="Function"
+      >setoid</a
+      ><a name="3259"
+      > </a
+      ><a name="3260" href="Context.html#1181" class="Function"
+      >Cxt</a
+      ><a name="3263" class="Symbol"
+      >)</a
+      ><a name="3264"
+      > </a
+      ><a name="3265" class="Symbol"
+      >;</a
+      ><a name="3266"
+      >
+        </a
+      ><a name="3275" class="Field"
+      >reflexive</a
+      ><a name="3284"
+      > </a
+      ><a name="3285" class="Symbol"
+      >=</a
+      ><a name="3286"
+      > </a
+      ><a name="3287" class="Symbol"
+      >&#955;</a
+      ><a name="3288"
+      > </a
+      ><a name="3289" class="Symbol"
+      >{</a
+      ><a name="3290"
+      > </a
+      ><a name="3291" class="Symbol"
+      >{</a
+      ><a name="3292" href="Context.html#3292" class="Bound"
+      >&#915;</a
+      ><a name="3293" class="Symbol"
+      >}</a
+      ><a name="3294"
+      > </a
+      ><a name="3295" class="Symbol"
+      >{</a
+      ><a name="3296" class="DottedPattern Symbol"
+      >.</a
+      ><a name="3297" href="Context.html#3292" class="DottedPattern Bound"
+      >&#915;</a
+      ><a name="3298" class="Symbol"
+      >}</a
+      ><a name="3299"
+      > </a
+      ><a name="3300" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="3304"
+      > </a
+      ><a name="3305" class="Symbol"
+      >&#8594;</a
+      ><a name="3306"
+      > </a
+      ><a name="3307" href="Context.html#2854" class="Function"
+      >&#961;&#8838;</a
+      ><a name="3309" class="Symbol"
+      >};</a
+      ><a name="3311"
+      >
+        </a
+      ><a name="3320" class="Field"
+      >trans</a
+      ><a name="3325"
+      > </a
+      ><a name="3326" class="Symbol"
+      >=</a
+      ><a name="3327"
+      > </a
+      ><a name="3328" href="Context.html#2894" class="Function"
+      >&#964;&#8838;</a
+      ><a name="3330"
+      > </a
+      ><a name="3331" class="Symbol"
+      >}</a
+      ><a name="3332"
+      > </a
+      ><a name="3333" class="Symbol"
+      >}</a
+      ><a name="3334"
+      >
+
+</a
+      ><a name="3336" class="Keyword"
+      >import</a
+      ><a name="3342"
+      > </a
+      ><a name="3343" href="Relation.Binary.PreorderReasoning.html#1" class="Module"
+      >Relation.Binary.PreorderReasoning</a
+      ><a name="3376"
+      > </a
+      ><a name="3377" class="Symbol"
+      >as</a
+      ><a name="3379"
+      > </a
+      ><a name="3380" class="Module"
+      >PreR</a
+      ><a name="3384"
+      >
+</a
+      ><a name="3385" class="Keyword"
+      >open</a
+      ><a name="3389"
+      > </a
+      ><a name="3390" href="Relation.Binary.PreorderReasoning.html#1" class="Module"
+      >PreR</a
+      ><a name="3394"
+      > </a
+      ><a name="3395" href="Context.html#3050" class="Function"
+      >&#8776;-preorder</a
+      ><a name="3405"
+      >
+
+</a
+      ><a name="3407" href="Context.html#3407" class="Function Operator"
+      >_&#8218;_</a
+      ><a name="3410"
+      > </a
+      ><a name="3411" class="Symbol"
+      >:</a
+      ><a name="3412"
+      > </a
+      ><a name="3413" href="Context.html#1181" class="Function"
+      >Cxt</a
+      ><a name="3416"
+      > </a
+      ><a name="3417" class="Symbol"
+      >&#8594;</a
+      ><a name="3418"
+      > </a
+      ><a name="3419" href="Context.html#237" class="Bound"
+      >K</a
+      ><a name="3420"
+      > </a
+      ><a name="3421" href="Data.Product.html#1055" class="Function Operator"
+      >&#215;</a
+      ><a name="3422"
+      > </a
+      ><a name="3423" href="Context.html#246" class="Bound"
+      >D</a
+      ><a name="3424"
+      > </a
+      ><a name="3425" class="Symbol"
+      >&#8594;</a
+      ><a name="3426"
+      > </a
+      ><a name="3427" href="Context.html#1181" class="Function"
+      >Cxt</a
+      ><a name="3430"
+      > </a
+      ><a name="3431" class="Comment"
+      >-- \glq</a
+      ><a name="3438"
+      >
+</a
+      ><a name="3439" href="Context.html#3407" class="Function Operator"
+      >_&#8218;_</a
+      ><a name="3442"
+      > </a
+      ><a name="3443" class="Symbol"
+      >=</a
+      ><a name="3444"
+      > </a
+      ><a name="3445" class="Symbol"
+      >&#955;</a
+      ><a name="3446"
+      > </a
+      ><a name="3447" href="Context.html#3447" class="Bound"
+      >x</a
+      ><a name="3448"
+      > </a
+      ><a name="3449" href="Context.html#3449" class="Bound"
+      >y</a
+      ><a name="3450"
+      > </a
+      ><a name="3451" class="Symbol"
+      >&#8594;</a
+      ><a name="3452"
+      > </a
+      ><a name="3453" href="Context.html#3449" class="Bound"
+      >y</a
+      ><a name="3454"
+      > </a
+      ><a name="3455" href="Data.List.html#711" class="InductiveConstructor Operator"
+      >&#8759;</a
+      ><a name="3456"
+      > </a
+      ><a name="3457" href="Context.html#3447" class="Bound"
+      >x</a
+      ><a name="3458"
+      >
+
+</a
+      ><a name="3460" href="Context.html#3460" class="Function"
+      >lemma&#8838;xy</a
+      ><a name="3468"
+      > </a
+      ><a name="3469" class="Symbol"
+      >:</a
+      ><a name="3470"
+      > </a
+      ><a name="3471" class="Symbol"
+      >{</a
+      ><a name="3472" href="Context.html#3472" class="Bound"
+      >x</a
+      ><a name="3473"
+      > </a
+      ><a name="3474" href="Context.html#3474" class="Bound"
+      >y</a
+      ><a name="3475"
+      > </a
+      ><a name="3476" class="Symbol"
+      >:</a
+      ><a name="3477"
+      > </a
+      ><a name="3478" href="Context.html#237" class="Bound"
+      >K</a
+      ><a name="3479" class="Symbol"
+      >}{</a
+      ><a name="3481" href="Context.html#3481" class="Bound"
+      >d</a
+      ><a name="3482"
+      > </a
+      ><a name="3483" href="Context.html#3483" class="Bound"
+      >e</a
+      ><a name="3484"
+      > </a
+      ><a name="3485" class="Symbol"
+      >:</a
+      ><a name="3486"
+      > </a
+      ><a name="3487" href="Context.html#246" class="Bound"
+      >D</a
+      ><a name="3488" class="Symbol"
+      >}{</a
+      ><a name="3490" href="Context.html#3490" class="Bound"
+      >&#915;</a
+      ><a name="3491"
+      > </a
+      ><a name="3492" class="Symbol"
+      >:</a
+      ><a name="3493"
+      > </a
+      ><a name="3494" href="Context.html#1181" class="Function"
+      >Cxt</a
+      ><a name="3497" class="Symbol"
+      >}</a
+      ><a name="3498"
+      > </a
+      ><a name="3499" class="Symbol"
+      >&#8594;</a
+      ><a name="3500"
+      > </a
+      ><a name="3501" href="Context.html#3472" class="Bound"
+      >x</a
+      ><a name="3502"
+      > </a
+      ><a name="3503" href="Relation.Binary.Core.html#4748" class="Function Operator"
+      >&#8802;</a
+      ><a name="3504"
+      > </a
+      ><a name="3505" href="Context.html#3474" class="Bound"
+      >y</a
+      ><a name="3506"
+      > </a
+      ><a name="3507" class="Symbol"
+      >&#8594;</a
+      ><a name="3508"
+      > </a
+      ><a name="3509" href="Context.html#3490" class="Bound"
+      >&#915;</a
+      ><a name="3510"
+      > </a
+      ><a name="3511" href="Context.html#3407" class="Function Operator"
+      >&#8218;</a
+      ><a name="3512"
+      > </a
+      ><a name="3513" href="Context.html#3472" class="Bound"
+      >x</a
+      ><a name="3514"
+      > </a
+      ><a name="3515" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="3516"
+      > </a
+      ><a name="3517" href="Context.html#3481" class="Bound"
+      >d</a
+      ><a name="3518"
+      > </a
+      ><a name="3519" href="Context.html#3407" class="Function Operator"
+      >&#8218;</a
+      ><a name="3520"
+      > </a
+      ><a name="3521" href="Context.html#3474" class="Bound"
+      >y</a
+      ><a name="3522"
+      > </a
+      ><a name="3523" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="3524"
+      > </a
+      ><a name="3525" href="Context.html#3483" class="Bound"
+      >e</a
+      ><a name="3526"
+      > </a
+      ><a name="3527" href="Context.html#2757" class="Function Operator"
+      >&#8838;</a
+      ><a name="3528"
+      > </a
+      ><a name="3529" href="Context.html#3490" class="Bound"
+      >&#915;</a
+      ><a name="3530"
+      > </a
+      ><a name="3531" href="Context.html#3407" class="Function Operator"
+      >&#8218;</a
+      ><a name="3532"
+      > </a
+      ><a name="3533" href="Context.html#3474" class="Bound"
+      >y</a
+      ><a name="3534"
+      > </a
+      ><a name="3535" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="3536"
+      > </a
+      ><a name="3537" href="Context.html#3483" class="Bound"
+      >e</a
+      ><a name="3538"
+      > </a
+      ><a name="3539" href="Context.html#3407" class="Function Operator"
+      >&#8218;</a
+      ><a name="3540"
+      > </a
+      ><a name="3541" href="Context.html#3472" class="Bound"
+      >x</a
+      ><a name="3542"
+      > </a
+      ><a name="3543" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="3544"
+      > </a
+      ><a name="3545" href="Context.html#3481" class="Bound"
+      >d</a
+      ><a name="3546"
+      >
+</a
+      ><a name="3547" href="Context.html#3460" class="Function"
+      >lemma&#8838;xy</a
+      ><a name="3555"
+      > </a
+      ><a name="3556" href="Context.html#3556" class="Bound"
+      >x&#8802;y</a
+      ><a name="3559"
+      > </a
+      ><a name="3560" class="Symbol"
+      >(</a
+      ><a name="3561" href="ListProperties.html#5302" class="InductiveConstructor"
+      >here</a
+      ><a name="3565"
+      > </a
+      ><a name="3566" href="Context.html#3566" class="Bound"
+      >z&#8801;y</a
+      ><a name="3569" class="Symbol"
+      >)</a
+      ><a name="3570"
+      > 
+  </a
+      ><a name="3574" class="Symbol"
+      >=</a
+      ><a name="3575"
+      > </a
+      ><a name="3576" href="ListProperties.html#5375" class="InductiveConstructor"
+      >there</a
+      ><a name="3581"
+      > </a
+      ><a name="3582" class="Symbol"
+      >(</a
+      ><a name="3583" href="Data.Empty.html#326" class="Function"
+      >&#8869;-elim</a
+      ><a name="3589"
+      > </a
+      ><a name="3590" href="Function.html#713" class="Function Operator"
+      >&#8728;</a
+      ><a name="3591"
+      > </a
+      ><a name="3592" href="Context.html#3556" class="Bound"
+      >x&#8802;y</a
+      ><a name="3595"
+      > </a
+      ><a name="3596" href="Function.html#713" class="Function Operator"
+      >&#8728;</a
+      ><a name="3597"
+      > </a
+      ><a name="3598" href="Relation.Binary.PropositionalEquality.Core.html#565" class="Function"
+      >sym</a
+      ><a name="3601"
+      > </a
+      ><a name="3602" href="Function.html#713" class="Function Operator"
+      >&#8728;</a
+      ><a name="3603"
+      > </a
+      ><a name="3604" href="Relation.Binary.PropositionalEquality.Core.html#632" class="Function"
+      >trans</a
+      ><a name="3609"
+      > </a
+      ><a name="3610" class="Symbol"
+      >(</a
+      ><a name="3611" href="Relation.Binary.PropositionalEquality.Core.html#565" class="Function"
+      >sym</a
+      ><a name="3614"
+      > </a
+      ><a name="3615" href="Context.html#3566" class="Bound"
+      >z&#8801;y</a
+      ><a name="3618" class="Symbol"
+      >))</a
+      ><a name="3620"
+      > </a
+      ><a name="3621" class="Symbol"
+      >(</a
+      ><a name="3622" href="ListProperties.html#5302" class="InductiveConstructor"
+      >here</a
+      ><a name="3626"
+      > </a
+      ><a name="3627" href="Context.html#3566" class="Bound"
+      >z&#8801;y</a
+      ><a name="3630" class="Symbol"
+      >)</a
+      ><a name="3631"
+      > </a
+      ><a name="3632" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="3633"
+      > </a
+      ><a name="3634" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="3638"
+      >
+</a
+      ><a name="3639" href="Context.html#3460" class="Function"
+      >lemma&#8838;xy</a
+      ><a name="3647"
+      > </a
+      ><a name="3648" href="Context.html#3648" class="Bound"
+      >x&#8802;y</a
+      ><a name="3651"
+      > </a
+      ><a name="3652" class="Symbol"
+      >(</a
+      ><a name="3653" href="ListProperties.html#5375" class="InductiveConstructor"
+      >there</a
+      ><a name="3658"
+      > </a
+      ><a name="3659" href="Context.html#3659" class="Bound"
+      >z&#8802;y</a
+      ><a name="3662"
+      > </a
+      ><a name="3663" class="Symbol"
+      >(</a
+      ><a name="3664" href="ListProperties.html#5302" class="InductiveConstructor"
+      >here</a
+      ><a name="3668"
+      > </a
+      ><a name="3669" href="Context.html#3669" class="Bound"
+      >z&#8801;x</a
+      ><a name="3672" class="Symbol"
+      >))</a
+      ><a name="3674"
+      > 
+  </a
+      ><a name="3678" class="Symbol"
+      >=</a
+      ><a name="3679"
+      > </a
+      ><a name="3680" href="ListProperties.html#5302" class="InductiveConstructor"
+      >here</a
+      ><a name="3684"
+      > </a
+      ><a name="3685" href="Context.html#3669" class="Bound"
+      >z&#8801;x</a
+      ><a name="3688"
+      > </a
+      ><a name="3689" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="3690"
+      > </a
+      ><a name="3691" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="3695"
+      >
+</a
+      ><a name="3696" href="Context.html#3460" class="Function"
+      >lemma&#8838;xy</a
+      ><a name="3704"
+      > </a
+      ><a name="3705" href="Context.html#3705" class="Bound"
+      >x&#8802;y</a
+      ><a name="3708"
+      > </a
+      ><a name="3709" class="Symbol"
+      >(</a
+      ><a name="3710" href="ListProperties.html#5375" class="InductiveConstructor"
+      >there</a
+      ><a name="3715"
+      > </a
+      ><a name="3716" href="Context.html#3716" class="Bound"
+      >z&#8802;y</a
+      ><a name="3719"
+      > </a
+      ><a name="3720" class="Symbol"
+      >(</a
+      ><a name="3721" href="ListProperties.html#5375" class="InductiveConstructor"
+      >there</a
+      ><a name="3726"
+      > </a
+      ><a name="3727" href="Context.html#3727" class="Bound"
+      >z&#8802;x</a
+      ><a name="3730"
+      > </a
+      ><a name="3731" href="Context.html#3731" class="Bound"
+      >z&#8712;&#915;</a
+      ><a name="3734" class="Symbol"
+      >))</a
+      ><a name="3736"
+      > 
+  </a
+      ><a name="3740" class="Symbol"
+      >=</a
+      ><a name="3741"
+      > </a
+      ><a name="3742" href="ListProperties.html#5375" class="InductiveConstructor"
+      >there</a
+      ><a name="3747"
+      > </a
+      ><a name="3748" href="Context.html#3727" class="Bound"
+      >z&#8802;x</a
+      ><a name="3751"
+      > </a
+      ><a name="3752" class="Symbol"
+      >(</a
+      ><a name="3753" href="ListProperties.html#5375" class="InductiveConstructor"
+      >there</a
+      ><a name="3758"
+      > </a
+      ><a name="3759" href="Context.html#3716" class="Bound"
+      >z&#8802;y</a
+      ><a name="3762"
+      > </a
+      ><a name="3763" href="Context.html#3731" class="Bound"
+      >z&#8712;&#915;</a
+      ><a name="3766" class="Symbol"
+      >)</a
+      ><a name="3767"
+      > </a
+      ><a name="3768" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="3769"
+      > </a
+      ><a name="3770" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="3774"
+      >
+
+</a
+      ><a name="3776" href="Context.html#3776" class="Function"
+      >lemma&#8838;xx</a
+      ><a name="3784"
+      > </a
+      ><a name="3785" class="Symbol"
+      >:</a
+      ><a name="3786"
+      > </a
+      ><a name="3787" class="Symbol"
+      >{</a
+      ><a name="3788" href="Context.html#3788" class="Bound"
+      >x</a
+      ><a name="3789"
+      > </a
+      ><a name="3790" class="Symbol"
+      >:</a
+      ><a name="3791"
+      > </a
+      ><a name="3792" href="Context.html#237" class="Bound"
+      >K</a
+      ><a name="3793" class="Symbol"
+      >}{</a
+      ><a name="3795" href="Context.html#3795" class="Bound"
+      >d</a
+      ><a name="3796"
+      > </a
+      ><a name="3797" href="Context.html#3797" class="Bound"
+      >e</a
+      ><a name="3798"
+      > </a
+      ><a name="3799" class="Symbol"
+      >:</a
+      ><a name="3800"
+      > </a
+      ><a name="3801" href="Context.html#246" class="Bound"
+      >D</a
+      ><a name="3802" class="Symbol"
+      >}{</a
+      ><a name="3804" href="Context.html#3804" class="Bound"
+      >&#915;</a
+      ><a name="3805"
+      > </a
+      ><a name="3806" class="Symbol"
+      >:</a
+      ><a name="3807"
+      > </a
+      ><a name="3808" href="Context.html#1181" class="Function"
+      >Cxt</a
+      ><a name="3811" class="Symbol"
+      >}</a
+      ><a name="3812"
+      > </a
+      ><a name="3813" class="Symbol"
+      >&#8594;</a
+      ><a name="3814"
+      > </a
+      ><a name="3815" href="Context.html#3804" class="Bound"
+      >&#915;</a
+      ><a name="3816"
+      > </a
+      ><a name="3817" href="Context.html#3407" class="Function Operator"
+      >&#8218;</a
+      ><a name="3818"
+      > </a
+      ><a name="3819" href="Context.html#3788" class="Bound"
+      >x</a
+      ><a name="3820"
+      > </a
+      ><a name="3821" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="3822"
+      > </a
+      ><a name="3823" href="Context.html#3795" class="Bound"
+      >d</a
+      ><a name="3824"
+      > </a
+      ><a name="3825" href="Context.html#3407" class="Function Operator"
+      >&#8218;</a
+      ><a name="3826"
+      > </a
+      ><a name="3827" href="Context.html#3788" class="Bound"
+      >x</a
+      ><a name="3828"
+      > </a
+      ><a name="3829" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="3830"
+      > </a
+      ><a name="3831" href="Context.html#3797" class="Bound"
+      >e</a
+      ><a name="3832"
+      > </a
+      ><a name="3833" href="Context.html#2757" class="Function Operator"
+      >&#8838;</a
+      ><a name="3834"
+      > </a
+      ><a name="3835" href="Context.html#3804" class="Bound"
+      >&#915;</a
+      ><a name="3836"
+      > </a
+      ><a name="3837" href="Context.html#3407" class="Function Operator"
+      >&#8218;</a
+      ><a name="3838"
+      > </a
+      ><a name="3839" href="Context.html#3788" class="Bound"
+      >x</a
+      ><a name="3840"
+      > </a
+      ><a name="3841" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="3842"
+      > </a
+      ><a name="3843" href="Context.html#3797" class="Bound"
+      >e</a
+      ><a name="3844"
+      >
+</a
+      ><a name="3845" href="Context.html#3776" class="Function"
+      >lemma&#8838;xx</a
+      ><a name="3853"
+      > </a
+      ><a name="3854" class="Symbol"
+      >(</a
+      ><a name="3855" href="ListProperties.html#5302" class="InductiveConstructor"
+      >here</a
+      ><a name="3859"
+      > </a
+      ><a name="3860" href="Context.html#3860" class="Bound"
+      >z&#8801;x</a
+      ><a name="3863" class="Symbol"
+      >)</a
+      ><a name="3864"
+      > 
+  </a
+      ><a name="3868" class="Symbol"
+      >=</a
+      ><a name="3869"
+      > </a
+      ><a name="3870" href="ListProperties.html#5302" class="InductiveConstructor"
+      >here</a
+      ><a name="3874"
+      > </a
+      ><a name="3875" href="Context.html#3860" class="Bound"
+      >z&#8801;x</a
+      ><a name="3878"
+      > </a
+      ><a name="3879" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="3880"
+      > </a
+      ><a name="3881" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="3885"
+      >
+</a
+      ><a name="3886" href="Context.html#3776" class="Function"
+      >lemma&#8838;xx</a
+      ><a name="3894"
+      > </a
+      ><a name="3895" class="Symbol"
+      >(</a
+      ><a name="3896" href="ListProperties.html#5375" class="InductiveConstructor"
+      >there</a
+      ><a name="3901"
+      > </a
+      ><a name="3902" href="Context.html#3902" class="Bound"
+      >z&#8802;x</a
+      ><a name="3905"
+      > </a
+      ><a name="3906" class="Symbol"
+      >(</a
+      ><a name="3907" href="ListProperties.html#5302" class="InductiveConstructor"
+      >here</a
+      ><a name="3911"
+      > </a
+      ><a name="3912" href="Context.html#3912" class="Bound"
+      >z&#8801;x</a
+      ><a name="3915" class="Symbol"
+      >))</a
+      ><a name="3917"
+      > 
+  </a
+      ><a name="3921" class="Symbol"
+      >=</a
+      ><a name="3922"
+      > </a
+      ><a name="3923" href="Data.Empty.html#326" class="Function"
+      >&#8869;-elim</a
+      ><a name="3929"
+      > </a
+      ><a name="3930" class="Symbol"
+      >(</a
+      ><a name="3931" href="Context.html#3902" class="Bound"
+      >z&#8802;x</a
+      ><a name="3934"
+      > </a
+      ><a name="3935" href="Context.html#3912" class="Bound"
+      >z&#8801;x</a
+      ><a name="3938" class="Symbol"
+      >)</a
+      ><a name="3939"
+      >
+</a
+      ><a name="3940" href="Context.html#3776" class="Function"
+      >lemma&#8838;xx</a
+      ><a name="3948"
+      > </a
+      ><a name="3949" class="Symbol"
+      >(</a
+      ><a name="3950" href="ListProperties.html#5375" class="InductiveConstructor"
+      >there</a
+      ><a name="3955"
+      > </a
+      ><a name="3956" href="Context.html#3956" class="Bound"
+      >z&#8802;x</a
+      ><a name="3959"
+      > </a
+      ><a name="3960" class="Symbol"
+      >(</a
+      ><a name="3961" href="ListProperties.html#5375" class="InductiveConstructor"
+      >there</a
+      ><a name="3966"
+      > </a
+      ><a name="3967" class="Symbol"
+      >_</a
+      ><a name="3968"
+      > </a
+      ><a name="3969" href="Context.html#3969" class="Bound"
+      >z&#8712;&#915;</a
+      ><a name="3972" class="Symbol"
+      >))</a
+      ><a name="3974"
+      > 
+  </a
+      ><a name="3978" class="Symbol"
+      >=</a
+      ><a name="3979"
+      > </a
+      ><a name="3980" href="ListProperties.html#5375" class="InductiveConstructor"
+      >there</a
+      ><a name="3985"
+      > </a
+      ><a name="3986" href="Context.html#3956" class="Bound"
+      >z&#8802;x</a
+      ><a name="3989"
+      > </a
+      ><a name="3990" href="Context.html#3969" class="Bound"
+      >z&#8712;&#915;</a
+      ><a name="3993"
+      > </a
+      ><a name="3994" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="3995"
+      > </a
+      ><a name="3996" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="4000"
+      >
+
+</a
+      ><a name="4002" href="Context.html#4002" class="Function"
+      >lemma&#8838;x</a
+      ><a name="4009"
+      > </a
+      ><a name="4010" class="Symbol"
+      >:</a
+      ><a name="4011"
+      > </a
+      ><a name="4012" class="Symbol"
+      >{</a
+      ><a name="4013" href="Context.html#4013" class="Bound"
+      >x</a
+      ><a name="4014"
+      > </a
+      ><a name="4015" class="Symbol"
+      >:</a
+      ><a name="4016"
+      > </a
+      ><a name="4017" href="Context.html#237" class="Bound"
+      >K</a
+      ><a name="4018" class="Symbol"
+      >}{</a
+      ><a name="4020" href="Context.html#4020" class="Bound"
+      >d</a
+      ><a name="4021"
+      > </a
+      ><a name="4022" href="Context.html#4022" class="Bound"
+      >e</a
+      ><a name="4023"
+      > </a
+      ><a name="4024" class="Symbol"
+      >:</a
+      ><a name="4025"
+      > </a
+      ><a name="4026" href="Context.html#246" class="Bound"
+      >D</a
+      ><a name="4027" class="Symbol"
+      >}{</a
+      ><a name="4029" href="Context.html#4029" class="Bound"
+      >&#915;</a
+      ><a name="4030"
+      > </a
+      ><a name="4031" class="Symbol"
+      >:</a
+      ><a name="4032"
+      > </a
+      ><a name="4033" href="Context.html#1181" class="Function"
+      >Cxt</a
+      ><a name="4036" class="Symbol"
+      >}</a
+      ><a name="4037"
+      > </a
+      ><a name="4038" class="Symbol"
+      >&#8594;</a
+      ><a name="4039"
+      > </a
+      ><a name="4040" href="Context.html#4029" class="Bound"
+      >&#915;</a
+      ><a name="4041"
+      > </a
+      ><a name="4042" href="Context.html#3407" class="Function Operator"
+      >&#8218;</a
+      ><a name="4043"
+      > </a
+      ><a name="4044" href="Context.html#4013" class="Bound"
+      >x</a
+      ><a name="4045"
+      > </a
+      ><a name="4046" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="4047"
+      > </a
+      ><a name="4048" href="Context.html#4022" class="Bound"
+      >e</a
+      ><a name="4049"
+      > </a
+      ><a name="4050" href="Context.html#2757" class="Function Operator"
+      >&#8838;</a
+      ><a name="4051"
+      > </a
+      ><a name="4052" href="Context.html#4029" class="Bound"
+      >&#915;</a
+      ><a name="4053"
+      > </a
+      ><a name="4054" href="Context.html#3407" class="Function Operator"
+      >&#8218;</a
+      ><a name="4055"
+      > </a
+      ><a name="4056" href="Context.html#4013" class="Bound"
+      >x</a
+      ><a name="4057"
+      > </a
+      ><a name="4058" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="4059"
+      > </a
+      ><a name="4060" href="Context.html#4020" class="Bound"
+      >d</a
+      ><a name="4061"
+      > </a
+      ><a name="4062" href="Context.html#3407" class="Function Operator"
+      >&#8218;</a
+      ><a name="4063"
+      > </a
+      ><a name="4064" href="Context.html#4013" class="Bound"
+      >x</a
+      ><a name="4065"
+      > </a
+      ><a name="4066" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="4067"
+      > </a
+      ><a name="4068" href="Context.html#4022" class="Bound"
+      >e</a
+      ><a name="4069"
+      > 
+</a
+      ><a name="4071" href="Context.html#4002" class="Function"
+      >lemma&#8838;x</a
+      ><a name="4078"
+      > </a
+      ><a name="4079" class="Symbol"
+      >(</a
+      ><a name="4080" href="ListProperties.html#5302" class="InductiveConstructor"
+      >here</a
+      ><a name="4084"
+      > </a
+      ><a name="4085" href="Context.html#4085" class="Bound"
+      >y&#8801;x</a
+      ><a name="4088" class="Symbol"
+      >)</a
+      ><a name="4089"
+      >       </a
+      ><a name="4096" class="Symbol"
+      >=</a
+      ><a name="4097"
+      > </a
+      ><a name="4098" href="ListProperties.html#5302" class="InductiveConstructor"
+      >here</a
+      ><a name="4102"
+      > </a
+      ><a name="4103" href="Context.html#4085" class="Bound"
+      >y&#8801;x</a
+      ><a name="4106"
+      > </a
+      ><a name="4107" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="4108"
+      > </a
+      ><a name="4109" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="4113"
+      >
+</a
+      ><a name="4114" href="Context.html#4002" class="Function"
+      >lemma&#8838;x</a
+      ><a name="4121"
+      > </a
+      ><a name="4122" class="Symbol"
+      >(</a
+      ><a name="4123" href="ListProperties.html#5375" class="InductiveConstructor"
+      >there</a
+      ><a name="4128"
+      > </a
+      ><a name="4129" href="Context.html#4129" class="Bound"
+      >y&#8802;x</a
+      ><a name="4132"
+      > </a
+      ><a name="4133" href="Context.html#4133" class="Bound"
+      >y&#8712;&#915;</a
+      ><a name="4136" class="Symbol"
+      >)</a
+      ><a name="4137"
+      >  </a
+      ><a name="4139" class="Symbol"
+      >=</a
+      ><a name="4140"
+      > </a
+      ><a name="4141" href="ListProperties.html#5375" class="InductiveConstructor"
+      >there</a
+      ><a name="4146"
+      > </a
+      ><a name="4147" href="Context.html#4129" class="Bound"
+      >y&#8802;x</a
+      ><a name="4150"
+      > </a
+      ><a name="4151" class="Symbol"
+      >(</a
+      ><a name="4152" href="ListProperties.html#5375" class="InductiveConstructor"
+      >there</a
+      ><a name="4157"
+      > </a
+      ><a name="4158" href="Context.html#4129" class="Bound"
+      >y&#8802;x</a
+      ><a name="4161"
+      > </a
+      ><a name="4162" href="Context.html#4133" class="Bound"
+      >y&#8712;&#915;</a
+      ><a name="4165" class="Symbol"
+      >)</a
+      ><a name="4166"
+      > </a
+      ><a name="4167" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="4168"
+      > </a
+      ><a name="4169" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="4173"
+      >
+
+</a
+      ><a name="4175" href="Context.html#4175" class="Function"
+      >lemma&#8838;&#8759;</a
+      ><a name="4182"
+      > </a
+      ><a name="4183" class="Symbol"
+      >:</a
+      ><a name="4184"
+      > </a
+      ><a name="4185" class="Symbol"
+      >{</a
+      ><a name="4186" href="Context.html#4186" class="Bound"
+      >x</a
+      ><a name="4187"
+      > </a
+      ><a name="4188" class="Symbol"
+      >:</a
+      ><a name="4189"
+      > </a
+      ><a name="4190" href="Context.html#237" class="Bound"
+      >K</a
+      ><a name="4191" class="Symbol"
+      >}{</a
+      ><a name="4193" href="Context.html#4193" class="Bound"
+      >d</a
+      ><a name="4194"
+      > </a
+      ><a name="4195" class="Symbol"
+      >:</a
+      ><a name="4196"
+      > </a
+      ><a name="4197" href="Context.html#246" class="Bound"
+      >D</a
+      ><a name="4198" class="Symbol"
+      >}{</a
+      ><a name="4200" href="Context.html#4200" class="Bound"
+      >&#915;</a
+      ><a name="4201"
+      > </a
+      ><a name="4202" href="Context.html#4202" class="Bound"
+      >&#916;</a
+      ><a name="4203"
+      > </a
+      ><a name="4204" class="Symbol"
+      >:</a
+      ><a name="4205"
+      > </a
+      ><a name="4206" href="Context.html#1181" class="Function"
+      >Cxt</a
+      ><a name="4209" class="Symbol"
+      >}</a
+      ><a name="4210"
+      > </a
+      ><a name="4211" class="Symbol"
+      >&#8594;</a
+      ><a name="4212"
+      > </a
+      ><a name="4213" href="Context.html#4200" class="Bound"
+      >&#915;</a
+      ><a name="4214"
+      > </a
+      ><a name="4215" href="Context.html#2757" class="Function Operator"
+      >&#8838;</a
+      ><a name="4216"
+      > </a
+      ><a name="4217" href="Context.html#4202" class="Bound"
+      >&#916;</a
+      ><a name="4218"
+      > </a
+      ><a name="4219" class="Symbol"
+      >&#8594;</a
+      ><a name="4220"
+      > </a
+      ><a name="4221" href="Context.html#4200" class="Bound"
+      >&#915;</a
+      ><a name="4222"
+      > </a
+      ><a name="4223" href="Context.html#3407" class="Function Operator"
+      >&#8218;</a
+      ><a name="4224"
+      > </a
+      ><a name="4225" href="Context.html#4186" class="Bound"
+      >x</a
+      ><a name="4226"
+      > </a
+      ><a name="4227" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="4228"
+      > </a
+      ><a name="4229" href="Context.html#4193" class="Bound"
+      >d</a
+      ><a name="4230"
+      > </a
+      ><a name="4231" href="Context.html#2757" class="Function Operator"
+      >&#8838;</a
+      ><a name="4232"
+      > </a
+      ><a name="4233" href="Context.html#4202" class="Bound"
+      >&#916;</a
+      ><a name="4234"
+      > </a
+      ><a name="4235" href="Context.html#3407" class="Function Operator"
+      >&#8218;</a
+      ><a name="4236"
+      > </a
+      ><a name="4237" href="Context.html#4186" class="Bound"
+      >x</a
+      ><a name="4238"
+      > </a
+      ><a name="4239" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="4240"
+      > </a
+      ><a name="4241" href="Context.html#4193" class="Bound"
+      >d</a
+      ><a name="4242"
+      >
+</a
+      ><a name="4243" href="Context.html#4175" class="Function"
+      >lemma&#8838;&#8759;</a
+      ><a name="4250"
+      > </a
+      ><a name="4251" href="Context.html#4251" class="Bound"
+      >&#915;&#8838;&#916;</a
+      ><a name="4254"
+      > </a
+      ><a name="4255" class="Symbol"
+      >(</a
+      ><a name="4256" href="ListProperties.html#5302" class="InductiveConstructor"
+      >here</a
+      ><a name="4260"
+      > </a
+      ><a name="4261" href="Context.html#4261" class="Bound"
+      >z&#8801;x</a
+      ><a name="4264" class="Symbol"
+      >)</a
+      ><a name="4265"
+      >       </a
+      ><a name="4272" class="Symbol"
+      >=</a
+      ><a name="4273"
+      > </a
+      ><a name="4274" href="ListProperties.html#5302" class="InductiveConstructor"
+      >here</a
+      ><a name="4278"
+      > </a
+      ><a name="4279" href="Context.html#4261" class="Bound"
+      >z&#8801;x</a
+      ><a name="4282"
+      > </a
+      ><a name="4283" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="4284"
+      > </a
+      ><a name="4285" href="Relation.Binary.Core.html#4653" class="InductiveConstructor"
+      >refl</a
+      ><a name="4289"
+      >
+</a
+      ><a name="4290" href="Context.html#4175" class="Function"
+      >lemma&#8838;&#8759;</a
+      ><a name="4297"
+      > </a
+      ><a name="4298" href="Context.html#4298" class="Bound"
+      >&#915;&#8838;&#916;</a
+      ><a name="4301"
+      > </a
+      ><a name="4302" class="Symbol"
+      >(</a
+      ><a name="4303" href="ListProperties.html#5375" class="InductiveConstructor"
+      >there</a
+      ><a name="4308"
+      > </a
+      ><a name="4309" href="Context.html#4309" class="Bound"
+      >z&#8802;x</a
+      ><a name="4312"
+      > </a
+      ><a name="4313" href="Context.html#4313" class="Bound"
+      >z&#8712;&#915;</a
+      ><a name="4316" class="Symbol"
+      >)</a
+      ><a name="4317"
+      >  </a
+      ><a name="4319" class="Symbol"
+      >=</a
+      ><a name="4320"
+      > </a
+      ><a name="4321" href="ListProperties.html#5375" class="InductiveConstructor"
+      >there</a
+      ><a name="4326"
+      > </a
+      ><a name="4327" href="Context.html#4309" class="Bound"
+      >z&#8802;x</a
+      ><a name="4330"
+      > </a
+      ><a name="4331" class="Symbol"
+      >(</a
+      ><a name="4332" href="Data.Product.html#525" class="Field"
+      >proj&#8321;</a
+      ><a name="4337"
+      > </a
+      ><a name="4338" class="Symbol"
+      >(</a
+      ><a name="4339" href="Context.html#4298" class="Bound"
+      >&#915;&#8838;&#916;</a
+      ><a name="4342"
+      > </a
+      ><a name="4343" href="Context.html#4313" class="Bound"
+      >z&#8712;&#915;</a
+      ><a name="4346" class="Symbol"
+      >))</a
+      ><a name="4348"
+      > </a
+      ><a name="4349" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="4350"
+      > </a
+      ><a name="4351" href="Data.Product.html#539" class="Field"
+      >proj&#8322;</a
+      ><a name="4356"
+      > </a
+      ><a name="4357" class="Symbol"
+      >(</a
+      ><a name="4358" href="Context.html#4298" class="Bound"
+      >&#915;&#8838;&#916;</a
+      ><a name="4361"
+      > </a
+      ><a name="4362" href="Context.html#4313" class="Bound"
+      >z&#8712;&#915;</a
+      ><a name="4365" class="Symbol"
+      >)</a
+      ><a name="4366"
+      >
+
+</a
+      ><a name="4368" href="Context.html#4368" class="Function Operator"
+      >_\\_</a
+      ><a name="4372"
+      > </a
+      ><a name="4373" class="Symbol"
+      >:</a
+      ><a name="4374"
+      > </a
+      ><a name="4375" href="Context.html#1181" class="Function"
+      >Cxt</a
+      ><a name="4378"
+      > </a
+      ><a name="4379" class="Symbol"
+      >&#8594;</a
+      ><a name="4380"
+      > </a
+      ><a name="4381" href="Context.html#237" class="Bound"
+      >K</a
+      ><a name="4382"
+      > </a
+      ><a name="4383" class="Symbol"
+      >&#8594;</a
+      ><a name="4384"
+      > </a
+      ><a name="4385" href="Context.html#1181" class="Function"
+      >Cxt</a
+      ><a name="4388"
+      >
+</a
+      ><a name="4389" href="Context.html#4389" class="Bound"
+      >cxt</a
+      ><a name="4392"
+      > </a
+      ><a name="4393" href="Context.html#4368" class="Function Operator"
+      >\\</a
+      ><a name="4395"
+      > </a
+      ><a name="4396" href="Context.html#4396" class="Bound"
+      >k</a
+      ><a name="4397"
+      > </a
+      ><a name="4398" class="Symbol"
+      >=</a
+      ><a name="4399"
+      > </a
+      ><a name="4400" href="Data.List.html#6303" class="Function"
+      >filter</a
+      ><a name="4406"
+      > </a
+      ><a name="4407" class="Symbol"
+      >(&#955;</a
+      ><a name="4409"
+      > </a
+      ><a name="4410" href="Context.html#4410" class="Bound"
+      >y</a
+      ><a name="4411"
+      > </a
+      ><a name="4412" class="Symbol"
+      >&#8594;</a
+      ><a name="4413"
+      > </a
+      ><a name="4414" href="Data.Bool.html#873" class="Function"
+      >not</a
+      ><a name="4417"
+      > </a
+      ><a name="4418" class="Symbol"
+      >(</a
+      ><a name="4419" href="Relation.Nullary.Decidable.html#783" class="Function Operator"
+      >&#8970;</a
+      ><a name="4420"
+      > </a
+      ><a name="4421" href="Context.html#4396" class="Bound"
+      >k</a
+      ><a name="4422"
+      > </a
+      ><a name="4423" href="Context.html#255" class="Bound Operator"
+      >&#8799;</a
+      ><a name="4424"
+      > </a
+      ><a name="4425" href="Data.Product.html#525" class="Field"
+      >proj&#8321;</a
+      ><a name="4430"
+      > </a
+      ><a name="4431" href="Context.html#4410" class="Bound"
+      >y</a
+      ><a name="4432"
+      > </a
+      ><a name="4433" href="Relation.Nullary.Decidable.html#783" class="Function Operator"
+      >&#8971;</a
+      ><a name="4434" class="Symbol"
+      >))</a
+      ><a name="4436"
+      > </a
+      ><a name="4437" href="Context.html#4389" class="Bound"
+      >cxt</a
+      ><a name="4440"
+      >
+
+</a
+      ><a name="4442" class="Comment"
+      >-- postulate</a
+      ><a name="4454"
+      >
+</a
+      ><a name="4455" class="Comment"
+      >--   lemma\\&#8594;  : (x y : K)(xs : Cxt) &#8594; (p : x &#8712; xs \\ y) </a
+      ><a name="4512"
+      >
+</a
+      ><a name="4513" class="Comment"
+      >--             &#8594; x &#8802; y &#215; &#931; (x &#8712; xs) (&#955; p' &#8594; (xs \\ y) &#10216; p &#10217; &#8801; xs &#10216; p' &#10217;)</a
+      ><a name="4585"
+      >
+</a
+      ><a name="4586" class="Comment"
+      >--   lemma\\&#8592;  : {x y : K}{xs : Cxt} &#8594; x &#8802; y &#8594; (p : x &#8712; xs)</a
+      ><a name="4645"
+      >
+</a
+      ><a name="4646" class="Comment"
+      >--             &#8594; &#931; (x &#8712; xs \\ y) (&#955; p' &#8594; xs &#10216; p &#10217; &#8801; (xs \\ y) &#10216; p' &#10217;)</a
+      ><a name="4715"
+      >
+</a
+      ><a name="4716" class="Comment"
+      >--   lemma\\&#8838;  : (xs : Cxt)(x : K) &#8594; xs \\ x &#8838; xs</a
+      ><a name="4765"
+      >
+</a
+      ><a name="4766" class="Comment"
+      >-- lemma\\&#8594; x y []              ()</a
+      ><a name="4800"
+      >
+</a
+      ><a name="4801" class="Comment"
+      >-- lemma\\&#8594; x y ((z , d) &#8759; xs)  x&#8712;z&#8759;xs\\y with y &#8799; z</a
+      ><a name="4853"
+      >
+</a
+      ><a name="4854" class="Comment"
+      >-- ... | no   y&#8802;z = {!!}</a
+      ><a name="4878"
+      >
+</a
+      ><a name="4879" class="Comment"
+      >-- ... | yes  y&#8801;z with x &#8799; z</a
+      ><a name="4907"
+      >
+</a
+      ><a name="4908" class="Comment"
+      >-- ...            | yes  x&#8801;z = {!!}</a
+      ><a name="4943"
+      >
+</a
+      ><a name="4944" class="Comment"
+      >-- ...            | no   x&#8802;z = {!!}</a
+      ><a name="4979"
+      >
+
+</a
+      ><a name="4981" class="Comment"
+      >--...  | false   | [ py&#8801;false ]&#7522; = map&#8339; id there (lemma\\&#8594; x xs p x&#8712;\\py&#8759;xs)</a
+      ><a name="5057"
+      >
+</a
+      ><a name="5058" class="Comment"
+      >-- lemma\\&#8594; x (.x &#8759; xs)  (here refl)         </a
+      ><a name="5103"
+      >
+</a
+      ><a name="5104" class="Comment"
+      >--      | true | [ px&#8801;true ]&#7522; = px&#8801;true , here refl</a
+      ><a name="5155"
+      >
+</a
+      ><a name="5156" class="Comment"
+      >-- lemma\\&#8594; x (y &#8759; xs)   (there x&#8712;\\pxs)  </a
+      ><a name="5198"
+      >
+</a
+      ><a name="5199" class="Comment"
+      >--      | true | [ py&#8801;true ]&#7522; = map&#8339; id there (lemma\\&#8594; x xs p x&#8712;\\pxs)</a
+      ><a name="5270"
+      >
+</a
+      ><a name="5271" class="Comment"
+      >--</a
+      ><a name="5273"
+      >
+</a
+      ><a name="5274" class="Comment"
+      >-- lemmafilter&#8592; : (k : &#8469;)(xs : Cxt)(p : K &#8594; Bool) &#8594; p x &#8801; true &#8594; x &#8712; xs &#8594; x &#8712; filter p xs</a
+      ><a name="5363"
+      >
+</a
+      ><a name="5364" class="Comment"
+      >-- lemmafilter&#8592; x (.x &#8759; xs)  p px&#8801;true (here refl) with p x</a
+      ><a name="5423"
+      >
+</a
+      ><a name="5424" class="Comment"
+      >-- lemmafilter&#8592; x (.x &#8759; xs)  p px&#8801;true (here refl) | true = here refl</a
+      ><a name="5493"
+      >
+</a
+      ><a name="5494" class="Comment"
+      >-- lemmafilter&#8592; x (.x &#8759; xs)  p ()      (here refl) | false </a
+      ><a name="5553"
+      >
+</a
+      ><a name="5554" class="Comment"
+      >-- lemmafilter&#8592; x (y &#8759; xs)   p px&#8801;true (there x&#8712;xs) with p y</a
+      ><a name="5614"
+      >
+</a
+      ><a name="5615" class="Comment"
+      >-- ... | false = lemmafilter&#8592; x xs p px&#8801;true x&#8712;xs</a
+      ><a name="5664"
+      >
+</a
+      ><a name="5665" class="Comment"
+      >-- ... | true  = there (lemmafilter&#8592; x xs p px&#8801;true x&#8712;xs)</a
+      ><a name="5722"
+      >
+
+\end{code}
+
+
+</a
+      ></pre
+    ></body
+  ></html
+>
