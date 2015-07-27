@@ -12,10 +12,10 @@ install:
   - export PATH=$HOME/.cabal/bin:$PATH
 
   # Showing Cabal configuration
-  - echo ' ' >> $HOME/.cabal/config
-  - echo 'program-default-options' >> $HOME/.cabal/config
-  - echo '  ghc-options: -pgmPcpphs -optP--cpp' >> $HOME/.cabal/config
-  - cat $HOME/.cabal/config
+  #- echo ' ' >> $HOME/.cabal/config
+  #- echo 'program-default-options' >> $HOME/.cabal/config
+  #- echo '  ghc-options: -pgmPcpphs -optP--cpp' >> $HOME/.cabal/config
+  #- cat $HOME/.cabal/config
 
   # New Happy needed for haskell-src-exts
   - cabal install happy
