@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # usage: auto-index [dir]
 INDEX=`ls -1 $1 | sed "s/^.*/      <li\>\<a\ href=\"&\"\>&\<\\/a\>\<\\/li\>/"`
 echo "<html>
