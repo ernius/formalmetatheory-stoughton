@@ -17,7 +17,7 @@ before_install:
 install:
   - cabal install cabal-install
   - export PATH=$HOME/.cabal/bin:$PATH
-  - mkdir $HOME/stdlib/
+  - mkdir -p $HOME/stdlib/
 
   # Showing Cabal configuration
   #- echo ' ' >> $HOME/.cabal/config
@@ -33,8 +33,7 @@ install:
   - cabal install cpphs
 
   - cabal --force-reinstalls install Agda-2.4.2.5
-  - wget https://github.com/agda/agda-stdlib/archive/2.4.2.5.zip $HOME/stdlib/2.4.2.5.zip
-  - unzip $HOME/stdlib/2.4.2.5.zip 
+  - if [[ ! -e $HOME/stdlib/ ]]; then  wget https://github.com/agda/agda-stdlib/archive/2.4.2.5.zip $HOME/stdlib/2.4.2.5.zip; unzip $HOME/stdlib/2.4.2.5.zip  fi
 
 script:
   - agda -i . -i $HOME/stdlib/agda-stdlib-2.4.2.5/src/ ChurchRosser.lagda
