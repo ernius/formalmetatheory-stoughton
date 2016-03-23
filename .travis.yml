@@ -20,7 +20,7 @@ before_install:
  - export PATH=/opt/ghc/$GHCVER/bin:/opt/cabal/$CABALVER/bin:$PATH
 
 install:
-  - cabal install cabal-install
+#  - cabal install cabal-install
   - export PATH=$HOME/.cabal/bin:$PATH
   - mkdir -p $HOME/stdlib/
 
