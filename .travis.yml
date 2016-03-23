@@ -1,7 +1,13 @@
-language: haskell
+language: c
 
-ghc:
-  - 7.8
+# explicitly request container-based infrastructure
+sudo: false
+
+matrix:
+  include:
+    - env: CABALVER=1.22 GHCVER=7.10.1
+      addons: {apt: {packages: [cabal-install-1.22,ghc-7.10.1],sources: [hvr-ghc]}}
+      
 
 cache:
   directories:
@@ -11,29 +17,26 @@ cache:
   - $HOME/stdlib/
 
 before_install:
-#  - zlib1g-dev 
-#  - libncurses5-dev
+ - export PATH=/opt/ghc/$GHCVER/bin:/opt/cabal/$CABALVER/bin:$PATH
 
 install:
   - cabal install cabal-install
   - export PATH=$HOME/.cabal/bin:$PATH
   - mkdir -p $HOME/stdlib/
 
-  # Showing Cabal configuration
-  #- echo ' ' >> $HOME/.cabal/config
-  #- echo 'program-default-options' >> $HOME/.cabal/config
-  #- echo '  ghc-options: -pgmPcpphs -optP--cpp' >> $HOME/.cabal/config
-  #- cat $HOME/.cabal/config
-
   # New Happy needed for haskell-src-exts
   - cabal install happy
 
-  # New new Alex for us
+  # new Alex for us
   - cabal install alex
   - cabal install cpphs
 
   - cabal --force-reinstalls install Agda-2.4.2.5
-  - if [[ ! -e $HOME/stdlib/ ]]; then  wget https://github.com/agda/agda-stdlib/archive/2.4.2.5.zip $HOME/stdlib/2.4.2.5.zip; unzip $HOME/stdlib/2.4.2.5.zip  fi
+  - if [[ ! -e $HOME/stdlib/ ]];
+    then
+      wget https://github.com/agda/agda-stdlib/archive/2.4.2.5.zip $HOME/stdlib/2.4.2.5.zip;
+      unzip $HOME/stdlib/2.4.2.5.zip
+    fi
 
 script:
   - agda -i . -i $HOME/stdlib/agda-stdlib-2.4.2.5/src/ ChurchRosser.lagda
