@@ -5,8 +5,8 @@ sudo: false
 
 matrix:
   include:
-    - env: CABALVER=1.22 GHCVER=7.10.1
-      addons: {apt: {packages: [cabal-install-1.22,ghc-7.10.1],sources: [hvr-ghc]}}
+    - env: CABALVER=1.22 GHCVER=7.10.2
+      addons: {apt: {packages: [cabal-install-1.22,ghc-7.10.2],sources: [hvr-ghc]}}
       
 
 cache:
@@ -20,11 +20,10 @@ before_install:
   - export PATH=/opt/ghc/$GHCVER/bin:/opt/cabal/$CABALVER/bin:$PATH
 
 install:
-  - if [ $GHCVER = "head" ] || [ ${GHCVER%.*} = "7.8" ] || [ ${GHCVER%.*} = "7.10.1" ];
-    then
-      travis_retry sudo apt-get install happy-1.19.4 alex-3.1.3
-      export PATH=/opt/alex/3.1.3/bin:/opt/happy/1.19.4/bin:$PATH
-    else
+  - if [ $GHCVER = "head" ] || [ ${GHCVER%.*} = "7.8" ] || [ ${GHCVER%.*} = "7.10.2" ]; then
+      travis_retry sudo apt-get install happy-1.19.4 alex-3.1.3;
+      export PATH=/opt/alex/3.1.3/bin:/opt/happy/1.19.4/bin:$PATH;
+    elif
       travis_retry sudo apt-get install happy alex
     fi
 
@@ -32,10 +31,9 @@ install:
   - travis_retry cabal install Agda-2.4.2.5
 
   - mkdir -p $HOME/stdlib/
-  - if [[ ! -e $HOME/stdlib/ ]];
-    then
+  - if [[ ! -e $HOME/stdlib/ ]]; then
       wget https://github.com/agda/agda-stdlib/archive/2.4.2.5.zip $HOME/stdlib/2.4.2.5.zip;
-      unzip $HOME/stdlib/2.4.2.5.zip
+      unzip $HOME/stdlib/2.4.2.5.zip;
     fi
 
 script:
