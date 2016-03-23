@@ -1,7 +1,7 @@
 language: haskell
 
 ghc:
-  - 7.8
+  - 7.10.2
 
 before_install:
 #  - zlib1g-dev 
@@ -24,12 +24,12 @@ install:
   - cabal install alex
   - cabal install cpphs
 
-  - cabal install Agda-2.4.2.3
-  - wget https://github.com/agda/agda-stdlib/archive/v0.9.tar.gz -O /tmp/v0.9.tar.gz
-  - tar -xzvf /tmp/v0.9.tar.gz -C /tmp/
+  - cabal install Agda-2.4.2.5
+  - wget https://github.com/agda/agda-stdlib/archive/2.4.2.5.zip /tmp/2.4.2.5.zip
+  - unzip /tmp/2.4.2.5.zip -d /tmp/
 
 script:
-  - agda -i . -i /tmp/agda-stdlib-0.9/src/ SubstitutionLemmas.lagda
+  - agda -i . -i /tmp/agda-stdlib-2.4.2.5/src/ ChurchRosser.lagda
 
 
 notifications:
