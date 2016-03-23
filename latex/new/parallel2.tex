@@ -1,0 +1,714 @@
+\documentclass{article} 
+
+% no margen
+% \usepackage[margin=0.1in]{geometry}
+\usepackage{graphicx}
+
+%\usepackage[bw,references]{latex/agda}
+%\usepackage[conor,references]{latex/agda}
+\usepackage[hidelinks]{hyperref}
+\usepackage[references,links]{agda}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{mathtools}
+\usepackage{textgreek}
+\usepackage{catchfilebetweentags}
+\usepackage{tipa}
+\usepackage{bussproofs}
+
+%math
+\newcommand{\add}[3]{\ensuremath{#1\mathbin{\prec\!\!\!+}(#2,#3)}}
+\newcommand{\alp}{\ensuremath{\alpha}}
+\newcommand{\lam}{\ensuremath{\lambda}}
+\newcommand{\alpsy}{\ensuremath{\sim}}
+\newcommand{\choice}[2]{\ensuremath{\chi(#1,#2)}}
+\newcommand{\pr}{\ensuremath{\rightrightarrows}}
+\newcommand{\then}{\ensuremath{\Rightarrow}}
+
+%Agda
+\newcommand{\freshin}[2]{\ensuremath{#1 \mathbin{\AgdaDatatype{\#}} #2}}
+\newcommand{\freshr}[3]{\ensuremath{#1 \mathbin{\#\!\!\downarrow}(#2,#3)}}
+\newcommand{\lambAg}[2]{\ensuremath{\AgdaInductiveConstructor{ƛ}\, #1\, #2}}
+\newcommand{\inAg}{\ensuremath{\mathbin{\AgdaFunction{∈}}}}
+\newcommand{\ninAg}{\ensuremath{\mathbin{\AgdaFunction{∉}}}}
+\newcommand{\neqAg}{\ensuremath{\mathbin{\AgdaInductiveConstructor{≢}}}}
+\newcommand{\ap}[2]{#1 \ensuremath{\mathbin{\AgdaInductiveConstructorFunction{·}} #2}}
+\newcommand{\var}[1]{\ensuremath{\AgdaInductiveConstructorFunction{v}\, #1}}
+\newcommand{\fv}{\ensuremath{{\AgdaFunction{fv}}\,}}
+\newcommand{\perm}{\ensuremath{\mathbin{\AgdaFunction{∙}}}}
+\newcommand{\perma}{\ensuremath{\mathbin{\AgdaFunction{∙}_a}}}
+\newcommand{\free}{\ensuremath{\mathbin{\AgdaFunction{*}}}}
+\newcommand{\choiceAg}{\ensuremath{\AgdaFunction{χ}\,}}
+\newcommand{\choiceAgaux}{\ensuremath{\AgdaFunction{χ'}\,}}
+\newcommand{\alpeqAg}{\ensuremath{\mathbin{\AgdaDatatype{∼α}}}}
+\newcommand{\swap}[3]{\ensuremath{(#1 \mathbin{\AgdaFunction{∙}} #2)\, #3}}
+
+% \newcommand{\agdaf}[1]{\ensuremath{\AgdaFunction{#1}\,}}
+% \newcommand{\agdaD}[1]{\ensuremath{\AgdaDatatype{#1}\,}}
+% \newcommand{\agdav}[1]{\ensuremath{\AgdaBound{#1}\,}}
+
+\DeclareUnicodeCharacter{411}{\textipa{\textcrlambda}}
+\DeclareUnicodeCharacter{65288}{(}
+\DeclareUnicodeCharacter{65289}{)}
+\DeclareUnicodeCharacter{8788}{\ensuremath{\coloneqq}}
+\DeclareUnicodeCharacter{8336}{\ensuremath{_a}}
+\DeclareUnicodeCharacter{8799}{\ensuremath{\overset{?}{=}}}
+\DeclareUnicodeCharacter{8759}{\ensuremath{\dblcolon}}
+\DeclareUnicodeCharacter{8718}{\ensuremath{\square}}
+\DeclareUnicodeCharacter{9657}{\ensuremath{\triangleright}}
+
+\newtheorem{lem}{Lemma}
+
+\begin{document}
+
+% Parallel ------------------------------------------------------------------------------------------------------------------------------------------
+\section{Parallel Reduction}
+\label{sec:parrallel}
+
+\begin{minipage}{0.5\linewidth}
+\AxiomC{}
+\LeftLabel{v}
+\UnaryInfC{$x \pr x$}
+\DisplayProof 
+\end{minipage}
+\begin{minipage}{0.5\linewidth}
+\AxiomC{$M \pr M'$}
+\AxiomC{$N \pr N'$}
+\LeftLabel{a}
+\BinaryInfC{$M N \pr N N'$}
+\DisplayProof
+\end{minipage}
+\begin{minipage}{0.5\linewidth}
+\AxiomC{$M [x/z] \pr M' [y/z]$}
+\LeftLabel{$\lam$}
+\RightLabel{$z \# \lam x M,\lam y M'$}
+\UnaryInfC{$\lam x M \pr \lam y M'$}
+\DisplayProof
+\end{minipage}
+\begin{minipage}{0.5\linewidth}
+\AxiomC{$M[x/y] \pr M'$}
+\AxiomC{$N \pr N'$}
+\RightLabel{$y \# \lam x M$}
+\LeftLabel{$\beta$}
+\BinaryInfC{$(\lam x M) N \pr M' [y/N']$}
+\DisplayProof
+\end{minipage}
+
+
+% \begin{minipage}{0.5\linewidth}
+% \AxiomC{$M \pr M'$}
+% \AxiomC{$N \pr N'$}
+% \LeftLabel{$\beta$}
+% \BinaryInfC{$(\lam x M) N \pr M' [x/N']$}
+% \DisplayProof
+% \end{minipage}
+
+\begin{center}
+\AxiomC{$M \pr N$}
+\AxiomC{$N \alpsy P$}
+\LeftLabel{$\alpha$}
+\BinaryInfC{$M \pr P$}
+\DisplayProof
+\end{center}
+
+\hspace{1px}
+
+Principal ideas:
+\begin{enumerate}
+ \item We have to leave $\alpha$\ rule because the substitution operation in the conclusion of the $\beta$\ rule normilises the right term.
+\end{enumerate}
+
+% Auxiliar lemmas
+\begin{lem}{$\lam x M \alpsy \lam y N \Rightarrow M [x / z] \equiv N [y / z] $}
+\label{lem:alphalambda}
+   \begin{proof}
+
+\AxiomC{$M [x/w] \alpsy N [y/w]$}
+\LeftLabel{$\lam$}
+\RightLabel{$w \# \lam x M, \lam y N$}
+\UnaryInfC{$\lam x M  \alpsy \lam y N$}
+\DisplayProof
+      \[
+      \begin{array}{rcl}
+         M [x/z] & \equiv& \{ \text{as } w \# \lam x M \} \\
+         (M [x/w])[w/z] & \equiv & \{\text{substitution lemma of \alpsy\ relation applied to } M [x/w] \alpsy N [y/w] \}\\
+         (N [y/w])[w/z] &\equiv& \{ \text{as } w \# \lam y N  \} \\
+         N [y/z] &&
+      \end{array}
+      \]
+   \end{proof}
+\end{lem}
+
+% LEMMA Alpha  parallel ------------------------------------------------------------------------------------------------------------------------------------------
+
+\begin{lem}{$M \alpsy N, N \pr P  \then  M \pr P$}
+\label{alphaparallel}
+  \begin{proof}Induction on \pr\ relation.
+    \begin{itemize}
+    \item[\lam\ case:] 
+
+\begin{minipage}{0.16\linewidth}
+      \underline{Hypotheses:} 
+\end{minipage}
+\begin{minipage}{0.3\linewidth}
+$\lam w M  \alpsy \lam x N$
+\end{minipage}
+\begin{minipage}{0.5\linewidth}
+\AxiomC{$N [x/z] \pr P [y/z]$}
+\LeftLabel{$\lam$}
+\RightLabel{$z \# \lam x N, \lam y P$}
+\UnaryInfC{$\lam x N \pr \lam y P$}
+\DisplayProof
+\end{minipage}
+
+\begin{minipage}{0.2\linewidth}
+      \underline{Tesis:} 
+\end{minipage}
+\begin{minipage}{0.6\linewidth}
+$\lam w M \pr \lam y P$
+\end{minipage}
+
+\underline{Proof}:
+
+      \begin{center}
+\AxiomC{$\lam x N \alpsy \lam x N$}
+\LeftLabel{lemma\ \ref{lem:alphalambda}}
+\UnaryInfC{$M [w/z] \equiv N [x/z]$}
+\AxiomC{$N [x/z] \pr P [y/z]$}
+\LeftLabel{congruence}
+\BinaryInfC{$M [w/z] \pr P [y/z]$}
+  \RightLabel{$z \# \lam w M(*), \lam y P$}
+\UnaryInfC{$\lam w M \pr \lam y P$}
+\DisplayProof
+      \end{center}
+
+(*) $\left. \begin{array}{c}z \#  \lam x N \\ \lam w M \alpsy \lam x N \end{array} \right\} \then z \# \lam w M$.
+
+      
+    \item[$\beta$\ case:]  
+
+\begin{minipage}{0.2\linewidth}
+      \underline{Hypotheses:} 
+\end{minipage}
+\begin{minipage}{0.6\linewidth}
+% \AxiomC{$M[y/z] \alpsy N[x/z]$}
+% \RightLabel{$z \# \lam y M, \lam x N$}
+% \LeftLabel{$\lam$}
+\AxiomC{$\lam y M \alpsy \lam x N$ }
+\AxiomC{$M' \alpsy N'$}
+\LeftLabel{a}
+\BinaryInfC{$(\lam y M) M' \alpsy (\lam x N) N'$}
+\DisplayProof
+\end{minipage}
+
+\begin{minipage}{0.2\linewidth}
+.
+\end{minipage}
+\begin{minipage}{0.6\linewidth}
+\AxiomC{$N[x/w] \pr P$}
+\AxiomC{$N' \pr P'$}
+\RightLabel{$w \# \lam x N$}
+\LeftLabel{$\beta$}
+\BinaryInfC{$(\lam x N) N' \pr P [w/P']$}
+\DisplayProof
+\end{minipage}
+
+\begin{minipage}{0.2\linewidth}
+      \underline{Tesis:} 
+\end{minipage}
+\begin{minipage}{0.6\linewidth}
+$(\lam y M) M' \pr P [w/P']$
+\end{minipage}
+
+\underline{Proof}:
+
+\AxiomC{$\lam y M \alpsy \lam x N$}
+\LeftLabel{lemma \ref{lem:alphalambda}}
+\UnaryInfC{$M[y/w] \equiv N[x/w]$}
+\AxiomC{$N[x/w] \pr P$}
+\LeftLabel{congruence}
+\BinaryInfC{$M[y/w] \pr P$}
+\AxiomC{$M' \alpsy N'$}
+\AxiomC{$N' \pr P'$}
+\LeftLabel{ind. hyp.}
+\BinaryInfC{$M' \pr P'$}
+\LeftLabel{$\beta$}
+\RightLabel{$w \# \lam y M (*)$}
+\BinaryInfC{$(\lam y M) M' \pr P [w/P']$}
+\DisplayProof
+\qed
+
+(*) $\left. \begin{array}{c}w \#  \lam x N \\ \lam y M \alpsy \lam x N \end{array} \right\} \then w \# \lam y M$.
+
+    \item[\alp\ case:] 
+
+\begin{minipage}{0.2\linewidth}
+      \underline{Hypotheses:} 
+\end{minipage}
+\begin{minipage}{0.2\linewidth}
+$M \alpsy N$
+\end{minipage}
+\begin{minipage}{0.6\linewidth}
+\AxiomC{$N \pr P'$}
+\AxiomC{$P' \alpsy P$}
+\LeftLabel{$\alp$}
+\BinaryInfC{$N \pr P$}
+\DisplayProof
+\end{minipage}
+
+\begin{minipage}{0.2\linewidth}
+      \underline{Tesis:} 
+\end{minipage}
+\begin{minipage}{0.6\linewidth}
+$M \pr P$
+\end{minipage}
+
+\underline{Proof}:
+
+\begin{center}
+  \AxiomC{$M \alpsy N$} 
+  \AxiomC{$N \pr P'$} \LeftLabel{ind. hypothesis}
+  \BinaryInfC{$M \pr P'$}
+  \AxiomC{$P' \alpsy P$} \LeftLabel{$\alp$}
+  \BinaryInfC{$M \pr P$} \DisplayProof
+\end{center}
+
+    \end{itemize}
+  \end{proof}
+\end{lem}
+
+
+% In the next lemma equality does not hold because of in the left term the substituted terms in \sigma are normalized by [z/N] substitution.
+
+\begin{lem}{$ \left.
+    \begin{array}{l}
+      y \# \lam x M \\
+      \freshr{z}{\sigma}{\lam x M}
+    \end{array} \right\}
+  \then (M \add{\sigma}{x}{z}) [z / N] \alpsy (M [x / y]) \add{\sigma}{y}{N}$}
+\label{alphasubstcomposition}
+\begin{proof}
+      \[
+      \begin{array}{rcl}
+         M \add{\sigma}{x}{z}) [z / N] & \alpsy& \{ \text{ as \freshr{z}{\sigma}{\lam x M}\ by corollary 1 substitution lemma }  \} \\
+         M \add{\sigma}{x}{N}  & \equiv & \{\text{ as $y \# \lam x M$\ by lemma prec } \} \\ %lemma≺+
+         (M [x / y]) \add{\sigma}{y}{N} & &
+      \end{array}
+      \]
+\end{proof}
+\end{lem}
+
+% LEMMA substitution for parallel reduction  ------------------------------------------------------------------------------------------------------------------------------------------
+
+\begin{lem}{$M \pr M', \sigma \pr \sigma' \then  M\sigma \pr M'\sigma'$}
+\label{substparallel}
+  \begin{proof}Induction on \pr\ relation.
+
+    \begin{itemize}
+
+    \item[\lam\ case:] 
+\begin{minipage}{0.2\linewidth}
+      \underline{Hypotheses:} 
+\end{minipage}
+\begin{minipage}{0.6\linewidth}
+\AxiomC{$M [x/z] \pr M' [y/z]$}
+\LeftLabel{$\lam$}
+\RightLabel{$z \# \lam x M,\lam y M'$}
+\UnaryInfC{$\lam x M \pr \lam y M'$}
+\DisplayProof
+\end{minipage}
+\begin{minipage}{0.2\linewidth}
+,\quad $\sigma \pr \sigma'$
+\end{minipage}
+
+\begin{minipage}{0.2\linewidth}
+      \underline{Tesis:} 
+\end{minipage}
+\begin{minipage}{0.6\linewidth}
+$(\lam x M) \sigma \pr (\lam y M') \sigma'$
+\end{minipage}
+
+\underline{Proof}:
+Be $t = \chi ((\lam x M)\sigma (\lam y M') \sigma')$, then $t \# (\lam x M)\sigma, (\lam y M') \sigma'$. And $u = \choice{\sigma}{\lam x M}, w = \choice{\sigma'}{\lam y M'}$.
+
+
+\AxiomC{$M [x/z] \pr M' [y/z]$}
+\AxiomC{$\sigma \pr \sigma'$}
+\UnaryInfC{$\add{\sigma}{z}{t} \pr \add{\sigma'}{z}{t}$}
+\LeftLabel{ind. hyp.}
+\BinaryInfC{$(M [x/z]) \add{\sigma}{z}{t} \pr (M' [y/z]) \add{\sigma}{z}{t} $}
+\DisplayProof
+
+\AxiomC{$z \# \lam x M$}
+\AxiomC{$\freshr{u}{\sigma}{\lam x M}$}
+\LeftLabel{lem. \ref{alphasubstcomposition}}
+\BinaryInfC{$(M \add{\sigma}{x}{u})  [u/t] \alpsy (M [x/z]) \add{\sigma}{z}{t} $}
+\AxiomC{$(M [x/z]) \add{\sigma}{z}{t} \pr (M' [y/z]) \add{\sigma}{z}{t} $}
+\LeftLabel{lem. \ref{alphaparallel}}
+\BinaryInfC{$(M \add{\sigma}{x}{u})  [u/t] \pr (M' [y/z]) \add{\sigma}{z}{t} $}
+\DisplayProof
+
+\AxiomC{$(M \add{\sigma}{x}{u})  [u/t] \pr (M' [y/z]) \add{\sigma}{z}{t}$}
+\AxiomC{$z \# \lam x M$}
+\AxiomC{$\freshr{w}{\sigma'}{\lam y M'}$}
+\LeftLabel{lem. \ref{alphasubstcomposition}}
+\BinaryInfC{$(M' [y/z]) \add{\sigma}{z}{t}  \alpsy (M' \add{\sigma}{y}{w})  [w/t]  $}
+\LeftLabel{$\alpha$}
+\BinaryInfC{$(M \add{\sigma}{x}{u})  [u/t] \pr  (M' \add{\sigma}{y}{w})  [w/t] $}
+\LeftLabel{\lam}
+\RightLabel{$t \# (\lam x M)\sigma, (\lam y M') \sigma'$}
+\UnaryInfC{$\underbrace{\lam u (M \add{\sigma}{x}{u})}_{= (\lam x M) \sigma} \pr \underbrace{\lam w (M' \add{\sigma}{y}{w})}_{ = (\lam y M') \sigma'}  $}
+\DisplayProof
+
+     \qed
+
+    \item[$\beta$\ case:] 
+\begin{minipage}{0.2\linewidth}
+      \underline{Hypotheses:} 
+\end{minipage}
+\begin{minipage}{0.6\linewidth}
+\AxiomC{$M[x/z] \pr M'$}
+\AxiomC{$N \pr N'$}
+\RightLabel{$z \# \lam x M$}
+\LeftLabel{$\beta$}
+\BinaryInfC{$(\lam x M) N \pr M' [z/N']$}
+\DisplayProof
+\end{minipage}
+\begin{minipage}{0.2\linewidth}
+,\quad $\sigma \pr \sigma'$
+\end{minipage}
+
+\begin{minipage}{0.2\linewidth}
+      \underline{Tesis:} 
+\end{minipage}
+\begin{minipage}{0.6\linewidth}
+$((\lam x M) N) \sigma  \pr (M' [z/N']) \sigma'$
+\end{minipage}
+
+\underline{Proof}:
+Be $w = \chi ((\lam x M)\sigma (\lam z M') \sigma')$\ then $w \# (\lam x M)\sigma, (\lam z M') \sigma'$. And $y = \choice{\sigma}{\lam x M}$.
+
+
+
+\AxiomC{$M[x/z] \pr M'$}
+\AxiomC{$\sigma \pr \sigma'$}
+\UnaryInfC{$\add{\sigma}{z}{w} \pr \add{\sigma'}{z}{w}$}
+\LeftLabel{ind. hyp.}
+\BinaryInfC{$(M [x/z]) \add{\sigma}{z}{w}  \pr M' \add{\sigma}{z}{w}$}
+\DisplayProof
+
+\AxiomC{$z \# \lam x M$}
+\AxiomC{$\freshr{y}{\sigma}{\lam x M}$}
+\LeftLabel{lem. \ref{alphasubstcomposition}}
+\BinaryInfC{$(M \add{\sigma}{x}{y})  [y/w] \alpsy (M [x/z]) \add{\sigma}{z}{w} $}
+\AxiomC{$(M [x/z]) \add{\sigma}{z}{w}  \pr M' \add{\sigma}{z}{w}$}
+\LeftLabel{lem. \ref{alphaparallel}}
+\BinaryInfC{$(M \add{\sigma}{x}{y})  [y/w]  \pr M' \add{\sigma}{z}{w}$}
+\DisplayProof
+
+\AxiomC{$(M \add{\sigma}{x}{y})  [y/w]  \pr M' \add{\sigma}{z}{w}$}
+\AxiomC{$N \pr N'$}
+\AxiomC{$\sigma \pr \sigma'$}
+\LeftLabel{ind. hyp.}
+\BinaryInfC{$ N \sigma \pr N' \sigma'$}
+\LeftLabel{$\beta$}
+\BinaryInfC{$ (\lam y (M \add{\sigma}{x}{y})) (N \sigma) \pr (M' \add{\sigma}{z}{w})[w/ N' \sigma'] $}
+\DisplayProof
+
+
+\[
+      \begin{array}{rcl}
+         (M' \add{\sigma'}{z}{w}) [w / N' \sigma']  &\alpsy& \text{corollary subst. lem} \\
+         M' \add{\sigma'}{z}{N' \sigma'}  &\equiv& \text{corollary prop. 7} \\
+         (M' [z / N']) \sigma'  && 
+      \end{array}
+\]
+
+\AxiomC{$ (\lam y (M \add{\sigma}{x}{y})) (N \sigma) \pr (M' \add{\sigma}{z}{w})[w/ N' \sigma'] $}
+\AxiomC{$(M' \add{\sigma'}{z}{w}) [w / N' \sigma'] \alpsy (M' [z / N']) \sigma'$}
+\LeftLabel{$\alpha$}
+\BinaryInfC{$ \underbrace{(\lam y (M \add{\sigma}{x}{y})) (N \sigma)}_{=  ((\lam x M) N) \sigma} \pr (M' [z / N']) \sigma' $}
+\DisplayProof
+
+
+
+      \qed
+
+    \item[\alp\ case:] 
+\begin{minipage}{0.2\linewidth}
+      \underline{Hypotheses:} 
+\end{minipage}
+\begin{minipage}{0.4\linewidth}
+\AxiomC{$M \pr N $}
+\AxiomC{$N \alpsy P $}
+\LeftLabel{$\alp$}
+\BinaryInfC{$M \pr P$}
+\DisplayProof
+\end{minipage}
+\begin{minipage}{0.2\linewidth}
+ $\sigma \pr \sigma'$
+\end{minipage}
+
+\begin{minipage}{0.2\linewidth}
+      \underline{Tesis:} 
+\end{minipage}
+\begin{minipage}{0.6\linewidth}
+$M \sigma \pr P \sigma'$
+\end{minipage}
+
+\underline{Proof}:
+
+\begin{center}
+\AxiomC{$M \pr N $}
+\LeftLabel{ind. hypotesis}
+\UnaryInfC{$M \sigma \pr N \sigma'$}
+\AxiomC{$N \alpsy P $}
+\LeftLabel{subst. lemma}
+\UnaryInfC{$N \sigma' \alpsy P \sigma'$}
+\LeftLabel{$\alp$}
+\BinaryInfC{$M \sigma \pr P \sigma'$}
+\DisplayProof
+\end{center}
+
+    \end{itemize}
+  \end{proof}
+\end{lem}
+
+% Aster --------------------------------------------------------------------------------------------------------------------------------------------
+\subsection{Reduce all redex function (*)}
+      \[
+      \begin{array}{llcl}
+                       x^*& &=& x \\
+                       (\lam x M)^*& &=& \lam x M^* \\
+                       (x &M)^* &=& x M^* \\
+                       ((\lam x M)& N)^* &=&  M^*[x/N^*]\\
+                       ((M N) & P)^* &=& (M N)^* P^* \\
+      \end{array}
+      \]
+
+
+% LEMMA 3 ------------------------------------------------------------------------------------------------------------------------------------------
+\begin{lem}{$\sigma\ \text{renaming}\ \then  (M\sigma)^* \alpsy M^*\sigma$}
+  \begin{proof}Structural induction on terms.
+    \begin{itemize}
+
+    \item[variable case:] 
+      \underline{Hypotheses:} $\sigma$\ renaming
+      \underline{Tesis:} $(x \sigma)^* \alpsy x ^* \sigma$
+
+\underline{Proof}: 
+    
+    \[ (x \sigma)^* = (\sigma x)^* \stackrel{\sigma\ \mbox{renaming}}{=} \sigma x = x \sigma = x^* \sigma \alpsy x^* \sigma\]
+
+
+    \item[\lam\ case:] 
+      \underline{Hypotheses:} $\sigma$\ renaming
+      \underline{Tesis:} $((\lam x M)\sigma)^* \alpsy (\lam x M) ^* \sigma$
+
+\underline{Proof}: 
+      \[
+      \begin{array}{lcl}
+              ((\lam x M) \sigma)^* &=&  \text{substitution definition, where } y =\choice{\sigma}{\lam x M}  \\
+              (\lam y M \sigma [x/y])^* &=& *\ \text{definition}  \\
+              \lam y M \sigma [x/y]^* &\alpsy& \text{inductive hypothesis with renaming } \sigma [x/y]  \\
+              \lam y M^* \sigma [x/y] &\alpsy& \text{stoughton corollary 4.2 with } \freshr{y}{\sigma}{\lam x M^*} (*) \\
+              \lam x M^* \sigma &=& *\ \text{definition}  \\
+              (\lam x M)^* \sigma && 
+      \end{array}
+      \]
+
+       (*) $y =\choice{\sigma}{\lam x M}$\ \then\  $\freshr{y}{\sigma}{\lam x M}$\ then by definition: $\forall z, z * \lam x M \then y \# \sigma z$. But if $z * \lam x M \then z * (\lam x M)^*$\ so we can conclude $\freshr{y}{\sigma}{\lam x M^*}$
+      
+       \qed
+
+    \item[application case:] Variable and application case ($M = x \vee M = M M'$). \\
+      \underline{Hypotheses:} $\sigma$\ renaming
+      \underline{Tesis:} $((M N)\sigma)^* \alpsy (M N) ^* \sigma$
+
+      \underline{Proof}: 
+      \[ ((M N)\sigma)^* = (M\sigma  N \sigma )^* = M\sigma^*  N \sigma^* \stackrel{\mbox{ind. hyp.}}{=} M^*\sigma N^*\sigma = (M ^* N ^*) \sigma = (M N)^* \sigma \]
+
+    \item[application case:] Abstraction case ($M = \lam x M$). \\
+      \underline{Hypotheses:} $\sigma$\ renaming
+      \underline{Tesis:} $(((\lam x M) N)\sigma)^* \alpsy ((\lam x M) N) ^* \sigma$
+
+      \underline{Proof}: 
+
+      \[
+      \begin{array}{llcl}
+              (((\lam x M)& N)\sigma)^* &=&  \text{subst. definition, with } y=\choice{\sigma}{\lam x M}\\  
+              ((\lam y M\sigma[x/y])& N\sigma)^* &=&  *\ \text{definition} \\
+              (M\sigma[x/y]^*)[y/N\sigma^*] & &\alpsy&  \text{ind. hypotheses and subtitution lemma} \\
+              (M^*\sigma[x/y])[y/N^*\sigma] & &\alpsy&  \text{subst. composition} \\
+              M^*\sigma[x/N^*\sigma] & &\alpsy&  \text{auxiliar lemma} \\
+              (M^*[x/N^*])\sigma & &=&  *\ \text{definition} \\
+              ((\lam x M) & N) ^* \sigma
+      \end{array}
+      \]
+
+\end{itemize}
+\end{proof}
+\end{lem}
+
+
+% LEMMA 4 ------------------------------------------------------------------------------------------------------------------------------------------
+
+\begin{lem}{$M \pr N  \then N \pr M^*$}
+  \begin{proof}Induction on \pr\ relation.
+    \begin{itemize}
+
+    \item[application case:] 
+
+\begin{minipage}{0.2\linewidth}
+      \underline{Hypotheses:} 
+\end{minipage}
+\begin{minipage}{0.6\linewidth}
+\AxiomC{$M \pr M' $}
+\AxiomC{$N \pr N' $}
+\LeftLabel{a}
+\BinaryInfC{$M N \pr M' N'$}
+\DisplayProof
+\end{minipage}
+
+\begin{minipage}{0.2\linewidth}
+      \underline{Tesis:} 
+\end{minipage}
+\begin{minipage}{0.6\linewidth}
+$M' N' \pr (M N)^*$
+\end{minipage}
+
+\underline{Proof by cases in M:}
+
+\begin{itemize}
+\item $M = \lam x M$ 
+\item $M = x$ 
+\item $M = M P$ 
+\end{itemize}
+
+
+
+    \item[\lam\ case:] 
+\begin{minipage}{0.2\linewidth}
+      \underline{Hypotheses:} 
+\end{minipage}
+\begin{minipage}{0.6\linewidth}
+\AxiomC{$M [x/z] \pr N [y/z]$}
+\LeftLabel{$\lam$}
+\RightLabel{$z \# \lam x M$}
+\UnaryInfC{$\lam x M \pr \lam y N$}
+\DisplayProof
+\end{minipage}
+
+\begin{minipage}{0.2\linewidth}
+      \underline{Tesis:} 
+\end{minipage}
+\begin{minipage}{0.6\linewidth}
+$\lam y N \pr (\lam x M)^* \equiv \lam x M^*$
+\end{minipage}
+
+\underline{Proof}:
+
+$ \left.
+\begin{array}[l]{l}
+z \# \lam x M \\
+\lam x M \pr \lam y N
+\end{array} \right\}
+\then  z \# \lam y N \\ $
+
+\begin{center}
+\AxiomC{$M [x/z] \pr N [y/z]$}
+\LeftLabel{ind. hyp.}
+\UnaryInfC{$N [y/z] \pr (M [x/z])^*$}
+\AxiomC{$(M [x/z])^* \alpsy M^*[x/z]$}
+\LeftLabel{\alp}
+\BinaryInfC{$N [y/z] \pr M^*[x/z]$}
+\RightLabel{$z \# \lam y N$}
+\LeftLabel{\lam}
+\UnaryInfC{$\lam y N \pr \lam x M^* $}
+\DisplayProof
+\end{center}
+
+     \qed
+
+    \item[$\beta$\ case:] 
+\begin{minipage}{0.2\linewidth}
+      \underline{Hypotheses:} 
+\end{minipage}
+\begin{minipage}{0.6\linewidth}
+\AxiomC{$M [x/y] \pr M'$}
+\AxiomC{$N \pr N'$}
+\LeftLabel{$\beta$}
+\RightLabel{$y \# \lam x M$}
+\BinaryInfC{$(\lam x M)N \pr M'[y/N']$}
+\DisplayProof
+\end{minipage}
+
+\begin{minipage}{0.2\linewidth}
+      \underline{Tesis:} 
+\end{minipage}
+\begin{minipage}{0.6\linewidth}
+$M' [y/N'] \pr ((\lam x M) N)^* \equiv M^*[x/N^*]$
+\end{minipage}
+
+\underline{Proof}:
+
+$y \# \lam x M \then y \# (\lam x M)^* \equiv y \# \lam x M^*$
+
+\begin{center}
+\AxiomC{$M [x/y] \pr M'$}
+\LeftLabel{ind. hyp.}
+\UnaryInfC{$M' \pr M [x/y]^*$}
+\AxiomC{$M [x/y]^* \alpsy M^*[x/y]$}
+\LeftLabel{\lam}
+\BinaryInfC{$M' \pr M^* [x/y]$}
+\AxiomC{$N \pr N'$}
+\LeftLabel{ind. hyp.}
+\UnaryInfC{$N' \pr N^*$}
+\UnaryInfC{$[y/N'] \pr [y/N^*]$}
+\LeftLabel{subst. lemma}
+\BinaryInfC{$M' [y/N'] \pr (M^*[x/y])[y/N^*]$}
+\LeftLabel{subst. composition}
+\RightLabel{$y \# \lam x M^*$}
+\UnaryInfC{$M' [y/N'] \pr M^*[x/N^*]$}
+\DisplayProof
+\end{center}
+
+\qed
+
+    \item[\alp\ case:] 
+\begin{minipage}{0.2\linewidth}
+      \underline{Hypotheses:} 
+\end{minipage}
+\begin{minipage}{0.6\linewidth}
+\AxiomC{$M \pr N$}
+\AxiomC{$N \alpsy P$}
+\LeftLabel{$\alpha$}
+\BinaryInfC{$ M \pr P$}
+\DisplayProof
+\end{minipage}
+
+\begin{minipage}{0.2\linewidth}
+      \underline{Tesis:} 
+\end{minipage}
+\begin{minipage}{0.6\linewidth}
+$P \pr M^*$
+\end{minipage}
+
+\underline{Proof}:
+
+\begin{center}
+\AxiomC{$P \alpsy N$}
+\AxiomC{$M \pr N$}
+\LeftLabel{ind. hyp.}
+\UnaryInfC{$N \pr M^*$}
+\LeftLabel{lemma 2}
+\BinaryInfC{$ P \pr M^*$}
+\DisplayProof
+\end{center}
+
+\end{itemize}
+\end{proof}
+\end{lem}
+
+
+\end{document}

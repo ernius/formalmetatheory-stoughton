@@ -9,6 +9,7 @@
 \usepackage[hidelinks]{hyperref}
 \usepackage[references,links]{agda}
 \usepackage{amsmath}
+\usepackage{amsthm}
 \usepackage{mathtools}
 \usepackage{textgreek}
 \usepackage{catchfilebetweentags}
@@ -54,9 +55,17 @@
 \newcommand{\choice}[1]{\ensuremath{\chi\,#1}}
 \newcommand{\scomp}[2]{\ensuremath{#1 \circ #2}}
 
+\newcommand{\noalp}{\ensuremath{no\alpha}}
+\newcommand{\p}{\ensuremath{\rightrightarrows}}
+\newcommand{\betaarr}{\ensuremath{\rightarrow_\beta}}
+\newcommand{\betaalpha}{\ensuremath{\rightarrow_\alpha}}
+\newcommand{\betaaster}{\ensuremath{\rightarrow_\beta^*}}
+
+
 \newcommand{\preds}{\ensuremath{\rightrightarrows}}
 \newcommand{\pred}[2]{\ensuremath{#1 \preds #2}}
 
+\newtheorem{thm}{Theorem}
 \newtheorem{lema}{Lemma}
 \newtheorem{prop}{Proposition}
 \newtheorem{coro}{Corollary}
@@ -66,6 +75,7 @@
 % Aca son nuevas mias !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 \newcommand{\type}[3]{\ensuremath{#1 \vdash #2 : #3}}
 \newcommand{\goes}[3]{\ensuremath{#1 : #2 \rightharpoonup #3}}
+\newcommand{\goesd}[4]{\ensuremath{#1 : #2 \rightharpoonup #3 \downharpoonright #4}}
 \newcommand{\betacontr}[2]{\ensuremath{#1 \triangleright #2}}
 \newcommand{\restfresh}[3]{\ensuremath{#1 \mathbin{\#\!\!\downharpoonright} (#2,#3)}}
 \begin{document}
@@ -92,7 +102,7 @@
 \DisplayProof
 \end{center}
 
-We define the inclusion between contexts $\Gamma \subseteq \Delta$\  as $\forall x \in \Gamma, x \in \Delta \wedge \Gamma x = \Delta x$. Next, we present two weakening lemmas of the typing judgement. The proofs are direct structural inductions on the typing relation.
+We define the inclusion between contexts $\Gamma \subseteq \Delta$\  as $\forall x \in \Gamma, x \in \Delta \wedge \Gamma x = \Delta x$. Next, we present a weakening lemma of the typing judgement. Both lemmas are proved by structural induction on the typing relation, the second lemma uses for the first one for the abstraction case.
 
 \begin{prop}[Weakening Lemma]
   \begin{enumerate}
@@ -101,54 +111,90 @@ We define the inclusion between contexts $\Gamma \subseteq \Delta$\  as $\forall
   \end{enumerate}
 \end{prop}
 
-The following proposition establish that all free variables of a term should appear in his typing context.
+% The following proposition establish that all free variables of a term should appear in his typing context, again is proved by a direct induction on the typing relation.
 
-\begin{prop}
-  $ \type{\Gamma}{M}{\alpha} , \freer{x}{M} \Rightarrow x \in \Gamma$
-\end{prop}
+% \begin{prop}
+%   $ \type{\Gamma}{M}{\alpha} , \freer{x}{M} \Rightarrow x \in \Gamma$
+% \end{prop}
 
-We define a substitution $\sigma$\ goes from  $\Gamma$\ to $\Delta$ contexts, denoted as $\goes{\sigma}{\Gamma}{\Delta}$, iff $ \forall z \in \Gamma, \type{\Delta}{\sigma z}{\Gamma z}$. Some usefull direct properties are:
+We define a substitution $\sigma$\ goes from  $\Gamma$\ to $\Delta$ contexts, denoted as $\goes{\sigma}{\Gamma}{\Delta}$, iff $ \forall z \in \Gamma, \type{\Delta}{\sigma z}{\Gamma z}$. We also define the restriction of this concept to some term, denoted as $\goesd{\sigma}{\Gamma}{\Delta}{M}$ iff $ \forall z * M, z \in \Gamma, \type{\Delta}{\sigma z}{\Gamma z}$. Some usefull properties are:
 
 \begin{prop}
   \begin{enumerate}
   \item $\goes{\iota}{\Gamma}{\Gamma}$
   \item $\type{\Gamma}{M}{\alpha} \Rightarrow \goes{(\upd{\iota}{x}{M})}{\Gamma , x : \alpha}{\Gamma} $
+  \item $\goes{\sigma}{\Gamma}{\Delta} \Rightarrow \goesd{\sigma}{\Gamma}{\Delta}{M}$
+  \item $\goesd{(\upd{\iota}{y}{x})}{\Gamma,y:\alpha}{\Gamma,x:\alpha}{M (\upd{\iota}{x}{y})}$
+  \item $\fresh{x}{\sigma}{\lambda y M},  \goesd{\sigma}{\Gamma}{\Delta}{\lambda y M} \Rightarrow \goesd{(\upd{\sigma}{y}{x})}{\Gamma, y : \alpha}{\Delta,x:\alpha}{M}$
   \end{enumerate}
 \end{prop}
 
-Next we define the \emph{freeCxt}\ function that given any typing judge of a term returns a minimal typing context. We say minimal in the sense that it only contains the free variables of the typed term. The type assigned for each variable is the extracted from the typing judge. The previously explained semantic of this function can be resumed in the following properties. 
+\begin{proof}
+  All results are direct except from last one that we discuss next. For all $z$ free in $M$ and decared in context $\Gamma,y:\alpha$, we have to prove that $\type{\Delta,x:\alpha}{(\upd{\sigma}{y}{x})z}{(\Gamma,y:\alpha)z}$. When $y = z$ the proof is inmediate, when not the goal becomes $\type{\Delta,x:\alpha}{\sigma z}{\Gamma z}$. As $y \neq x$\ and $z * M$ then $z * \lambda y M$, and we can use the $\goesd{\sigma}{\Gamma}{\Delta}{\lambda y M}$\ hypotheses with $z$ variable to get $\type{\Delta}{\sigma z}{\Gamma z}$. Using that $z * \lambda y M$ and the $\fresh{x}{\sigma}{\lambda y M}$\ premise, we know that $x \# \sigma z$, then we can apply the second weakening lemma to $\type{\Delta}{\sigma z}{\Gamma z}$\ and obtain our goal.
+\end{proof}
 
-\begin{prop}
-  \begin{enumerate}
-  \item $freeCxt(\type{\Gamma}{M}{\alpha}) \subseteq \Gamma$
-  \item $x \in freeCxt(\type{\Gamma}{M}{\alpha}) \Leftrightarrow \freer{x}{M}$
-  \item $\type{\Gamma}{M}{\alpha} \Rightarrow \type{freeCxt(\type{\Gamma}{M}{\alpha})}{M}{\alpha} $
-  \end{enumerate}
+% Next we define the \emph{freeCxt}\ function that given any typing judge of a term returns a minimal typing context. We say minimal in the sense that it only contains the free variables of the typed term. The type assigned for each variable is the extracted from the typing judge. The previously explained semantic of this function can be resumed in the following properties. 
+
+% \begin{prop}
+%   \begin{enumerate}
+%   \item $freeCxt(\type{\Gamma}{M}{\alpha}) \subseteq \Gamma$
+%   \item $x \in freeCxt(\type{\Gamma}{M}{\alpha}) \Leftrightarrow \freer{x}{M}$
+%   \item $\type{\Gamma}{M}{\alpha} \Rightarrow \type{freeCxt(\type{\Gamma}{M}{\alpha})}{M}{\alpha} $
+%   \end{enumerate}
+% \end{prop}
+
+We can now prove the following substitution lemma for the typing judge. 
+
+\begin{prop}[Substitution Lemma for Type System]
+  $\type{\Gamma}{M}{\alpha}, \goesd{\sigma}{\Gamma}{\Delta}{M} \Rightarrow \type{\Delta}{M \sigma}{\alpha}$
 \end{prop}
 
-We can now prove the following substitution lemma for the type judge. 
-
-\begin{prop}
-  $\type{\Gamma}{M}{\alpha}, \goes{\sigma}{\Gamma}{\Delta} \Rightarrow \type{\Delta}{M \sigma}{\alpha}$
-\end{prop}
-
-The proof is by induction in the typing judge. The variable and application cases are direct. For the abstraction case we have to prove \type{\Delta}{(\lambda y. M) \sigma}{\alpha}. Where $(\lambda y. M) \sigma$ is equal to $\lambda x . (M (\upd{\sigma}{y}{x}))$, where $y = \chi (\sigma , \lambda y . M)$. We use the last properties of \emph{freeCxt}\ functions to derive that exists a $\Gamma'$, equals to $freeCxt(\type{\Gamma}{\lambda x . (M (\upd{\sigma}{y}{x}))}{\alpha \rightarrow \beta})$, which contains only the free variables of $\lambda x . (M (\upd{\sigma}{y}{x}))$, $\Gamma' \subseteq \Gamma$ and $\type{\Gamma'}{{\lambda x . (M (\upd{\sigma}{y}{x}))}}{\alpha \rightarrow \beta}$. From the last typing judgmente, by syntax directed definition of the typing judge, we derive that $\type{\Gamma', x : \alpha}{M (\upd{\sigma}{y}{x})}{\beta}$. Besides by hypothesis $\goes{\sigma}{\Gamma}{\Delta}$, so by definition \goes{\sigma}{\Gamma'}{\Delta} because of $\Gamma' \subseteq \Gamma$. Then we can prove that $\goes{(\upd{\sigma}{y}{x})}{\Gamma , y : \alpha}{\Delta , x : \alpha}$\ because of the second weakening lemma and that by $\chi$\ lemma \restfresh{y}{\sigma}{\lambda y.M}
-
-Then applying the inductive hypothesis
-
+\begin{proof}
+The proof is by induction in the typing judge. The variable and application cases are direct. For the abstraction case we have to prove \type{\Delta}{(\lambda y. M) \sigma}{\alpha \rightarrow \beta}, where $(\lambda y. M) \sigma$ is equal to $\lambda x . (M (\upd{\sigma}{y}{x}))$, and $x = \chi (\sigma , \lambda y . M)$. By the syntax directed definition of the typing judge, using abstraction case, we derive that $\type{\Gamma, y : \alpha}{M}{\beta}$. We can use the last part of previous proposition to derive that $\goesd{(\upd{\sigma}{y}{x})}{\Gamma , y : \alpha}{\Delta , x : \alpha}{M}$. Then, applying the inductive hypothesis to previous result we have that $\type{\Delta, x : \alpha}{M (\upd{\sigma}{y}{x}) }{\beta}$. Next by abstraction rule of type system we have that $\type{\Delta}{ \lambda x. (M (\upd{\sigma}{y}{x})) }{\alpha \rightarrow \beta}$, which by substitution definition is desired result.
+\end{proof}
 % obtained from the last \emph{freeCxt} property, that is, we perform the induction over a typing with only the free variables of the typed term.
 
 
-From this result is direct to prove the following one that says that the typing relation is preserved under $\beta$-contraction.
-
-\begin{coro}
+\begin{coro}[Typing judge is preserved by $\beta$-contraction]
   $\type{\Gamma}{M}{\alpha}, \betacontr{M}{N} \Rightarrow \type{\Gamma}{N}{\alpha}$
 \end{coro}
 
-Finally using that if \type{\Gamma}{M \iota}{\alpha}\ then \type{\Gamma}{M}{\alpha}\ and Corrolary 1 we can directly prove that the typing judge is preserved under $\alpha$-conversion.
+\begin{proof}
+  We have to prove that $\type{\Gamma}{M (\upd{\iota}{x}{N})}{\alpha}$. By hypotheses $\type{\Gamma}{(\lambda x M)}{\alpha}$ , then by typing judge $\type{\Gamma,x:\alpha}{M}{\beta}$\ and $\type{\Gamma}{N}{\alpha}$. Using second part and third parts of proposition 2 to last typing judge we have that $\goesd{(\upd{\iota}{x}{M})}{\Gamma , x : \alpha}{\Gamma}{M}$, then applying previous subsitution lemma to $(\upd{\iota}{x}{M})$\ substitution and $\type{\Gamma,x:\alpha}{M}{\beta}$ we finish the proof.
+
+\end{proof}
+
+
+
+\begin{coro}
+  $\type{\Gamma}{M}{\alpha}, M \betaarr N \Rightarrow \type{\Gamma}{N}{\alpha}$
+\end{coro}
+
+\begin{proof}
+  Direct induction on the contextual clousure relation. For the $\beta$-contraction we directly use last result.
+\end{proof}
+
+\begin{prop}
+  $\type{\Gamma}{M \iota}{\alpha}, \Rightarrow \type{\Gamma}{M}{\alpha}$
+\end{prop}
+
+\begin{proof}
+  By induction on the typing relation. Variable and application cases are direct. Next we detail the abstraction case we have that $\type{\Gamma,y:\alpha}{M(\upd{\iota}{x}{y})}{\beta}$, with $y = \choice (\iota , \lambda x M)$. Using the subtitution lemma to previous judge, and with $(\upd{\iota}{y}{x})$\ substitution, by part fourth of prop. 2 we get that $\type{\Gamma,x:\alpha}{(M(\upd{\iota}{x}{y}))(\upd{\iota}{y}{x})}{\beta}$, but $(M(\upd{\iota}{x}{y}))(\upd{\iota}{y}{x}) \equiv M \iota$ because $\fresh{y}{\iota}{\lambda x M}$. Then by inductive hypothesis and abstraction rule of typing system we end the proof.
+\end{proof}
 
 \begin{prop}
   $\type{\Gamma}{M}{\alpha}, M \alpeq N \Rightarrow \type{\Gamma}{N}{\alpha}$
 \end{prop}
+
+\begin{proof}
+As $M\alpeq N$ then $M\iota \equiv N\iota$. Using previous prposition we just need to proof that \type{\Gamma}{M \iota}{\alpha}, which is direct by the substitution lemma and first part of proposition 3 .
+\end{proof}
+
+Subject redution is proved by induction on the reflexive-transitive closure of \betaalpha ($\betaarr \cup \alpeq$) relation, using directly the two last results for the \betaalpha\ and \alpeq\ cases respectively.
+
+\begin{thm}[Subject Reduction]
+  $\type{\Gamma}{M}{\alpha}, M \betaaster N \Rightarrow \type{\Gamma}{N}{\alpha}$
+\end{thm}
+
 
 \end{document}

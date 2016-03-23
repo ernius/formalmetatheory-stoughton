@@ -25,8 +25,8 @@ open import Relation.Nullary
 open import Relation.Nullary.Decidable hiding (map)
 open import Algebra.Structures
 open DecTotalOrder Nat.decTotalOrder using () renaming (refl to ≤-refl)
-open ≤-Reasoning
-  renaming (begin_ to start_; _∎ to _◽; _≡⟨_⟩_ to _≤⟨_⟩'_)
+-- open ≤-Reasoning
+--   renaming (begin_ to start_; _∎ to _◽; _≡⟨_⟩_ to _≤⟨_⟩'_)
 
 infixl 8 _≺+_
 infix  5 _∙_ 
@@ -51,6 +51,12 @@ _≺+_ : Σ → V × Λ → Σ
 ... | no  _ = σ y
 \end{code}
 
+\begin{code}
+x≢y→x[y/M]≡x : {x y : V}{M : Λ} → x ≢ y → (ι ≺+ (x , M)) y ≡ v y
+x≢y→x[y/M]≡x {x} {y} x≢y with x ≟ y
+... | yes x≡y = ⊥-elim (x≢y x≡y)
+... | no  _   = refl
+\end{code}
 
 
 -- %<*sigmatype>
@@ -118,6 +124,14 @@ _#⇂_ : V → R → Set
 x #⇂ (σ , M) = (y : V) → y * M → x # (σ y)
 \end{code}
 
+
+\begin{code}
+lemma#→ι#⇂ : {x y : V}{M : Λ} → x # ƛ y M → x #⇂ (ι , ƛ y M)
+lemma#→ι#⇂ {x} {y} {M} x#ƛyM z z*ƛyM with z ≟ x
+... | no  z≢x  = #v z≢x
+lemma#→ι#⇂ {x} {y} {M} x#ƛyM .x x*ƛyM 
+    | yes refl = ⊥-elim (lemma#→¬free x#ƛyM x*ƛyM)
+\end{code}
 
 Free
 
@@ -203,112 +217,120 @@ lemma∉fv→# {a} {M} a∉fvM with a #? M
 ... | no ¬a#M = ⊥-elim (a∉fvM (lemmafvfree← a M (lemma¬#→free ¬a#M)))
 \end{code}
 
-\begin{code}
-f : {α : Type}(M : Λ)(Γ : Cxt) → Γ ⊢ M ∶ α → {x : V} → (x∈xs : x ∈ fv M) → V × Type
-f M Γ Γ⊢M∶α = λ {x} x∈vs → (x , Γ ⟨ lemma⊢*∈ Γ⊢M∶α (lemmafvfree→ x M x∈vs) ⟩) 
+-- \begin{code}
+-- f : {α : Type}(M : Λ)(Γ : Cxt) → Γ ⊢ M ∶ α → {x : V} → (x∈xs : x ∈ fv M) → V × Type
+-- f M Γ Γ⊢M∶α = λ {x} x∈vs → (x , Γ ⟨ lemma⊢*∈ Γ⊢M∶α (lemmafvfree→ x M x∈vs) ⟩) 
 
-freeCxt  : {Γ : Cxt}{M : Λ}{α : Type} 
-         → Γ ⊢ M ∶ α
-         → Cxt
-freeCxt {Γ} {M} Γ⊢M∶α 
-  = map-with-∈ (fv M) (f M Γ Γ⊢M∶α)
+-- freeCxt  : {Γ : Cxt}{M : Λ}{α : Type} 
+--          → Γ ⊢ M ∶ α
+--          → Cxt
+-- freeCxt {Γ} {M} Γ⊢M∶α 
+--   = map-with-∈ (fv M) (f M Γ Γ⊢M∶α)
 
-import Function.Equality as FE
+-- import Function.Equality as FE
 
-lemmafreeCxt⊆  : {Γ : Cxt}{M : Λ}{α : Type} 
-          → (p : Γ ⊢ M ∶ α)
-          → freeCxt p ⊆c Γ
-lemmafreeCxt⊆ {Γ} {M} Γ⊢M∶α {x} x∈free⊢ 
-  with lemma∈→∈[] x∈free⊢ 
-... | α , x,α∈free⊢ , free⊢⟨x∈free⊢⟩≡α 
-  with FE.Π._⟨$⟩_ (from (map-with-∈↔ {f = f M Γ Γ⊢M∶α})) x,α∈free⊢
-lemmafreeCxt⊆ {Γ} {M} Γ⊢M∶α {x} x∈free⊢ 
-    | .(Γ ⟨ lemma⊢*∈ Γ⊢M∶α (lemmafvfree→ x M x∈fvM) ⟩) , x,α∈free⊢ , free⊢⟨x∈free⊢⟩≡Γ 
-    | .x , x∈fvM , refl
-  = lemma⊢*∈ Γ⊢M∶α (lemmafvfree→ x M x∈fvM) , free⊢⟨x∈free⊢⟩≡Γ 
+-- lemmafreeCxt⊆  : {Γ : Cxt}{M : Λ}{α : Type} 
+--           → (p : Γ ⊢ M ∶ α)
+--           → freeCxt p ⊆c Γ
+-- lemmafreeCxt⊆ {Γ} {M} Γ⊢M∶α {x} x∈free⊢ 
+--   with lemma∈→∈[] x∈free⊢ 
+-- ... | α , x,α∈free⊢ , free⊢⟨x∈free⊢⟩≡α 
+--   with FE.Π._⟨$⟩_ (from (map-with-∈↔ {f = f M Γ Γ⊢M∶α})) x,α∈free⊢
+-- lemmafreeCxt⊆ {Γ} {M} Γ⊢M∶α {x} x∈free⊢ 
+--     | .(Γ ⟨ lemma⊢*∈ Γ⊢M∶α (lemmafvfree→ x M x∈fvM) ⟩) , x,α∈free⊢ , free⊢⟨x∈free⊢⟩≡Γ 
+--     | .x , x∈fvM , refl
+--   = lemma⊢*∈ Γ⊢M∶α (lemmafvfree→ x M x∈fvM) , free⊢⟨x∈free⊢⟩≡Γ 
 
-lemmafreeCxt→*  : {Γ : Cxt}{M : Λ}{α : Type} 
-           → (p : Γ ⊢ M ∶ α)
-           → (x : V) → x ∈c freeCxt p 
-           → x * M
-lemmafreeCxt→* {Γ} {M} Γ⊢M∶α x x∈free⊢ 
-  with lemma∈→∈[] x∈free⊢ 
-... | α , x,α∈free⊢ , free⊢⟨x∈free⊢⟩≡α 
-  with FE.Π._⟨$⟩_ (from (map-with-∈↔ {f = f M Γ Γ⊢M∶α})) x,α∈free⊢
-lemmafreeCxt→* {Γ} {M} Γ⊢M∶α x x∈free⊢ 
-    | .(Γ ⟨ lemma⊢*∈ Γ⊢M∶α (lemmafvfree→ x M x∈fvM) ⟩) , x,α∈free⊢ , free⊢⟨x∈free⊢⟩≡Γ 
-    | .x , x∈fvM , refl
-    = lemmafvfree→ x M x∈fvM
+-- lemmafreeCxt→*  : {Γ : Cxt}{M : Λ}{α : Type} 
+--            → (p : Γ ⊢ M ∶ α)
+--            → (x : V) → x ∈c freeCxt p 
+--            → x * M
+-- lemmafreeCxt→* {Γ} {M} Γ⊢M∶α x x∈free⊢ 
+--   with lemma∈→∈[] x∈free⊢ 
+-- ... | α , x,α∈free⊢ , free⊢⟨x∈free⊢⟩≡α 
+--   with FE.Π._⟨$⟩_ (from (map-with-∈↔ {f = f M Γ Γ⊢M∶α})) x,α∈free⊢
+-- lemmafreeCxt→* {Γ} {M} Γ⊢M∶α x x∈free⊢ 
+--     | .(Γ ⟨ lemma⊢*∈ Γ⊢M∶α (lemmafvfree→ x M x∈fvM) ⟩) , x,α∈free⊢ , free⊢⟨x∈free⊢⟩≡Γ 
+--     | .x , x∈fvM , refl
+--     = lemmafvfree→ x M x∈fvM
 
-lemmafreeCxt←*  : {Γ : Cxt}{M : Λ}{α : Type}{x : V}
-           → (p : Γ ⊢ M ∶ α)
-           → x * M
-           → x ∈c freeCxt p
-lemmafreeCxt←* {Γ} {M} {α} {x} Γ⊢M∶α x*M 
-  with lemmafvfree← x M x*M 
-... | x∈fvM
-  = lemma∈[]→∈ (FE.Π._⟨$⟩_ (to (map-with-∈↔ {f = f M Γ Γ⊢M∶α})) (x , x∈fvM , refl)) 
+-- lemmafreeCxt←*  : {Γ : Cxt}{M : Λ}{α : Type}{x : V}
+--            → (p : Γ ⊢ M ∶ α)
+--            → x * M
+--            → x ∈c freeCxt p
+-- lemmafreeCxt←* {Γ} {M} {α} {x} Γ⊢M∶α x*M 
+--   with lemmafvfree← x M x*M 
+-- ... | x∈fvM
+--   = lemma∈[]→∈ (FE.Π._⟨$⟩_ (to (map-with-∈↔ {f = f M Γ Γ⊢M∶α})) (x , x∈fvM , refl)) 
 
-lemmaStrengthening⊢free  : {Γ : Cxt}{M : Λ}{α : Type} 
-                         → (p : Γ ⊢ M ∶ α) → freeCxt p ⊢ M ∶ α
-lemmaStrengthening⊢free (⊢v {x} x∈Γ) 
-  rewrite lemma∈!⟨⟩ (lemma⊢*∈ (⊢v x∈Γ) (lemmafvfree→ x (v x) (here refl))) x∈Γ
-  = ⊢v (here refl) 
-lemmaStrengthening⊢free (⊢· Γ⊢M∶α⟶β Γ⊢N∶α) 
-  with lemmaStrengthening⊢free Γ⊢M∶α⟶β | lemmaStrengthening⊢free Γ⊢N∶α
-... | freeM⊢M∶α⟶β | freeN⊢N∶α 
-  = ⊢·  (lemmaWeakening⊢ lemmafreeM⊆freeMN freeM⊢M∶α⟶β) 
-        (lemmaWeakening⊢ lemmafreeN⊆freeMN freeN⊢N∶α) 
-  where
-  lemmafreeM⊆freeMN : freeCxt Γ⊢M∶α⟶β ⊆c freeCxt (⊢· Γ⊢M∶α⟶β Γ⊢N∶α) 
-  lemmafreeM⊆freeMN {x} x∈freeM 
-    with lemmafreeCxt⊆ Γ⊢M∶α⟶β x∈freeM | lemmafreeCxt⊆ (⊢· Γ⊢M∶α⟶β Γ⊢N∶α) (lemmafreeCxt←* (⊢· Γ⊢M∶α⟶β Γ⊢N∶α) (*·l (lemmafreeCxt→* Γ⊢M∶α⟶β x x∈freeM)))
-  ... | x∈Γ , freeM⟨x∈freeM⟩≡Γ⟨x∈Γ⟩ | x∈Γ' , freeMN⟨x∈freeMN⟩≡Γ⟨x∈Γ'⟩ rewrite lemma∈!⟨⟩ x∈Γ x∈Γ'
-    =     lemmafreeCxt←* (⊢· Γ⊢M∶α⟶β Γ⊢N∶α) (*·l (lemmafreeCxt→* Γ⊢M∶α⟶β x x∈freeM)) 
-       ,  trans freeM⟨x∈freeM⟩≡Γ⟨x∈Γ⟩ (sym freeMN⟨x∈freeMN⟩≡Γ⟨x∈Γ'⟩)
-  lemmafreeN⊆freeMN : freeCxt Γ⊢N∶α ⊆c freeCxt (⊢· Γ⊢M∶α⟶β Γ⊢N∶α) 
-  lemmafreeN⊆freeMN {x} x∈freeN 
-    with lemmafreeCxt⊆ Γ⊢N∶α x∈freeN | lemmafreeCxt⊆ (⊢· Γ⊢M∶α⟶β Γ⊢N∶α) (lemmafreeCxt←* (⊢· Γ⊢M∶α⟶β Γ⊢N∶α) (*·r (lemmafreeCxt→* Γ⊢N∶α x x∈freeN)))
-  ... | x∈Γ , freeN⟨x∈freeN⟩≡Γ⟨x∈Γ⟩ | x∈Γ' , freeMN⟨x∈freeMN⟩≡Γ⟨x∈Γ'⟩ rewrite lemma∈!⟨⟩ x∈Γ x∈Γ'
-    =     lemmafreeCxt←* (⊢· Γ⊢M∶α⟶β Γ⊢N∶α) (*·r (lemmafreeCxt→* Γ⊢N∶α x x∈freeN)) 
-       ,  trans freeN⟨x∈freeN⟩≡Γ⟨x∈Γ⟩ (sym freeMN⟨x∈freeMN⟩≡Γ⟨x∈Γ'⟩)
-lemmaStrengthening⊢free (⊢ƛ {y} {α} Γ,y:α⊢M∶β)
-  with lemmaStrengthening⊢free Γ,y:α⊢M∶β
-... | freeM⊢M∶β
-  = ⊢ƛ (lemmaWeakening⊢ lemmafreeM⊆freeλyM freeM⊢M∶β)
-  where 
-  lemmafreeM⊆freeλyM : freeCxt Γ,y:α⊢M∶β ⊆c freeCxt (⊢ƛ Γ,y:α⊢M∶β) ‚ y , α
-  lemmafreeM⊆freeλyM {x} x∈freeM 
-    with lemmafreeCxt⊆ Γ,y:α⊢M∶β x∈freeM 
-  ... | x∈Γ,y:α , freeM⟨x∈freeM⟩≡Γ,y:α⟨x∈Γ,y:α⟩ 
-    with x ≟ y
-  ... | no x≢y 
-    with lemmafreeCxt⊆ (⊢ƛ Γ,y:α⊢M∶β) (lemmafreeCxt←* (⊢ƛ Γ,y:α⊢M∶β) (*ƛ (lemmafreeCxt→* Γ,y:α⊢M∶β x x∈freeM) (λ y≡x → ⊥-elim (x≢y (sym y≡x)))))
-  lemmafreeM⊆freeλyM {x} x∈freeM 
-      | here x≡y , freeM⟨x∈freeM⟩≡Γ,y:α⟨x∈Γ,y:α⟩ 
-      | no x≢y 
-      | x∈Γ , freeλyM⟨x∈freeƛyM⟩≡Γ⟨x∈Γ⟩
-    = ⊥-elim (x≢y x≡y) 
-  lemmafreeM⊆freeλyM {x} x∈freeM 
-      | there _ x∈Γ' , freeM⟨x∈freeM⟩≡Γ⟨x∈Γ'⟩ 
-      | no x≢y 
-      | x∈Γ , freeλyM⟨x∈freeƛyM⟩≡Γ⟨x∈Γ⟩
-      rewrite lemma∈!⟨⟩ x∈Γ x∈Γ'
-    =     there x≢y (lemmafreeCxt←* (⊢ƛ Γ,y:α⊢M∶β) (*ƛ (lemmafreeCxt→* Γ,y:α⊢M∶β x x∈freeM) (λ y≡x → ⊥-elim (x≢y (sym y≡x)))))
-       ,  trans freeM⟨x∈freeM⟩≡Γ⟨x∈Γ'⟩ (sym freeλyM⟨x∈freeƛyM⟩≡Γ⟨x∈Γ⟩)
-  lemmafreeM⊆freeλyM .{y} y∈freeM
-      | here refl , freeM⟨x∈freeM⟩≡α
-      | yes refl =  here refl , freeM⟨x∈freeM⟩≡α
-  lemmafreeM⊆freeλyM .{y} y∈freeM
-      | there y≢y _ , freeM⟨x∈freeM⟩≡Γ,y:α⟨x∈Γ⟩ 
-      | yes refl = ⊥-elim (y≢y refl)
-\end{code}
+-- lemmaStrengthening⊢free  : {Γ : Cxt}{M : Λ}{α : Type} 
+--                          → (p : Γ ⊢ M ∶ α) → freeCxt p ⊢ M ∶ α
+-- lemmaStrengthening⊢free (⊢v {x} x∈Γ) 
+--   rewrite lemma∈!⟨⟩ (lemma⊢*∈ (⊢v x∈Γ) (lemmafvfree→ x (v x) (here refl))) x∈Γ
+--   = ⊢v (here refl) 
+-- lemmaStrengthening⊢free (⊢· Γ⊢M∶α⟶β Γ⊢N∶α) 
+--   with lemmaStrengthening⊢free Γ⊢M∶α⟶β | lemmaStrengthening⊢free Γ⊢N∶α
+-- ... | freeM⊢M∶α⟶β | freeN⊢N∶α 
+--   = ⊢·  (lemmaWeakening⊢ lemmafreeM⊆freeMN freeM⊢M∶α⟶β) 
+--         (lemmaWeakening⊢ lemmafreeN⊆freeMN freeN⊢N∶α) 
+--   where
+--   lemmafreeM⊆freeMN : freeCxt Γ⊢M∶α⟶β ⊆c freeCxt (⊢· Γ⊢M∶α⟶β Γ⊢N∶α) 
+--   lemmafreeM⊆freeMN {x} x∈freeM 
+--     with lemmafreeCxt⊆ Γ⊢M∶α⟶β x∈freeM | lemmafreeCxt⊆ (⊢· Γ⊢M∶α⟶β Γ⊢N∶α) (lemmafreeCxt←* (⊢· Γ⊢M∶α⟶β Γ⊢N∶α) (*·l (lemmafreeCxt→* Γ⊢M∶α⟶β x x∈freeM)))
+--   ... | x∈Γ , freeM⟨x∈freeM⟩≡Γ⟨x∈Γ⟩ | x∈Γ' , freeMN⟨x∈freeMN⟩≡Γ⟨x∈Γ'⟩ rewrite lemma∈!⟨⟩ x∈Γ x∈Γ'
+--     =     lemmafreeCxt←* (⊢· Γ⊢M∶α⟶β Γ⊢N∶α) (*·l (lemmafreeCxt→* Γ⊢M∶α⟶β x x∈freeM)) 
+--        ,  trans freeM⟨x∈freeM⟩≡Γ⟨x∈Γ⟩ (sym freeMN⟨x∈freeMN⟩≡Γ⟨x∈Γ'⟩)
+--   lemmafreeN⊆freeMN : freeCxt Γ⊢N∶α ⊆c freeCxt (⊢· Γ⊢M∶α⟶β Γ⊢N∶α) 
+--   lemmafreeN⊆freeMN {x} x∈freeN 
+--     with lemmafreeCxt⊆ Γ⊢N∶α x∈freeN | lemmafreeCxt⊆ (⊢· Γ⊢M∶α⟶β Γ⊢N∶α) (lemmafreeCxt←* (⊢· Γ⊢M∶α⟶β Γ⊢N∶α) (*·r (lemmafreeCxt→* Γ⊢N∶α x x∈freeN)))
+--   ... | x∈Γ , freeN⟨x∈freeN⟩≡Γ⟨x∈Γ⟩ | x∈Γ' , freeMN⟨x∈freeMN⟩≡Γ⟨x∈Γ'⟩ rewrite lemma∈!⟨⟩ x∈Γ x∈Γ'
+--     =     lemmafreeCxt←* (⊢· Γ⊢M∶α⟶β Γ⊢N∶α) (*·r (lemmafreeCxt→* Γ⊢N∶α x x∈freeN)) 
+--        ,  trans freeN⟨x∈freeN⟩≡Γ⟨x∈Γ⟩ (sym freeMN⟨x∈freeMN⟩≡Γ⟨x∈Γ'⟩)
+-- lemmaStrengthening⊢free (⊢ƛ {y} {α} Γ,y:α⊢M∶β)
+--   with lemmaStrengthening⊢free Γ,y:α⊢M∶β
+-- ... | freeM⊢M∶β
+--   = ⊢ƛ (lemmaWeakening⊢ lemmafreeM⊆freeλyM freeM⊢M∶β)
+--   where 
+--   lemmafreeM⊆freeλyM : freeCxt Γ,y:α⊢M∶β ⊆c freeCxt (⊢ƛ Γ,y:α⊢M∶β) ‚ y , α
+--   lemmafreeM⊆freeλyM {x} x∈freeM 
+--     with lemmafreeCxt⊆ Γ,y:α⊢M∶β x∈freeM 
+--   ... | x∈Γ,y:α , freeM⟨x∈freeM⟩≡Γ,y:α⟨x∈Γ,y:α⟩ 
+--     with x ≟ y
+--   ... | no x≢y 
+--     with lemmafreeCxt⊆ (⊢ƛ Γ,y:α⊢M∶β) (lemmafreeCxt←* (⊢ƛ Γ,y:α⊢M∶β) (*ƛ (lemmafreeCxt→* Γ,y:α⊢M∶β x x∈freeM) (λ y≡x → ⊥-elim (x≢y (sym y≡x)))))
+--   lemmafreeM⊆freeλyM {x} x∈freeM 
+--       | here x≡y , freeM⟨x∈freeM⟩≡Γ,y:α⟨x∈Γ,y:α⟩ 
+--       | no x≢y 
+--       | x∈Γ , freeλyM⟨x∈freeƛyM⟩≡Γ⟨x∈Γ⟩
+--     = ⊥-elim (x≢y x≡y) 
+--   lemmafreeM⊆freeλyM {x} x∈freeM 
+--       | there _ x∈Γ' , freeM⟨x∈freeM⟩≡Γ⟨x∈Γ'⟩ 
+--       | no x≢y 
+--       | x∈Γ , freeλyM⟨x∈freeƛyM⟩≡Γ⟨x∈Γ⟩
+--       rewrite lemma∈!⟨⟩ x∈Γ x∈Γ'
+--     =     there x≢y (lemmafreeCxt←* (⊢ƛ Γ,y:α⊢M∶β) (*ƛ (lemmafreeCxt→* Γ,y:α⊢M∶β x x∈freeM) (λ y≡x → ⊥-elim (x≢y (sym y≡x)))))
+--        ,  trans freeM⟨x∈freeM⟩≡Γ⟨x∈Γ'⟩ (sym freeλyM⟨x∈freeƛyM⟩≡Γ⟨x∈Γ⟩)
+--   lemmafreeM⊆freeλyM .{y} y∈freeM
+--       | here refl , freeM⟨x∈freeM⟩≡α
+--       | yes refl =  here refl , freeM⟨x∈freeM⟩≡α
+--   lemmafreeM⊆freeλyM .{y} y∈freeM
+--       | there y≢y _ , freeM⟨x∈freeM⟩≡Γ,y:α⟨x∈Γ⟩ 
+--       | yes refl = ⊥-elim (y≢y refl)
+-- \end{code}
 
 Chi encapsulation
 
 \begin{code}
 χ : R → V
 χ (σ , M) = χ' (concat (map (fv ∘f σ) (fv M)))
+\end{code}
+
+\begin{code}
+χₜ : Λ → V
+χₜ M = χ' (fv M)
+--
+lemmaχₜ# : {M : Λ} → χₜ M # M
+lemmaχₜ# {M} = lemma∉fv→# (lemmaχaux∉ (fv M))
 \end{code}
 
 \begin{code}
@@ -407,11 +429,13 @@ prop7 : {x : V}{σ σ' : Σ}{M : Λ} → (σ' ∘ σ) ≺+ (x , M ∙ σ') ≅σ
 prop7 {x} {σ} {σ'} {M} y with x ≟ y
 ... | yes _  = refl
 ... | no _   = refl
-
 \end{code}
 
-
-
+\begin{code}
+x≢y→x*x[y/M] : {x y : V}{M : Λ} → x ≢ y → y * v y ∙ ι ≺+ (x , M)
+x≢y→x*x[y/M] {x} {y} {M} x≢y with (ι ≺+ (x , M)) y | x≢y→x[y/M]≡x {x} {y} {M} x≢y
+... | .(v y) | refl = *v
+\end{code}
 
 \begin{code}
 lemmax∙ι≺+x,N : (x : V)(N : Λ) → v x ∙ ι ≺+ (x , N) ≡ N  
@@ -421,7 +445,7 @@ lemmax∙ι≺+x,N x N with x ≟ x
 \end{code}
 
 \begin{code}
-lemma#→free# : {x : V}{σ : Σ}{M : Λ} → x # (M ∙ σ) → (y : V) → y * M → x # (σ y)
+lemma#→free# : {x : V}{σ : Σ}{M : Λ} → x # (M ∙ σ) → x #⇂ (σ , M) 
 lemma#→free# {x} {σ} {v .y}   x#σy           y *v
   = x#σy
 lemma#→free# {x} {σ} {M · N} (#· x#Mσ x#Nσ) y (*·l yfreeMσ)   
@@ -438,7 +462,7 @@ lemma#→free# {x} {σ} {ƛ z M} (#ƛ x#Mσ<+zw)  y (*ƛ yfreeM z≢y)
 sym≢ : {x y : V} → x ≢ y → y ≢ x
 sym≢ {x} {y} x≢y y≡x = x≢y (sym y≡x)
 
-lemmafree#→# : {x : V}{σ : Σ}{M : Λ} → ((y : V) → y * M → x # (σ y)) → x # (M ∙ σ) 
+lemmafree#→# : {x : V}{σ : Σ}{M : Λ} → x #⇂ (σ , M) → x # (M ∙ σ) 
 lemmafree#→# {x} {σ} {v y}   f = f y *v
 lemmafree#→# {x} {σ} {M · N} f 
   = #· (lemmafree#→# (λ y yfreeM → f y (*·l yfreeM))) 
@@ -472,7 +496,7 @@ lemmafree#y→# {x} {ƛ .x M} f
 No Capture Lemma
 
 \begin{code}
-lemmafreeσ→ : {x : V}{M : Λ}{σ : Σ} → x * (M ∙ σ) → ∃ (λ y → (y * M) × (x * σ y))
+lemmafreeσ→ : {x : V}{M : Λ}{σ : Σ} → x * (M ∙ σ) → x *⇂ (σ , M) --∃ (λ y → (y * M) × (x * σ y))
 lemmafreeσ→ {x} {v z}   {σ} xfreeσz = z , *v , xfreeσz
 lemmafreeσ→ {x} {M · N} {σ} (*·l xfreeMσ) = y , *·l yfreeMσ , xfreeσy
   where y = proj₁ (lemmafreeσ→ {x} {M} xfreeMσ)
@@ -586,6 +610,22 @@ lemma-length-corolary {x} {y} {M} = lemma-length {M} {ι ≺+ (x , v y)} lemma
 \end{code}
 
 
+\begin{code}
+lemmaaux⇀ : {x y : V}{M : Λ}{σ : Σ}{Γ Δ : Cxt}{α : Type}
+            → x #⇂ (σ , ƛ y M) → (σ ∶ Γ ⇀ Δ ⇂ ƛ y M) → (σ ≺+ (y , v x)) ∶ Γ ‚ y , α ⇀ (Δ ‚ x , α) ⇂ M
+lemmaaux⇀ {y = y} x#⇂σƛyM σ∶Γ⇀Δ⇂ƛyM {z} z*M z∈Γ,x with y ≟ z
+lemmaaux⇀ {y = y} x#⇂σƛyM σ∶Γ⇀Δ⇂ƛyM {z} z*M (there _ z∈Γ) 
+  | no  y≢z 
+  = lemmaWeakening⊢# (x#⇂σƛyM z (*ƛ z*M y≢z)) (σ∶Γ⇀Δ⇂ƛyM (*ƛ z*M y≢z) z∈Γ) -- (Γ'* z z∈Γ')
+lemmaaux⇀ _ _ {z} z*M (here z≡y)
+  | no  y≢z   = ⊥-elim (y≢z (sym z≡y))
+lemmaaux⇀ {y = y} _ _ .{y} z*M (here _) 
+  | yes refl  = ⊢v (here refl)
+lemmaaux⇀ {y = y} _ _ .{y} z*M (there y≢y _)
+   | yes refl  = ⊥-elim (y≢y refl)
+\end{code}
+
+
 %<*typesusbstterm>
 \begin{code}
 lemma⊢σM  :  {σ : Σ}{Γ Δ : Cxt}{M : Λ}{α : Type}
@@ -596,32 +636,14 @@ lemma⊢σM  :  {σ : Σ}{Γ Δ : Cxt}{M : Λ}{α : Type}
 \begin{code}
 lemma⊢σM  (⊢v p∈)              σ∶Γ⇀Δ⇂M
   = σ∶Γ⇀Δ⇂M *v p∈
-lemma⊢σM  (⊢· Γ⊢M∶α⟶β Γ⊢N∶β)  σ∶Γ⇀Δ⇂M
-  = ⊢·  (lemma⊢σM Γ⊢M∶α⟶β (λ {z} z*M z∈Γ → σ∶Γ⇀Δ⇂M (*·l z*M) z∈Γ)) 
-        (lemma⊢σM Γ⊢N∶β (λ {z} z*M z∈Γ → σ∶Γ⇀Δ⇂M (*·r z*M) z∈Γ))
-lemma⊢σM  {σ} {Σ} {Δ} {M = ƛ y M} {α = α ⟶ β} 
-          Γ⊢ƛyM∶α⟶β           σ∶Γ⇀Δ⇂M
-  with  freeCxt Γ⊢ƛyM∶α⟶β 
-  |     lemmafreeCxt→* Γ⊢ƛyM∶α⟶β 
-  |     lemmaStrengthening⊢free Γ⊢ƛyM∶α⟶β 
-  |     lemmafreeCxt⊆ Γ⊢ƛyM∶α⟶β
-... | Γ' | Γ'* | ⊢ƛ Γ',y:α⊢M∶β | Γ'⊆Γ
-  = ⊢ƛ (lemma⊢σM {σ ≺+ (y , v x)} {Γ' ‚ y ∶ α} {Δ ‚ x ∶ α} Γ',y:α⊢M∶β lemmaaux⇀)
+lemma⊢σM  (⊢· Γ⊢M∶α⟶β Γ⊢N∶β)   σ∶Γ⇀Δ⇂M
+  = ⊢·  (lemma⊢σM Γ⊢M∶α⟶β    (λ {z} z*M z∈Γ → σ∶Γ⇀Δ⇂M (*·l z*M) z∈Γ)) 
+        (lemma⊢σM Γ⊢N∶β      (λ {z} z*M z∈Γ → σ∶Γ⇀Δ⇂M (*·r z*M) z∈Γ))
+lemma⊢σM  {σ} {Γ} {Δ} {M = ƛ y M} {α = α ⟶ β} 
+          (⊢ƛ Γ,y:α⊢M∶β)       σ∶Γ⇀Δ⇂ƛyM
+  = ⊢ƛ  (lemma⊢σM  {σ ≺+ (y , v x)} {Γ ‚ y ∶ α} {Δ ‚ x ∶ α}
+                   Γ,y:α⊢M∶β  (lemmaaux⇀ x#⇂σƛyM σ∶Γ⇀Δ⇂ƛyM))
   where 
   x = χ (σ , ƛ y M)
-  χ#⇂σƛxM = χ-lemma2 σ (ƛ y M)
-  lemmaaux⇀ : (σ ≺+ (y , v x)) ∶ Γ' ‚ y , α ⇀ (Δ ‚ x , α) ⇂ M
-  lemmaaux⇀ {z} z*M z∈Γ',x with y ≟ z
-  lemmaaux⇀ {z} z*M (there _ z∈Γ')
-    | no  y≢z  with Γ'⊆Γ z∈Γ'
-  ... | z∈Γ , Γ'⟨z∈Γ'⟩≡Γ⟨z∈Γ⟩ 
-    rewrite Γ'⟨z∈Γ'⟩≡Γ⟨z∈Γ⟩ 
-    = lemmaWeakening⊢# (χ#⇂σƛxM z (Γ'* z z∈Γ')) (σ∶Γ⇀Δ⇂M (*ƛ z*M y≢z) z∈Γ)
-  lemmaaux⇀ {z} z*M (here z≡y)
-    | no  y≢z   = ⊥-elim (y≢z (sym z≡y))
-  lemmaaux⇀ .{y} z*M (here _) 
-    | yes refl  = ⊢v (here refl)
-  lemmaaux⇀ .{y} z*M (there y≢y _)
-    | yes refl  = ⊥-elim (y≢y refl)
+  x#⇂σƛyM = χ-lemma2 σ (ƛ y M)
 \end{code}
-

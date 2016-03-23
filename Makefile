@@ -1,10 +1,10 @@
 # name of agda compiler name
-AGDA = agda2.4.2.2  
+AGDA = agda
 
 LATEX = pdflatex
 
 # agda library location
-AGDALIBRARYFLAGS = -i . -i ~/Documents/NewAgda/agda-stdlib-0.9/src/
+AGDALIBRARYFLAGS = -i . -i /home/ernius/agda-stdlib-0.11/src/ 
 
 # agda html
 AGDAHTMLFLAGS = --html
@@ -15,17 +15,17 @@ AGDALATEXFLAGS = --latex
 latex/%.tex : %.lagda
 	$(AGDA) $(AGDALATEXFLAGS) $(AGDALIBRARYFLAGS) $<
 
-bib : latex/resumen.bib
-	cd latex; pdflatex resumen.tex; bibtex resumen;pdflatex resumen.tex;pdflatex resumen.tex; cd ..;
+bib : latex/resumen.bib latex/x2
+	cd latex; pdflatex resumenCR.tex; bibtex resumenCR;pdflatex resumenCR.tex;pdflatex resumenCR.tex; cd ..;
 
-resumen : latex/resumen.tex latex/Substitution.tex latex/FreeVariables.tex latex/Atom.tex latex/Alpha.tex latex/Chi.tex latex/Equivariant.tex latex/ListProperties.tex latex/NaturalProperties.tex latex/Permutation.tex latex/TermAcc.tex latex/Term.tex latex/TermInduction.tex latex/TermRecursion.tex latex/Norrish.tex 
-	cd latex; $(LATEX) resumen.tex; cd ..;	
+resumen : latex/resumenChurchRosser.tex latex/ChurchRosser.tex latex/Substitution.tex latex/Alpha.tex latex/Chi.tex latex/Context.tex latex/ListProperties.tex latex/NaturalProp.tex latex/ParallelReduction.tex latex/SubstitutionLemmas.tex latex/Term.tex latex/Beta.tex
+	cd latex; $(LATEX) resumenChurchRosser.tex; cd ..;	
 
-SubstitutionLemmas : SubstitutionLemmas.lagda
-	$(AGDA) $(AGDALIBRARYFLAGS) SubstitutionLemmas.lagda
+ChurchRosser : ChurchRosser.lagda
+	$(AGDA) $(AGDALIBRARYFLAGS) ChurchRosser.lagda
 
 html : *.lagda
-	$(AGDA) $(AGDAHTMLFLAGS) $(AGDALIBRARYFLAGS) SubstitutionLemmas.lagda; cp -rf html/ ../formalmetatheory-stoughton
+	$(AGDA) $(AGDAHTMLFLAGS) $(AGDALIBRARYFLAGS) ChurchRosser.lagda
 
 clean :
 	rm *.agdai

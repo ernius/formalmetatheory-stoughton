@@ -1,0 +1,4713 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+><head
+  ><title
+    >Alpha</title
+    ><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+     /><meta http-equiv="Content-Style-Type" content="text/css"
+     /><link href="Agda.css" rel="stylesheet" type="text/css"
+     /></head
+  ><body
+  ><pre
+    ><a name="1"
+      >\begin{code}
+</a
+      ><a name="14" class="Keyword"
+      >module</a
+      ><a name="20"
+      > </a
+      ><a name="21" href="Alpha.html#1" class="Module"
+      >Alpha</a
+      ><a name="26"
+      > </a
+      ><a name="27" class="Keyword"
+      >where</a
+      ><a name="32"
+      >
+
+</a
+      ><a name="34" class="Keyword"
+      >open</a
+      ><a name="38"
+      > </a
+      ><a name="39" class="Keyword"
+      >import</a
+      ><a name="45"
+      > </a
+      ><a name="46" href="Chi.html#1" class="Module"
+      >Chi</a
+      ><a name="49"
+      >
+</a
+      ><a name="50" class="Keyword"
+      >open</a
+      ><a name="54"
+      > </a
+      ><a name="55" class="Keyword"
+      >import</a
+      ><a name="61"
+      > </a
+      ><a name="62" href="Term.html#1" class="Module"
+      >Term</a
+      ><a name="66"
+      >
+</a
+      ><a name="67" class="Keyword"
+      >open</a
+      ><a name="71"
+      > </a
+      ><a name="72" class="Keyword"
+      >import</a
+      ><a name="78"
+      > </a
+      ><a name="79" href="Substitution.html#1" class="Module"
+      >Substitution</a
+      ><a name="91"
+      > 
+
+</a
+      ><a name="94" class="Keyword"
+      >open</a
+      ><a name="98"
+      > </a
+      ><a name="99" class="Keyword"
+      >import</a
+      ><a name="105"
+      > </a
+      ><a name="106" href="Function.html#1" class="Module"
+      >Function</a
+      ><a name="114"
+      >
+</a
+      ><a name="115" class="Keyword"
+      >open</a
+      ><a name="119"
+      > </a
+      ><a name="120" class="Keyword"
+      >import</a
+      ><a name="126"
+      > </a
+      ><a name="127" href="Data.Empty.html#1" class="Module"
+      >Data.Empty</a
+      ><a name="137"
+      >
+</a
+      ><a name="138" class="Keyword"
+      >open</a
+      ><a name="142"
+      > </a
+      ><a name="143" class="Keyword"
+      >import</a
+      ><a name="149"
+      > </a
+      ><a name="150" href="Relation.Nullary.html#1" class="Module"
+      >Relation.Nullary</a
+      ><a name="166"
+      >
+</a
+      ><a name="167" class="Keyword"
+      >open</a
+      ><a name="171"
+      > </a
+      ><a name="172" class="Keyword"
+      >import</a
+      ><a name="178"
+      > </a
+      ><a name="179" href="Data.Nat.html#1" class="Module"
+      >Data.Nat</a
+      ><a name="187"
+      > </a
+      ><a name="188" class="Keyword"
+      >hiding</a
+      ><a name="194"
+      > </a
+      ><a name="195" class="Symbol"
+      >(</a
+      ><a name="196"
+      >_*_</a
+      ><a name="199" class="Symbol"
+      >)</a
+      ><a name="200"
+      >
+</a
+      ><a name="201" class="Keyword"
+      >open</a
+      ><a name="205"
+      > </a
+      ><a name="206" class="Keyword"
+      >import</a
+      ><a name="212"
+      > </a
+      ><a name="213" href="Data.Product.html#1" class="Module"
+      >Data.Product</a
+      ><a name="225"
+      > </a
+      ><a name="226" class="Keyword"
+      >renaming</a
+      ><a name="234"
+      > </a
+      ><a name="235" class="Symbol"
+      >(</a
+      ><a name="236"
+      >&#931; </a
+      ><a name="238" class="Symbol"
+      >to</a
+      ><a name="240"
+      > &#931;&#8339;</a
+      ><a name="243" class="Symbol"
+      >)</a
+      ><a name="244"
+      >
+</a
+      ><a name="245" class="Keyword"
+      >open</a
+      ><a name="249"
+      > </a
+      ><a name="250" class="Keyword"
+      >import</a
+      ><a name="256"
+      > </a
+      ><a name="257" href="Relation.Binary.PropositionalEquality.html#1" class="Module"
+      >Relation.Binary.PropositionalEquality</a
+      ><a name="294"
+      > </a
+      ><a name="295" class="Symbol"
+      >as</a
+      ><a name="297"
+      > </a
+      ><a name="298" class="Module"
+      >PropEq</a
+      ><a name="304"
+      >
+  </a
+      ><a name="307" class="Keyword"
+      >using</a
+      ><a name="312"
+      > </a
+      ><a name="313" class="Symbol"
+      >(</a
+      ><a name="314"
+      >_&#8801;_</a
+      ><a name="317" class="Symbol"
+      >;</a
+      ><a name="318"
+      > _&#8802;_</a
+      ><a name="322" class="Symbol"
+      >;</a
+      ><a name="323"
+      > refl</a
+      ><a name="328" class="Symbol"
+      >;</a
+      ><a name="329"
+      > sym</a
+      ><a name="333" class="Symbol"
+      >;</a
+      ><a name="334"
+      > cong</a
+      ><a name="339" class="Symbol"
+      >;</a
+      ><a name="340"
+      > cong&#8322;</a
+      ><a name="346" class="Symbol"
+      >;</a
+      ><a name="347"
+      > trans</a
+      ><a name="353" class="Symbol"
+      >)</a
+      ><a name="354"
+      >
+</a
+      ><a name="355" class="Keyword"
+      >open</a
+      ><a name="359"
+      > </a
+      ><a name="360" href="Relation.Binary.PropositionalEquality.html#243" class="Module"
+      >PropEq.</a
+      ><a name="367" href="Relation.Binary.PropositionalEquality.html#5746" class="Module"
+      >&#8801;-Reasoning</a
+      ><a name="378"
+      > </a
+      ><a name="379" class="Keyword"
+      >renaming</a
+      ><a name="387"
+      > </a
+      ><a name="388" class="Symbol"
+      >(</a
+      ><a name="389"
+      >begin_ </a
+      ><a name="396" class="Symbol"
+      >to</a
+      ><a name="398"
+      > begin&#8801;_</a
+      ><a name="406" class="Symbol"
+      >;</a
+      ><a name="407"
+      >_&#8718; </a
+      ><a name="410" class="Symbol"
+      >to</a
+      ><a name="412"
+      > _&#9723;</a
+      ><a name="415" class="Symbol"
+      >)</a
+      ><a name="416"
+      >
+
+</a
+      ><a name="418" class="Keyword"
+      >infix</a
+      ><a name="423"
+      >  </a
+      ><a name="425" class="Number"
+      >3</a
+      ><a name="426"
+      > _&#8764;&#945;_ 
+\end{code}
+
+
+\begin{code}
+</a
+      ><a name="459" class="Keyword"
+      >data</a
+      ><a name="463"
+      > </a
+      ><a name="464" href="Alpha.html#464" class="Datatype Operator"
+      >_&#8764;&#945;_</a
+      ><a name="468"
+      > </a
+      ><a name="469" class="Symbol"
+      >:</a
+      ><a name="470"
+      > </a
+      ><a name="471" href="Term.html#1156" class="Datatype"
+      >&#923;</a
+      ><a name="472"
+      > </a
+      ><a name="473" class="Symbol"
+      >&#8594;</a
+      ><a name="474"
+      > </a
+      ><a name="475" href="Term.html#1156" class="Datatype"
+      >&#923;</a
+      ><a name="476"
+      > </a
+      ><a name="477" class="Symbol"
+      >&#8594;</a
+      ><a name="478"
+      > </a
+      ><a name="479" class="PrimitiveType"
+      >Set</a
+      ><a name="482"
+      > </a
+      ><a name="483" class="Keyword"
+      >where</a
+      ><a name="488"
+      >
+  </a
+      ><a name="491" href="Alpha.html#491" class="InductiveConstructor"
+      >&#8764;v</a
+      ><a name="493"
+      >  </a
+      ><a name="495" class="Symbol"
+      >:</a
+      ><a name="496"
+      > </a
+      ><a name="497" class="Symbol"
+      >{</a
+      ><a name="498" href="Alpha.html#498" class="Bound"
+      >x</a
+      ><a name="499"
+      > </a
+      ><a name="500" class="Symbol"
+      >:</a
+      ><a name="501"
+      > </a
+      ><a name="502" href="Chi.html#1141" class="Function"
+      >V</a
+      ><a name="503" class="Symbol"
+      >}</a
+      ><a name="504"
+      > </a
+      ><a name="505" class="Symbol"
+      >&#8594;</a
+      ><a name="506"
+      > </a
+      ><a name="507" class="Symbol"
+      >(</a
+      ><a name="508" href="Term.html#1172" class="InductiveConstructor"
+      >v</a
+      ><a name="509"
+      > </a
+      ><a name="510" href="Alpha.html#498" class="Bound"
+      >x</a
+      ><a name="511" class="Symbol"
+      >)</a
+      ><a name="512"
+      > </a
+      ><a name="513" href="Alpha.html#464" class="Datatype Operator"
+      >&#8764;&#945;</a
+      ><a name="515"
+      > </a
+      ><a name="516" href="Term.html#1172" class="InductiveConstructor"
+      >v</a
+      ><a name="517"
+      > </a
+      ><a name="518" href="Alpha.html#498" class="Bound"
+      >x</a
+      ><a name="519"
+      >
+  </a
+      ><a name="522" href="Alpha.html#522" class="InductiveConstructor"
+      >&#8764;&#183;</a
+      ><a name="524"
+      >  </a
+      ><a name="526" class="Symbol"
+      >:</a
+      ><a name="527"
+      > </a
+      ><a name="528" class="Symbol"
+      >{</a
+      ><a name="529" href="Alpha.html#529" class="Bound"
+      >M</a
+      ><a name="530"
+      > </a
+      ><a name="531" href="Alpha.html#531" class="Bound"
+      >M'</a
+      ><a name="533"
+      > </a
+      ><a name="534" href="Alpha.html#534" class="Bound"
+      >N</a
+      ><a name="535"
+      > </a
+      ><a name="536" href="Alpha.html#536" class="Bound"
+      >N'</a
+      ><a name="538"
+      > </a
+      ><a name="539" class="Symbol"
+      >:</a
+      ><a name="540"
+      > </a
+      ><a name="541" href="Term.html#1156" class="Datatype"
+      >&#923;</a
+      ><a name="542" class="Symbol"
+      >}</a
+      ><a name="543"
+      > </a
+      ><a name="544" class="Symbol"
+      >&#8594;</a
+      ><a name="545"
+      > </a
+      ><a name="546" href="Alpha.html#529" class="Bound"
+      >M</a
+      ><a name="547"
+      > </a
+      ><a name="548" href="Alpha.html#464" class="Datatype Operator"
+      >&#8764;&#945;</a
+      ><a name="550"
+      > </a
+      ><a name="551" href="Alpha.html#531" class="Bound"
+      >M'</a
+      ><a name="553"
+      > </a
+      ><a name="554" class="Symbol"
+      >&#8594;</a
+      ><a name="555"
+      > </a
+      ><a name="556" href="Alpha.html#534" class="Bound"
+      >N</a
+      ><a name="557"
+      > </a
+      ><a name="558" href="Alpha.html#464" class="Datatype Operator"
+      >&#8764;&#945;</a
+      ><a name="560"
+      > </a
+      ><a name="561" href="Alpha.html#536" class="Bound"
+      >N'</a
+      ><a name="563"
+      > 
+      </a
+      ><a name="571" class="Symbol"
+      >&#8594;</a
+      ><a name="572"
+      > </a
+      ><a name="573" href="Alpha.html#529" class="Bound"
+      >M</a
+      ><a name="574"
+      > </a
+      ><a name="575" href="Term.html#1188" class="InductiveConstructor Operator"
+      >&#183;</a
+      ><a name="576"
+      > </a
+      ><a name="577" href="Alpha.html#534" class="Bound"
+      >N</a
+      ><a name="578"
+      > </a
+      ><a name="579" href="Alpha.html#464" class="Datatype Operator"
+      >&#8764;&#945;</a
+      ><a name="581"
+      > </a
+      ><a name="582" href="Alpha.html#531" class="Bound"
+      >M'</a
+      ><a name="584"
+      > </a
+      ><a name="585" href="Term.html#1188" class="InductiveConstructor Operator"
+      >&#183;</a
+      ><a name="586"
+      > </a
+      ><a name="587" href="Alpha.html#536" class="Bound"
+      >N'</a
+      ><a name="589"
+      >
+  </a
+      ><a name="592" href="Alpha.html#592" class="InductiveConstructor"
+      >&#8764;&#411;</a
+      ><a name="594"
+      >  </a
+      ><a name="596" class="Symbol"
+      >:</a
+      ><a name="597"
+      > </a
+      ><a name="598" class="Symbol"
+      >{</a
+      ><a name="599" href="Alpha.html#599" class="Bound"
+      >M</a
+      ><a name="600"
+      > </a
+      ><a name="601" href="Alpha.html#601" class="Bound"
+      >M'</a
+      ><a name="603"
+      > </a
+      ><a name="604" class="Symbol"
+      >:</a
+      ><a name="605"
+      > </a
+      ><a name="606" href="Term.html#1156" class="Datatype"
+      >&#923;</a
+      ><a name="607" class="Symbol"
+      >}{</a
+      ><a name="609" href="Alpha.html#609" class="Bound"
+      >x</a
+      ><a name="610"
+      > </a
+      ><a name="611" href="Alpha.html#611" class="Bound"
+      >x'</a
+      ><a name="613"
+      > </a
+      ><a name="614" href="Alpha.html#614" class="Bound"
+      >y</a
+      ><a name="615"
+      > </a
+      ><a name="616" class="Symbol"
+      >:</a
+      ><a name="617"
+      > </a
+      ><a name="618" href="Chi.html#1141" class="Function"
+      >V</a
+      ><a name="619" class="Symbol"
+      >}</a
+      ><a name="620"
+      > 
+      </a
+      ><a name="628" class="Symbol"
+      >&#8594;</a
+      ><a name="629"
+      > </a
+      ><a name="630" href="Alpha.html#614" class="Bound"
+      >y</a
+      ><a name="631"
+      > </a
+      ><a name="632" href="Term.html#3423" class="Datatype Operator"
+      >#</a
+      ><a name="633"
+      > </a
+      ><a name="634" href="Term.html#1208" class="InductiveConstructor"
+      >&#411;</a
+      ><a name="635"
+      > </a
+      ><a name="636" href="Alpha.html#609" class="Bound"
+      >x</a
+      ><a name="637"
+      > </a
+      ><a name="638" href="Alpha.html#599" class="Bound"
+      >M</a
+      ><a name="639"
+      > </a
+      ><a name="640" class="Symbol"
+      >&#8594;</a
+      ><a name="641"
+      > </a
+      ><a name="642" href="Alpha.html#614" class="Bound"
+      >y</a
+      ><a name="643"
+      > </a
+      ><a name="644" href="Term.html#3423" class="Datatype Operator"
+      >#</a
+      ><a name="645"
+      > </a
+      ><a name="646" href="Term.html#1208" class="InductiveConstructor"
+      >&#411;</a
+      ><a name="647"
+      > </a
+      ><a name="648" href="Alpha.html#611" class="Bound"
+      >x'</a
+      ><a name="650"
+      > </a
+      ><a name="651" href="Alpha.html#601" class="Bound"
+      >M'</a
+      ><a name="653"
+      > 
+      </a
+      ><a name="661" class="Symbol"
+      >&#8594;</a
+      ><a name="662"
+      > </a
+      ><a name="663" href="Alpha.html#599" class="Bound"
+      >M</a
+      ><a name="664"
+      > </a
+      ><a name="665" href="Substitution.html#14552" class="Function Operator"
+      >&#8729;</a
+      ><a name="666"
+      > </a
+      ><a name="667" href="Substitution.html#1239" class="Function"
+      >&#953;</a
+      ><a name="668"
+      > </a
+      ><a name="669" href="Substitution.html#1283" class="Function Operator"
+      >&#8826;+</a
+      ><a name="671"
+      > </a
+      ><a name="672" class="Symbol"
+      >(</a
+      ><a name="673" href="Alpha.html#609" class="Bound"
+      >x</a
+      ><a name="674"
+      > </a
+      ><a name="675" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="676"
+      > </a
+      ><a name="677" href="Term.html#1172" class="InductiveConstructor"
+      >v</a
+      ><a name="678"
+      > </a
+      ><a name="679" href="Alpha.html#614" class="Bound"
+      >y</a
+      ><a name="680" class="Symbol"
+      >)</a
+      ><a name="681"
+      > </a
+      ><a name="682" href="Alpha.html#464" class="Datatype Operator"
+      >&#8764;&#945;</a
+      ><a name="684"
+      > </a
+      ><a name="685" href="Alpha.html#601" class="Bound"
+      >M'</a
+      ><a name="687"
+      > </a
+      ><a name="688" href="Substitution.html#14552" class="Function Operator"
+      >&#8729;</a
+      ><a name="689"
+      > </a
+      ><a name="690" href="Substitution.html#1239" class="Function"
+      >&#953;</a
+      ><a name="691"
+      > </a
+      ><a name="692" href="Substitution.html#1283" class="Function Operator"
+      >&#8826;+</a
+      ><a name="694"
+      > </a
+      ><a name="695" class="Symbol"
+      >(</a
+      ><a name="696" href="Alpha.html#611" class="Bound"
+      >x'</a
+      ><a name="698"
+      > </a
+      ><a name="699" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="700"
+      > </a
+      ><a name="701" href="Term.html#1172" class="InductiveConstructor"
+      >v</a
+      ><a name="702"
+      > </a
+      ><a name="703" href="Alpha.html#614" class="Bound"
+      >y</a
+      ><a name="704" class="Symbol"
+      >)</a
+      ><a name="705"
+      >
+      </a
+      ><a name="712" class="Symbol"
+      >&#8594;</a
+      ><a name="713"
+      > </a
+      ><a name="714" href="Term.html#1208" class="InductiveConstructor"
+      >&#411;</a
+      ><a name="715"
+      > </a
+      ><a name="716" href="Alpha.html#609" class="Bound"
+      >x</a
+      ><a name="717"
+      > </a
+      ><a name="718" href="Alpha.html#599" class="Bound"
+      >M</a
+      ><a name="719"
+      > </a
+      ><a name="720" href="Alpha.html#464" class="Datatype Operator"
+      >&#8764;&#945;</a
+      ><a name="722"
+      > </a
+      ><a name="723" href="Term.html#1208" class="InductiveConstructor"
+      >&#411;</a
+      ><a name="724"
+      > </a
+      ><a name="725" href="Alpha.html#611" class="Bound"
+      >x'</a
+      ><a name="727"
+      > </a
+      ><a name="728" href="Alpha.html#601" class="Bound"
+      >M'</a
+      ><a name="730"
+      >
+\end{code}
+
+\begin{code}
+</a
+      ><a name="756" class="Keyword"
+      >infix</a
+      ><a name="761"
+      > </a
+      ><a name="762" class="Number"
+      >1</a
+      ><a name="763"
+      > _&#8764;&#945;_&#8642;_
+</a
+      ><a name="771" href="Alpha.html#771" class="Function Operator"
+      >_&#8764;&#945;_&#8642;_</a
+      ><a name="777"
+      > </a
+      ><a name="778" class="Symbol"
+      >:</a
+      ><a name="779"
+      > </a
+      ><a name="780" href="Substitution.html#1204" class="Function"
+      >&#931;</a
+      ><a name="781"
+      > </a
+      ><a name="782" class="Symbol"
+      >&#8594;</a
+      ><a name="783"
+      > </a
+      ><a name="784" href="Substitution.html#1204" class="Function"
+      >&#931;</a
+      ><a name="785"
+      > </a
+      ><a name="786" class="Symbol"
+      >&#8594;</a
+      ><a name="787"
+      > </a
+      ><a name="788" href="Term.html#1156" class="Datatype"
+      >&#923;</a
+      ><a name="789"
+      > </a
+      ><a name="790" class="Symbol"
+      >&#8594;</a
+      ><a name="791"
+      > </a
+      ><a name="792" class="PrimitiveType"
+      >Set</a
+      ><a name="795"
+      >
+</a
+      ><a name="796" href="Alpha.html#796" class="Bound"
+      >&#963;</a
+      ><a name="797"
+      > </a
+      ><a name="798" href="Alpha.html#771" class="Function Operator"
+      >&#8764;&#945;</a
+      ><a name="800"
+      > </a
+      ><a name="801" href="Alpha.html#801" class="Bound"
+      >&#963;'</a
+      ><a name="803"
+      > </a
+      ><a name="804" href="Alpha.html#771" class="Function Operator"
+      >&#8642;</a
+      ><a name="805"
+      > </a
+      ><a name="806" href="Alpha.html#806" class="Bound"
+      >M</a
+      ><a name="807"
+      > </a
+      ><a name="808" class="Symbol"
+      >=</a
+      ><a name="809"
+      > </a
+      ><a name="810" class="Symbol"
+      >(</a
+      ><a name="811" href="Alpha.html#811" class="Bound"
+      >x</a
+      ><a name="812"
+      > </a
+      ><a name="813" class="Symbol"
+      >:</a
+      ><a name="814"
+      > </a
+      ><a name="815" href="Chi.html#1141" class="Function"
+      >V</a
+      ><a name="816" class="Symbol"
+      >)</a
+      ><a name="817"
+      > </a
+      ><a name="818" class="Symbol"
+      >&#8594;</a
+      ><a name="819"
+      > </a
+      ><a name="820" href="Alpha.html#811" class="Bound"
+      >x</a
+      ><a name="821"
+      > </a
+      ><a name="822" href="Term.html#4430" class="Datatype Operator"
+      >*</a
+      ><a name="823"
+      > </a
+      ><a name="824" href="Alpha.html#806" class="Bound"
+      >M</a
+      ><a name="825"
+      > </a
+      ><a name="826" class="Symbol"
+      >&#8594;</a
+      ><a name="827"
+      > </a
+      ><a name="828" href="Alpha.html#796" class="Bound"
+      >&#963;</a
+      ><a name="829"
+      > </a
+      ><a name="830" href="Alpha.html#811" class="Bound"
+      >x</a
+      ><a name="831"
+      > </a
+      ><a name="832" href="Alpha.html#464" class="Datatype Operator"
+      >&#8764;&#945;</a
+      ><a name="834"
+      > </a
+      ><a name="835" href="Alpha.html#801" class="Bound"
+      >&#963;'</a
+      ><a name="837"
+      > </a
+      ><a name="838" href="Alpha.html#811" class="Bound"
+      >x</a
+      ><a name="839"
+      >
+
+</a
+      ><a name="841" href="Alpha.html#841" class="Function"
+      >lemma&#953;&#8764;&#945;&#8642;</a
+      ><a name="850"
+      > </a
+      ><a name="851" class="Symbol"
+      >:</a
+      ><a name="852"
+      > </a
+      ><a name="853" class="Symbol"
+      >{</a
+      ><a name="854" href="Alpha.html#854" class="Bound"
+      >M</a
+      ><a name="855"
+      > </a
+      ><a name="856" class="Symbol"
+      >:</a
+      ><a name="857"
+      > </a
+      ><a name="858" href="Term.html#1156" class="Datatype"
+      >&#923;</a
+      ><a name="859" class="Symbol"
+      >}</a
+      ><a name="860"
+      > </a
+      ><a name="861" class="Symbol"
+      >&#8594;</a
+      ><a name="862"
+      > </a
+      ><a name="863" href="Substitution.html#1239" class="Function"
+      >&#953;</a
+      ><a name="864"
+      > </a
+      ><a name="865" href="Alpha.html#771" class="Function Operator"
+      >&#8764;&#945;</a
+      ><a name="867"
+      > </a
+      ><a name="868" href="Substitution.html#1239" class="Function"
+      >&#953;</a
+      ><a name="869"
+      > </a
+      ><a name="870" href="Alpha.html#771" class="Function Operator"
+      >&#8642;</a
+      ><a name="871"
+      > </a
+      ><a name="872" href="Alpha.html#854" class="Bound"
+      >M</a
+      ><a name="873"
+      >
+</a
+      ><a name="874" href="Alpha.html#841" class="Function"
+      >lemma&#953;&#8764;&#945;&#8642;</a
+      ><a name="883"
+      > </a
+      ><a name="884" class="Symbol"
+      >{</a
+      ><a name="885" href="Alpha.html#885" class="Bound"
+      >M</a
+      ><a name="886" class="Symbol"
+      >}</a
+      ><a name="887"
+      > </a
+      ><a name="888" href="Alpha.html#888" class="Bound"
+      >x</a
+      ><a name="889"
+      > </a
+      ><a name="890" class="Symbol"
+      >_</a
+      ><a name="891"
+      > </a
+      ><a name="892" class="Symbol"
+      >=</a
+      ><a name="893"
+      > </a
+      ><a name="894" href="Alpha.html#491" class="InductiveConstructor"
+      >&#8764;v</a
+      ><a name="896"
+      > 
+
+</a
+      ><a name="899" href="Alpha.html#899" class="Function"
+      >lemma&#8826;+&#8764;&#945;&#8642;</a
+      ><a name="909"
+      > </a
+      ><a name="910" class="Symbol"
+      >:</a
+      ><a name="911"
+      > </a
+      ><a name="912" class="Symbol"
+      >{</a
+      ><a name="913" href="Alpha.html#913" class="Bound"
+      >x</a
+      ><a name="914"
+      > </a
+      ><a name="915" class="Symbol"
+      >:</a
+      ><a name="916"
+      > </a
+      ><a name="917" href="Chi.html#1141" class="Function"
+      >V</a
+      ><a name="918" class="Symbol"
+      >}{</a
+      ><a name="920" href="Alpha.html#920" class="Bound"
+      >M</a
+      ><a name="921"
+      > </a
+      ><a name="922" href="Alpha.html#922" class="Bound"
+      >N</a
+      ><a name="923"
+      > </a
+      ><a name="924" href="Alpha.html#924" class="Bound"
+      >P</a
+      ><a name="925"
+      > </a
+      ><a name="926" class="Symbol"
+      >:</a
+      ><a name="927"
+      > </a
+      ><a name="928" href="Term.html#1156" class="Datatype"
+      >&#923;</a
+      ><a name="929" class="Symbol"
+      >}{</a
+      ><a name="931" href="Alpha.html#931" class="Bound"
+      >&#963;</a
+      ><a name="932"
+      > </a
+      ><a name="933" href="Alpha.html#933" class="Bound"
+      >&#963;'</a
+      ><a name="935"
+      > </a
+      ><a name="936" class="Symbol"
+      >:</a
+      ><a name="937"
+      > </a
+      ><a name="938" href="Substitution.html#1204" class="Function"
+      >&#931;</a
+      ><a name="939" class="Symbol"
+      >}</a
+      ><a name="940"
+      > </a
+      ><a name="941" class="Symbol"
+      >&#8594;</a
+      ><a name="942"
+      > </a
+      ><a name="943" href="Alpha.html#931" class="Bound"
+      >&#963;</a
+      ><a name="944"
+      > </a
+      ><a name="945" href="Alpha.html#771" class="Function Operator"
+      >&#8764;&#945;</a
+      ><a name="947"
+      > </a
+      ><a name="948" href="Alpha.html#933" class="Bound"
+      >&#963;'</a
+      ><a name="950"
+      > </a
+      ><a name="951" href="Alpha.html#771" class="Function Operator"
+      >&#8642;</a
+      ><a name="952"
+      > </a
+      ><a name="953" href="Alpha.html#920" class="Bound"
+      >M</a
+      ><a name="954"
+      > </a
+      ><a name="955" class="Symbol"
+      >&#8594;</a
+      ><a name="956"
+      > </a
+      ><a name="957" href="Alpha.html#922" class="Bound"
+      >N</a
+      ><a name="958"
+      > </a
+      ><a name="959" href="Alpha.html#464" class="Datatype Operator"
+      >&#8764;&#945;</a
+      ><a name="961"
+      > </a
+      ><a name="962" href="Alpha.html#924" class="Bound"
+      >P</a
+      ><a name="963"
+      > </a
+      ><a name="964" class="Symbol"
+      >&#8594;</a
+      ><a name="965"
+      > </a
+      ><a name="966" href="Alpha.html#931" class="Bound"
+      >&#963;</a
+      ><a name="967"
+      > </a
+      ><a name="968" href="Substitution.html#1283" class="Function Operator"
+      >&#8826;+</a
+      ><a name="970"
+      > </a
+      ><a name="971" class="Symbol"
+      >(</a
+      ><a name="972" href="Alpha.html#913" class="Bound"
+      >x</a
+      ><a name="973"
+      > </a
+      ><a name="974" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="975"
+      > </a
+      ><a name="976" href="Alpha.html#922" class="Bound"
+      >N</a
+      ><a name="977" class="Symbol"
+      >)</a
+      ><a name="978"
+      > </a
+      ><a name="979" href="Alpha.html#771" class="Function Operator"
+      >&#8764;&#945;</a
+      ><a name="981"
+      > </a
+      ><a name="982" href="Alpha.html#933" class="Bound"
+      >&#963;'</a
+      ><a name="984"
+      > </a
+      ><a name="985" href="Substitution.html#1283" class="Function Operator"
+      >&#8826;+</a
+      ><a name="987"
+      > </a
+      ><a name="988" class="Symbol"
+      >(</a
+      ><a name="989" href="Alpha.html#913" class="Bound"
+      >x</a
+      ><a name="990"
+      > </a
+      ><a name="991" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="992"
+      > </a
+      ><a name="993" href="Alpha.html#924" class="Bound"
+      >P</a
+      ><a name="994" class="Symbol"
+      >)</a
+      ><a name="995"
+      > </a
+      ><a name="996" href="Alpha.html#771" class="Function Operator"
+      >&#8642;</a
+      ><a name="997"
+      > </a
+      ><a name="998" href="Alpha.html#920" class="Bound"
+      >M</a
+      ><a name="999"
+      >
+</a
+      ><a name="1000" href="Alpha.html#899" class="Function"
+      >lemma&#8826;+&#8764;&#945;&#8642;</a
+      ><a name="1010"
+      > </a
+      ><a name="1011" class="Symbol"
+      >{</a
+      ><a name="1012" href="Alpha.html#1012" class="Bound"
+      >x</a
+      ><a name="1013" class="Symbol"
+      >}</a
+      ><a name="1014"
+      > </a
+      ><a name="1015" href="Alpha.html#1015" class="Bound"
+      >&#963;&#8764;&#945;&#963;'&#8642;M</a
+      ><a name="1022"
+      > </a
+      ><a name="1023" href="Alpha.html#1023" class="Bound"
+      >N~P</a
+      ><a name="1026"
+      > </a
+      ><a name="1027" href="Alpha.html#1027" class="Bound"
+      >y</a
+      ><a name="1028"
+      > </a
+      ><a name="1029" href="Alpha.html#1029" class="Bound"
+      >y*M</a
+      ><a name="1032"
+      > </a
+      ><a name="1033" class="Keyword"
+      >with</a
+      ><a name="1037"
+      > </a
+      ><a name="1038" href="Alpha.html#1012" class="Bound"
+      >x</a
+      ><a name="1039"
+      > </a
+      ><a name="1040" href="Data.Nat.Base.html#3467" class="Function Operator"
+      >&#8799;</a
+      ><a name="1041"
+      > </a
+      ><a name="1042" href="Alpha.html#1027" class="Bound"
+      >y</a
+      ><a name="1043"
+      >
+</a
+      ><a name="1044" class="Symbol"
+      >...</a
+      ><a name="1047"
+      > </a
+      ><a name="1048" class="Symbol"
+      >|</a
+      ><a name="1049"
+      > </a
+      ><a name="1050" href="Relation.Nullary.html#520" class="InductiveConstructor"
+      >yes</a
+      ><a name="1053"
+      >  </a
+      ><a name="1055" class="Symbol"
+      >_</a
+      ><a name="1056"
+      > </a
+      ><a name="1057" class="Symbol"
+      >=</a
+      ><a name="1058"
+      > </a
+      ><a name="1059" href="Alpha.html#1023" class="Bound"
+      >N~P</a
+      ><a name="1062"
+      > 
+</a
+      ><a name="1064" class="Symbol"
+      >...</a
+      ><a name="1067"
+      > </a
+      ><a name="1068" class="Symbol"
+      >|</a
+      ><a name="1069"
+      > </a
+      ><a name="1070" href="Relation.Nullary.html#547" class="InductiveConstructor"
+      >no</a
+      ><a name="1072"
+      >   </a
+      ><a name="1075" class="Symbol"
+      >_</a
+      ><a name="1076"
+      > </a
+      ><a name="1077" class="Symbol"
+      >=</a
+      ><a name="1078"
+      > </a
+      ><a name="1079" href="Alpha.html#1015" class="Bound"
+      >&#963;&#8764;&#945;&#963;'&#8642;M</a
+      ><a name="1086"
+      > </a
+      ><a name="1087" href="Alpha.html#1027" class="Bound"
+      >y</a
+      ><a name="1088"
+      > </a
+      ><a name="1089" href="Alpha.html#1029" class="Bound"
+      >y*M</a
+      ><a name="1092"
+      > 
+\end{code}
+
+</a
+      ><a name="1106" class="Comment"
+      >Freshness lemmas used in lemmaM&#8764;M'&#8594;free lemmas</a
+      ><a name="1152"
+      >
+
+\begin{code}
+</a
+      ><a name="1167" href="Alpha.html#1167" class="Function"
+      >lemmafree1</a
+      ><a name="1177"
+      > </a
+      ><a name="1178" class="Symbol"
+      >:</a
+      ><a name="1179"
+      > </a
+      ><a name="1180" class="Symbol"
+      >{</a
+      ><a name="1181" href="Alpha.html#1181" class="Bound"
+      >x</a
+      ><a name="1182"
+      > </a
+      ><a name="1183" href="Alpha.html#1183" class="Bound"
+      >y</a
+      ><a name="1184"
+      > </a
+      ><a name="1185" href="Alpha.html#1185" class="Bound"
+      >z</a
+      ><a name="1186"
+      > </a
+      ><a name="1187" class="Symbol"
+      >:</a
+      ><a name="1188"
+      > </a
+      ><a name="1189" href="Chi.html#1141" class="Function"
+      >V</a
+      ><a name="1190" class="Symbol"
+      >}{</a
+      ><a name="1192" href="Alpha.html#1192" class="Bound"
+      >M</a
+      ><a name="1193"
+      > </a
+      ><a name="1194" class="Symbol"
+      >:</a
+      ><a name="1195"
+      > </a
+      ><a name="1196" href="Term.html#1156" class="Datatype"
+      >&#923;</a
+      ><a name="1197" class="Symbol"
+      >}</a
+      ><a name="1198"
+      > </a
+      ><a name="1199" class="Symbol"
+      >&#8594;</a
+      ><a name="1200"
+      > </a
+      ><a name="1201" href="Alpha.html#1181" class="Bound"
+      >x</a
+      ><a name="1202"
+      > </a
+      ><a name="1203" href="Relation.Binary.Core.html#4642" class="Function Operator"
+      >&#8802;</a
+      ><a name="1204"
+      > </a
+      ><a name="1205" href="Alpha.html#1185" class="Bound"
+      >z</a
+      ><a name="1206"
+      > </a
+      ><a name="1207" class="Symbol"
+      >&#8594;</a
+      ><a name="1208"
+      > </a
+      ><a name="1209" href="Alpha.html#1185" class="Bound"
+      >z</a
+      ><a name="1210"
+      > </a
+      ><a name="1211" href="Term.html#4430" class="Datatype Operator"
+      >*</a
+      ><a name="1212"
+      > </a
+      ><a name="1213" href="Alpha.html#1192" class="Bound"
+      >M</a
+      ><a name="1214"
+      > </a
+      ><a name="1215" class="Symbol"
+      >&#8594;</a
+      ><a name="1216"
+      > </a
+      ><a name="1217" href="Alpha.html#1185" class="Bound"
+      >z</a
+      ><a name="1218"
+      > </a
+      ><a name="1219" href="Term.html#4430" class="Datatype Operator"
+      >*</a
+      ><a name="1220"
+      > </a
+      ><a name="1221" class="Symbol"
+      >(</a
+      ><a name="1222" href="Alpha.html#1192" class="Bound"
+      >M</a
+      ><a name="1223"
+      > </a
+      ><a name="1224" href="Substitution.html#14552" class="Function Operator"
+      >&#8729;</a
+      ><a name="1225"
+      > </a
+      ><a name="1226" class="Symbol"
+      >(</a
+      ><a name="1227" href="Substitution.html#1239" class="Function"
+      >&#953;</a
+      ><a name="1228"
+      > </a
+      ><a name="1229" href="Substitution.html#1283" class="Function Operator"
+      >&#8826;+</a
+      ><a name="1231"
+      > </a
+      ><a name="1232" class="Symbol"
+      >(</a
+      ><a name="1233" href="Alpha.html#1181" class="Bound"
+      >x</a
+      ><a name="1234"
+      > </a
+      ><a name="1235" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="1236"
+      > </a
+      ><a name="1237" href="Term.html#1172" class="InductiveConstructor"
+      >v</a
+      ><a name="1238"
+      > </a
+      ><a name="1239" href="Alpha.html#1183" class="Bound"
+      >y</a
+      ><a name="1240" class="Symbol"
+      >)))</a
+      ><a name="1243"
+      > 
+</a
+      ><a name="1245" href="Alpha.html#1167" class="Function"
+      >lemmafree1</a
+      ><a name="1255"
+      > </a
+      ><a name="1256" class="Symbol"
+      >{</a
+      ><a name="1257" href="Alpha.html#1257" class="Bound"
+      >x</a
+      ><a name="1258" class="Symbol"
+      >}</a
+      ><a name="1259"
+      > </a
+      ><a name="1260" class="Symbol"
+      >{</a
+      ><a name="1261" href="Alpha.html#1261" class="Bound"
+      >y</a
+      ><a name="1262" class="Symbol"
+      >}</a
+      ><a name="1263"
+      > </a
+      ><a name="1264" class="Symbol"
+      >{</a
+      ><a name="1265" href="Alpha.html#1265" class="Bound"
+      >z</a
+      ><a name="1266" class="Symbol"
+      >}</a
+      ><a name="1267"
+      > </a
+      ><a name="1268" class="Symbol"
+      >{</a
+      ><a name="1269" href="Alpha.html#1269" class="Bound"
+      >M</a
+      ><a name="1270" class="Symbol"
+      >}</a
+      ><a name="1271"
+      > </a
+      ><a name="1272" href="Alpha.html#1272" class="Bound"
+      >x&#8802;z</a
+      ><a name="1275"
+      > </a
+      ><a name="1276" href="Alpha.html#1276" class="Bound"
+      >zfreeM</a
+      ><a name="1282"
+      > </a
+      ><a name="1283" class="Symbol"
+      >=</a
+      ><a name="1284"
+      > </a
+      ><a name="1285" href="Substitution.html#18428" class="Function"
+      >lemmafree&#963;&#8592;</a
+      ><a name="1296"
+      > </a
+      ><a name="1297" class="Symbol"
+      >{</a
+      ><a name="1298" href="Alpha.html#1265" class="Bound"
+      >z</a
+      ><a name="1299" class="Symbol"
+      >}</a
+      ><a name="1300"
+      > </a
+      ><a name="1301" class="Symbol"
+      >{</a
+      ><a name="1302" href="Alpha.html#1269" class="Bound"
+      >M</a
+      ><a name="1303" class="Symbol"
+      >}</a
+      ><a name="1304"
+      > </a
+      ><a name="1305" class="Symbol"
+      >(</a
+      ><a name="1306" href="Alpha.html#1265" class="Bound"
+      >z</a
+      ><a name="1307"
+      > </a
+      ><a name="1308" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="1309"
+      > </a
+      ><a name="1310" href="Alpha.html#1276" class="Bound"
+      >zfreeM</a
+      ><a name="1316"
+      > </a
+      ><a name="1317" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="1318"
+      > </a
+      ><a name="1319" href="Alpha.html#1334" class="Function"
+      >lemma</a
+      ><a name="1324" class="Symbol"
+      >)</a
+      ><a name="1325"
+      >
+  </a
+      ><a name="1328" class="Keyword"
+      >where</a
+      ><a name="1333"
+      > </a
+      ><a name="1334" href="Alpha.html#1334" class="Function"
+      >lemma</a
+      ><a name="1339"
+      > </a
+      ><a name="1340" class="Symbol"
+      >:</a
+      ><a name="1341"
+      > </a
+      ><a name="1342" href="Alpha.html#1265" class="Bound"
+      >z</a
+      ><a name="1343"
+      > </a
+      ><a name="1344" href="Term.html#4430" class="Datatype Operator"
+      >*</a
+      ><a name="1345"
+      > </a
+      ><a name="1346" class="Symbol"
+      >((</a
+      ><a name="1348" href="Substitution.html#1239" class="Function"
+      >&#953;</a
+      ><a name="1349"
+      > </a
+      ><a name="1350" href="Substitution.html#1283" class="Function Operator"
+      >&#8826;+</a
+      ><a name="1352"
+      > </a
+      ><a name="1353" class="Symbol"
+      >(</a
+      ><a name="1354" href="Alpha.html#1257" class="Bound"
+      >x</a
+      ><a name="1355"
+      > </a
+      ><a name="1356" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="1357"
+      > </a
+      ><a name="1358" href="Term.html#1172" class="InductiveConstructor"
+      >v</a
+      ><a name="1359"
+      > </a
+      ><a name="1360" href="Alpha.html#1261" class="Bound"
+      >y</a
+      ><a name="1361" class="Symbol"
+      >))</a
+      ><a name="1363"
+      > </a
+      ><a name="1364" href="Alpha.html#1265" class="Bound"
+      >z</a
+      ><a name="1365" class="Symbol"
+      >)</a
+      ><a name="1366"
+      >
+        </a
+      ><a name="1375" href="Alpha.html#1334" class="Function"
+      >lemma</a
+      ><a name="1380"
+      > </a
+      ><a name="1381" class="Keyword"
+      >with</a
+      ><a name="1385"
+      > </a
+      ><a name="1386" href="Alpha.html#1257" class="Bound"
+      >x</a
+      ><a name="1387"
+      > </a
+      ><a name="1388" href="Data.Nat.Base.html#3467" class="Function Operator"
+      >&#8799;</a
+      ><a name="1389"
+      > </a
+      ><a name="1390" href="Alpha.html#1265" class="Bound"
+      >z</a
+      ><a name="1391"
+      >
+        </a
+      ><a name="1400" class="Symbol"
+      >...</a
+      ><a name="1403"
+      > </a
+      ><a name="1404" class="Symbol"
+      >|</a
+      ><a name="1405"
+      > </a
+      ><a name="1406" href="Relation.Nullary.html#520" class="InductiveConstructor"
+      >yes</a
+      ><a name="1409"
+      > </a
+      ><a name="1410" href="Alpha.html#1410" class="Bound"
+      >x&#8801;z</a
+      ><a name="1413"
+      > </a
+      ><a name="1414" class="Symbol"
+      >=</a
+      ><a name="1415"
+      > </a
+      ><a name="1416" href="Data.Empty.html#326" class="Function"
+      >&#8869;-elim</a
+      ><a name="1422"
+      > </a
+      ><a name="1423" class="Symbol"
+      >(</a
+      ><a name="1424" href="Alpha.html#1272" class="Bound"
+      >x&#8802;z</a
+      ><a name="1427"
+      > </a
+      ><a name="1428" href="Alpha.html#1410" class="Bound"
+      >x&#8801;z</a
+      ><a name="1431" class="Symbol"
+      >)</a
+      ><a name="1432"
+      >
+        </a
+      ><a name="1441" class="Symbol"
+      >...</a
+      ><a name="1444"
+      > </a
+      ><a name="1445" class="Symbol"
+      >|</a
+      ><a name="1446"
+      > </a
+      ><a name="1447" href="Relation.Nullary.html#547" class="InductiveConstructor"
+      >no</a
+      ><a name="1449"
+      >  </a
+      ><a name="1451" class="Symbol"
+      >_</a
+      ><a name="1452"
+      >   </a
+      ><a name="1455" class="Symbol"
+      >=</a
+      ><a name="1456"
+      > </a
+      ><a name="1457" href="Term.html#4456" class="InductiveConstructor"
+      >*v</a
+      ><a name="1459"
+      >
+
+</a
+      ><a name="1461" href="Alpha.html#1461" class="Function"
+      >lemmafree2</a
+      ><a name="1471"
+      > </a
+      ><a name="1472" class="Symbol"
+      >:</a
+      ><a name="1473"
+      > </a
+      ><a name="1474" class="Symbol"
+      >{</a
+      ><a name="1475" href="Alpha.html#1475" class="Bound"
+      >x</a
+      ><a name="1476"
+      > </a
+      ><a name="1477" href="Alpha.html#1477" class="Bound"
+      >x'</a
+      ><a name="1479"
+      > </a
+      ><a name="1480" href="Alpha.html#1480" class="Bound"
+      >y</a
+      ><a name="1481"
+      > </a
+      ><a name="1482" href="Alpha.html#1482" class="Bound"
+      >z</a
+      ><a name="1483"
+      > </a
+      ><a name="1484" class="Symbol"
+      >:</a
+      ><a name="1485"
+      > </a
+      ><a name="1486" href="Chi.html#1141" class="Function"
+      >V</a
+      ><a name="1487" class="Symbol"
+      >}{</a
+      ><a name="1489" href="Alpha.html#1489" class="Bound"
+      >M</a
+      ><a name="1490"
+      > </a
+      ><a name="1491" href="Alpha.html#1491" class="Bound"
+      >M'</a
+      ><a name="1493"
+      > </a
+      ><a name="1494" class="Symbol"
+      >:</a
+      ><a name="1495"
+      > </a
+      ><a name="1496" href="Term.html#1156" class="Datatype"
+      >&#923;</a
+      ><a name="1497" class="Symbol"
+      >}</a
+      ><a name="1498"
+      > </a
+      ><a name="1499" class="Symbol"
+      >&#8594;</a
+      ><a name="1500"
+      > </a
+      ><a name="1501" href="Alpha.html#1480" class="Bound"
+      >y</a
+      ><a name="1502"
+      > </a
+      ><a name="1503" href="Term.html#3423" class="Datatype Operator"
+      >#</a
+      ><a name="1504"
+      > </a
+      ><a name="1505" class="Symbol"
+      >(</a
+      ><a name="1506" href="Term.html#1208" class="InductiveConstructor"
+      >&#411;</a
+      ><a name="1507"
+      > </a
+      ><a name="1508" href="Alpha.html#1475" class="Bound"
+      >x</a
+      ><a name="1509"
+      > </a
+      ><a name="1510" href="Alpha.html#1489" class="Bound"
+      >M</a
+      ><a name="1511" class="Symbol"
+      >)</a
+      ><a name="1512"
+      > </a
+      ><a name="1513" class="Symbol"
+      >&#8594;</a
+      ><a name="1514"
+      > </a
+      ><a name="1515" href="Alpha.html#1475" class="Bound"
+      >x</a
+      ><a name="1516"
+      > </a
+      ><a name="1517" href="Relation.Binary.Core.html#4642" class="Function Operator"
+      >&#8802;</a
+      ><a name="1518"
+      > </a
+      ><a name="1519" href="Alpha.html#1482" class="Bound"
+      >z</a
+      ><a name="1520"
+      > </a
+      ><a name="1521" class="Symbol"
+      >&#8594;</a
+      ><a name="1522"
+      > 
+             </a
+      ><a name="1537" href="Alpha.html#1482" class="Bound"
+      >z</a
+      ><a name="1538"
+      > </a
+      ><a name="1539" href="Term.html#4430" class="Datatype Operator"
+      >*</a
+      ><a name="1540"
+      > </a
+      ><a name="1541" class="Symbol"
+      >(</a
+      ><a name="1542" href="Alpha.html#1491" class="Bound"
+      >M'</a
+      ><a name="1544"
+      > </a
+      ><a name="1545" href="Substitution.html#14552" class="Function Operator"
+      >&#8729;</a
+      ><a name="1546"
+      > </a
+      ><a name="1547" class="Symbol"
+      >(</a
+      ><a name="1548" href="Substitution.html#1239" class="Function"
+      >&#953;</a
+      ><a name="1549"
+      > </a
+      ><a name="1550" href="Substitution.html#1283" class="Function Operator"
+      >&#8826;+</a
+      ><a name="1552"
+      > </a
+      ><a name="1553" class="Symbol"
+      >(</a
+      ><a name="1554" href="Alpha.html#1477" class="Bound"
+      >x'</a
+      ><a name="1556"
+      > </a
+      ><a name="1557" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="1558"
+      > </a
+      ><a name="1559" href="Term.html#1172" class="InductiveConstructor"
+      >v</a
+      ><a name="1560"
+      > </a
+      ><a name="1561" href="Alpha.html#1480" class="Bound"
+      >y</a
+      ><a name="1562" class="Symbol"
+      >)))</a
+      ><a name="1565"
+      > </a
+      ><a name="1566" class="Symbol"
+      >&#8594;</a
+      ><a name="1567"
+      > </a
+      ><a name="1568" href="Alpha.html#1482" class="Bound"
+      >z</a
+      ><a name="1569"
+      > </a
+      ><a name="1570" href="Term.html#4430" class="Datatype Operator"
+      >*</a
+      ><a name="1571"
+      > </a
+      ><a name="1572" href="Alpha.html#1489" class="Bound"
+      >M</a
+      ><a name="1573"
+      > </a
+      ><a name="1574" class="Symbol"
+      >&#8594;</a
+      ><a name="1575"
+      > 
+             </a
+      ><a name="1590" href="Alpha.html#1477" class="Bound"
+      >x'</a
+      ><a name="1592"
+      > </a
+      ><a name="1593" href="Relation.Binary.Core.html#4642" class="Function Operator"
+      >&#8802;</a
+      ><a name="1594"
+      > </a
+      ><a name="1595" href="Alpha.html#1482" class="Bound"
+      >z</a
+      ><a name="1596"
+      > 
+</a
+      ><a name="1598" href="Alpha.html#1461" class="Function"
+      >lemmafree2</a
+      ><a name="1608"
+      > </a
+      ><a name="1609" class="Symbol"
+      >{</a
+      ><a name="1610" href="Alpha.html#1610" class="Bound"
+      >x</a
+      ><a name="1611" class="Symbol"
+      >}</a
+      ><a name="1612"
+      > </a
+      ><a name="1613" class="Symbol"
+      >{</a
+      ><a name="1614" href="Alpha.html#1614" class="Bound"
+      >x'</a
+      ><a name="1616" class="Symbol"
+      >}</a
+      ><a name="1617"
+      > </a
+      ><a name="1618" class="Symbol"
+      >{</a
+      ><a name="1619" href="Alpha.html#1619" class="Bound"
+      >y</a
+      ><a name="1620" class="Symbol"
+      >}</a
+      ><a name="1621"
+      > </a
+      ><a name="1622" class="Symbol"
+      >{</a
+      ><a name="1623" href="Alpha.html#1623" class="Bound"
+      >z</a
+      ><a name="1624" class="Symbol"
+      >}</a
+      ><a name="1625"
+      > </a
+      ><a name="1626" class="Symbol"
+      >{</a
+      ><a name="1627" href="Alpha.html#1627" class="Bound"
+      >M</a
+      ><a name="1628" class="Symbol"
+      >}</a
+      ><a name="1629"
+      > </a
+      ><a name="1630" class="Symbol"
+      >{</a
+      ><a name="1631" href="Alpha.html#1631" class="Bound"
+      >M'</a
+      ><a name="1633" class="Symbol"
+      >}</a
+      ><a name="1634"
+      > </a
+      ><a name="1635" href="Alpha.html#1635" class="Bound"
+      >y#&#955;xM</a
+      ><a name="1640"
+      > </a
+      ><a name="1641" href="Alpha.html#1641" class="Bound"
+      >x&#8802;z</a
+      ><a name="1644"
+      > </a
+      ><a name="1645" href="Alpha.html#1645" class="Bound"
+      >zfreeM'&#953;&#8826;+x'y</a
+      ><a name="1658"
+      > </a
+      ><a name="1659" href="Alpha.html#1659" class="Bound"
+      >zfreeM</a
+      ><a name="1665"
+      >
+  </a
+      ><a name="1668" class="Keyword"
+      >with</a
+      ><a name="1672"
+      > </a
+      ><a name="1673" href="Substitution.html#17316" class="Function"
+      >lemmafree&#963;&#8594;</a
+      ><a name="1684"
+      > </a
+      ><a name="1685" class="Symbol"
+      >{</a
+      ><a name="1686" href="Alpha.html#1623" class="Bound"
+      >z</a
+      ><a name="1687" class="Symbol"
+      >}</a
+      ><a name="1688"
+      > </a
+      ><a name="1689" class="Symbol"
+      >{</a
+      ><a name="1690" href="Alpha.html#1631" class="Bound"
+      >M'</a
+      ><a name="1692" class="Symbol"
+      >}</a
+      ><a name="1693"
+      > </a
+      ><a name="1694" href="Alpha.html#1645" class="Bound"
+      >zfreeM'&#953;&#8826;+x'y</a
+      ><a name="1707"
+      >
+</a
+      ><a name="1708" class="Symbol"
+      >...</a
+      ><a name="1711"
+      > </a
+      ><a name="1712" class="Symbol"
+      >|</a
+      ><a name="1713"
+      > </a
+      ><a name="1714" href="Alpha.html#1714" class="Bound"
+      >w</a
+      ><a name="1715"
+      > </a
+      ><a name="1716" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="1717"
+      > </a
+      ><a name="1718" href="Alpha.html#1718" class="Bound"
+      >wfreeM'</a
+      ><a name="1725"
+      > </a
+      ><a name="1726" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="1727"
+      > </a
+      ><a name="1728" href="Alpha.html#1728" class="Bound"
+      >zfree&#953;&#8826;+x'yw</a
+      ><a name="1740"
+      > </a
+      ><a name="1741" class="Keyword"
+      >with</a
+      ><a name="1745"
+      > </a
+      ><a name="1746" href="Alpha.html#1614" class="Bound"
+      >x'</a
+      ><a name="1748"
+      > </a
+      ><a name="1749" href="Data.Nat.Base.html#3467" class="Function Operator"
+      >&#8799;</a
+      ><a name="1750"
+      > </a
+      ><a name="1751" href="Alpha.html#1714" class="Bound"
+      >w</a
+      ><a name="1752"
+      >
+</a
+      ><a name="1753" class="Symbol"
+      >...</a
+      ><a name="1756"
+      > </a
+      ><a name="1757" class="Symbol"
+      >|</a
+      ><a name="1758"
+      > </a
+      ><a name="1759" href="Relation.Nullary.html#547" class="InductiveConstructor"
+      >no</a
+      ><a name="1761"
+      >  </a
+      ><a name="1763" href="Alpha.html#1763" class="Bound"
+      >x'&#8802;w</a
+      ><a name="1767"
+      > </a
+      ><a name="1768" class="Keyword"
+      >with</a
+      ><a name="1772"
+      > </a
+      ><a name="1773" href="Alpha.html#1728" class="Bound"
+      >zfree&#953;&#8826;+x'yw</a
+      ><a name="1785"
+      > 
+</a
+      ><a name="1787" href="Alpha.html#1461" class="Function"
+      >lemmafree2</a
+      ><a name="1797"
+      > </a
+      ><a name="1798" class="Symbol"
+      >{</a
+      ><a name="1799" href="Alpha.html#1799" class="Bound"
+      >x</a
+      ><a name="1800" class="Symbol"
+      >}</a
+      ><a name="1801"
+      > </a
+      ><a name="1802" class="Symbol"
+      >{</a
+      ><a name="1803" href="Alpha.html#1803" class="Bound"
+      >x'</a
+      ><a name="1805" class="Symbol"
+      >}</a
+      ><a name="1806"
+      > </a
+      ><a name="1807" class="Symbol"
+      >{</a
+      ><a name="1808" href="Alpha.html#1808" class="Bound"
+      >y</a
+      ><a name="1809" class="Symbol"
+      >}</a
+      ><a name="1810"
+      > </a
+      ><a name="1811" class="Symbol"
+      >{</a
+      ><a name="1812" href="Alpha.html#1812" class="Bound"
+      >z</a
+      ><a name="1813" class="Symbol"
+      >}</a
+      ><a name="1814"
+      > </a
+      ><a name="1815" class="Symbol"
+      >{</a
+      ><a name="1816" href="Alpha.html#1816" class="Bound"
+      >M</a
+      ><a name="1817" class="Symbol"
+      >}</a
+      ><a name="1818"
+      > </a
+      ><a name="1819" class="Symbol"
+      >{</a
+      ><a name="1820" href="Alpha.html#1820" class="Bound"
+      >M'</a
+      ><a name="1822" class="Symbol"
+      >}</a
+      ><a name="1823"
+      > </a
+      ><a name="1824" href="Alpha.html#1824" class="Bound"
+      >y#&#955;xM</a
+      ><a name="1829"
+      > </a
+      ><a name="1830" href="Alpha.html#1830" class="Bound"
+      >x&#8802;z</a
+      ><a name="1833"
+      > </a
+      ><a name="1834" href="Alpha.html#1834" class="Bound"
+      >zfreeM'&#953;&#8826;+x'y</a
+      ><a name="1847"
+      > </a
+      ><a name="1848" href="Alpha.html#1848" class="Bound"
+      >zfreeM</a
+      ><a name="1854"
+      >
+    </a
+      ><a name="1859" class="Symbol"
+      >|</a
+      ><a name="1860"
+      > </a
+      ><a name="1861" class="DottedPattern Symbol"
+      >.</a
+      ><a name="1862" href="Alpha.html#1812" class="DottedPattern Bound"
+      >z</a
+      ><a name="1863"
+      > </a
+      ><a name="1864" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="1865"
+      > </a
+      ><a name="1866" href="Alpha.html#1866" class="Bound"
+      >wfreeM'</a
+      ><a name="1873"
+      > </a
+      ><a name="1874" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="1875"
+      > </a
+      ><a name="1876" href="Alpha.html#1876" class="Bound"
+      >zfree&#953;&#8826;+x'yw</a
+      ><a name="1888"
+      >
+    </a
+      ><a name="1893" class="Symbol"
+      >|</a
+      ><a name="1894"
+      > </a
+      ><a name="1895" href="Relation.Nullary.html#547" class="InductiveConstructor"
+      >no</a
+      ><a name="1897"
+      >  </a
+      ><a name="1899" href="Alpha.html#1899" class="Bound"
+      >x'&#8802;w</a
+      ><a name="1903"
+      >
+    </a
+      ><a name="1908" class="Symbol"
+      >|</a
+      ><a name="1909"
+      > </a
+      ><a name="1910" href="Term.html#4456" class="InductiveConstructor"
+      >*v</a
+      ><a name="1912"
+      > </a
+      ><a name="1913" class="Symbol"
+      >=</a
+      ><a name="1914"
+      > </a
+      ><a name="1915" class="Symbol"
+      >&#955;</a
+      ><a name="1916"
+      > </a
+      ><a name="1917" href="Alpha.html#1917" class="Bound"
+      >x'&#8801;z</a
+      ><a name="1921"
+      > </a
+      ><a name="1922" class="Symbol"
+      >&#8594;</a
+      ><a name="1923"
+      > </a
+      ><a name="1924" href="Alpha.html#1899" class="Bound"
+      >x'&#8802;w</a
+      ><a name="1928"
+      > </a
+      ><a name="1929" class="Symbol"
+      >(</a
+      ><a name="1930" href="Relation.Binary.PropositionalEquality.Core.html#632" class="Function"
+      >trans</a
+      ><a name="1935"
+      > </a
+      ><a name="1936" class="Symbol"
+      >(</a
+      ><a name="1937" href="Alpha.html#1917" class="Bound"
+      >x'&#8801;z</a
+      ><a name="1941" class="Symbol"
+      >)</a
+      ><a name="1942"
+      > </a
+      ><a name="1943" class="Symbol"
+      >(</a
+      ><a name="1944" href="Relation.Binary.PropositionalEquality.Core.html#565" class="Function"
+      >sym</a
+      ><a name="1947"
+      > </a
+      ><a name="1948" href="Relation.Binary.Core.html#4547" class="InductiveConstructor"
+      >refl</a
+      ><a name="1952" class="Symbol"
+      >))</a
+      ><a name="1954"
+      > 
+</a
+      ><a name="1956" href="Alpha.html#1461" class="Function"
+      >lemmafree2</a
+      ><a name="1966"
+      > </a
+      ><a name="1967" class="Symbol"
+      >{</a
+      ><a name="1968" href="Alpha.html#1968" class="Bound"
+      >x</a
+      ><a name="1969" class="Symbol"
+      >}</a
+      ><a name="1970"
+      > </a
+      ><a name="1971" class="Symbol"
+      >{</a
+      ><a name="1972" href="Alpha.html#1972" class="Bound"
+      >x'</a
+      ><a name="1974" class="Symbol"
+      >}</a
+      ><a name="1975"
+      > </a
+      ><a name="1976" class="Symbol"
+      >{</a
+      ><a name="1977" href="Alpha.html#1977" class="Bound"
+      >y</a
+      ><a name="1978" class="Symbol"
+      >}</a
+      ><a name="1979"
+      > </a
+      ><a name="1980" class="Symbol"
+      >{</a
+      ><a name="1981" href="Alpha.html#1981" class="Bound"
+      >z</a
+      ><a name="1982" class="Symbol"
+      >}</a
+      ><a name="1983"
+      > </a
+      ><a name="1984" class="Symbol"
+      >{</a
+      ><a name="1985" href="Alpha.html#1985" class="Bound"
+      >M</a
+      ><a name="1986" class="Symbol"
+      >}</a
+      ><a name="1987"
+      > </a
+      ><a name="1988" class="Symbol"
+      >{</a
+      ><a name="1989" href="Alpha.html#1989" class="Bound"
+      >M'</a
+      ><a name="1991" class="Symbol"
+      >}</a
+      ><a name="1992"
+      > </a
+      ><a name="1993" href="Alpha.html#1993" class="Bound"
+      >y#&#955;xM</a
+      ><a name="1998"
+      > </a
+      ><a name="1999" href="Alpha.html#1999" class="Bound"
+      >x&#8802;z</a
+      ><a name="2002"
+      > </a
+      ><a name="2003" href="Alpha.html#2003" class="Bound"
+      >zfreeM'&#953;&#8826;+x'y</a
+      ><a name="2016"
+      > </a
+      ><a name="2017" href="Alpha.html#2017" class="Bound"
+      >zfreeM</a
+      ><a name="2023"
+      >
+    </a
+      ><a name="2028" class="Symbol"
+      >|</a
+      ><a name="2029"
+      >  </a
+      ><a name="2031" class="DottedPattern Symbol"
+      >.</a
+      ><a name="2032" href="Alpha.html#1972" class="DottedPattern Bound"
+      >x'</a
+      ><a name="2034"
+      > </a
+      ><a name="2035" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="2036"
+      > </a
+      ><a name="2037" href="Alpha.html#2037" class="Bound"
+      >x'freeM'</a
+      ><a name="2045"
+      > </a
+      ><a name="2046" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="2047"
+      > </a
+      ><a name="2048" href="Alpha.html#2048" class="Bound"
+      >x'free&#953;&#8826;+x'yw</a
+      ><a name="2061"
+      > </a
+      ><a name="2062" class="Symbol"
+      >|</a
+      ><a name="2063"
+      > </a
+      ><a name="2064" href="Relation.Nullary.html#520" class="InductiveConstructor"
+      >yes</a
+      ><a name="2067"
+      > </a
+      ><a name="2068" href="Relation.Binary.Core.html#4547" class="InductiveConstructor"
+      >refl</a
+      ><a name="2072"
+      > 
+    </a
+      ><a name="2078" class="Keyword"
+      >with</a
+      ><a name="2082"
+      > </a
+      ><a name="2083" href="Alpha.html#1993" class="Bound"
+      >y#&#955;xM</a
+      ><a name="2088"
+      > </a
+      ><a name="2089" class="Symbol"
+      >|</a
+      ><a name="2090"
+      > </a
+      ><a name="2091" href="Alpha.html#2048" class="Bound"
+      >x'free&#953;&#8826;+x'yw</a
+      ><a name="2104"
+      > 
+</a
+      ><a name="2106" href="Alpha.html#1461" class="Function"
+      >lemmafree2</a
+      ><a name="2116"
+      > </a
+      ><a name="2117" class="Symbol"
+      >{</a
+      ><a name="2118" href="Alpha.html#2118" class="Bound"
+      >x</a
+      ><a name="2119" class="Symbol"
+      >}</a
+      ><a name="2120"
+      > </a
+      ><a name="2121" class="Symbol"
+      >{</a
+      ><a name="2122" href="Alpha.html#2122" class="Bound"
+      >x'</a
+      ><a name="2124" class="Symbol"
+      >}</a
+      ><a name="2125"
+      > </a
+      ><a name="2126" class="DottedPattern Symbol"
+      >.{</a
+      ><a name="2128" href="Alpha.html#2118" class="DottedPattern Bound"
+      >x</a
+      ><a name="2129" class="DottedPattern Symbol"
+      >}</a
+      ><a name="2130"
+      > </a
+      ><a name="2131" class="DottedPattern Symbol"
+      >.{</a
+      ><a name="2133" href="Alpha.html#2118" class="DottedPattern Bound"
+      >x</a
+      ><a name="2134" class="DottedPattern Symbol"
+      >}</a
+      ><a name="2135"
+      > </a
+      ><a name="2136" class="Symbol"
+      >{</a
+      ><a name="2137" href="Alpha.html#2137" class="Bound"
+      >M</a
+      ><a name="2138" class="Symbol"
+      >}</a
+      ><a name="2139"
+      > </a
+      ><a name="2140" class="Symbol"
+      >{</a
+      ><a name="2141" href="Alpha.html#2141" class="Bound"
+      >M'</a
+      ><a name="2143" class="Symbol"
+      >}</a
+      ><a name="2144"
+      > </a
+      ><a name="2145" href="Alpha.html#2145" class="Bound"
+      >y#&#955;xM</a
+      ><a name="2150"
+      > </a
+      ><a name="2151" href="Alpha.html#2151" class="Bound"
+      >x&#8802;y</a
+      ><a name="2154"
+      > </a
+      ><a name="2155" href="Alpha.html#2155" class="Bound"
+      >yfreeM'&#953;&#8826;+x'y</a
+      ><a name="2168"
+      > </a
+      ><a name="2169" href="Alpha.html#2169" class="Bound"
+      >zfreeM</a
+      ><a name="2175"
+      >
+    </a
+      ><a name="2180" class="Symbol"
+      >|</a
+      ><a name="2181"
+      >  </a
+      ><a name="2183" class="DottedPattern Symbol"
+      >.</a
+      ><a name="2184" href="Alpha.html#2122" class="DottedPattern Bound"
+      >x'</a
+      ><a name="2186"
+      > </a
+      ><a name="2187" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="2188"
+      > </a
+      ><a name="2189" href="Alpha.html#2189" class="Bound"
+      >x'freeM'</a
+      ><a name="2197"
+      > </a
+      ><a name="2198" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="2199"
+      > </a
+      ><a name="2200" href="Alpha.html#2200" class="Bound"
+      >x'free&#953;&#8826;+x'yw</a
+      ><a name="2213"
+      > </a
+      ><a name="2214" class="Symbol"
+      >|</a
+      ><a name="2215"
+      > </a
+      ><a name="2216" href="Relation.Nullary.html#520" class="InductiveConstructor"
+      >yes</a
+      ><a name="2219"
+      > </a
+      ><a name="2220" href="Relation.Binary.Core.html#4547" class="InductiveConstructor"
+      >refl</a
+      ><a name="2224"
+      > 
+    </a
+      ><a name="2230" class="Symbol"
+      >|</a
+      ><a name="2231"
+      > </a
+      ><a name="2232" href="Term.html#3563" class="InductiveConstructor"
+      >#&#411;&#8801;</a
+      ><a name="2235"
+      > </a
+      ><a name="2236" class="Symbol"
+      >|</a
+      ><a name="2237"
+      > </a
+      ><a name="2238" href="Term.html#4456" class="InductiveConstructor"
+      >*v</a
+      ><a name="2240"
+      > </a
+      ><a name="2241" class="Symbol"
+      >=</a
+      ><a name="2242"
+      > </a
+      ><a name="2243" href="Data.Empty.html#326" class="Function"
+      >&#8869;-elim</a
+      ><a name="2249"
+      > </a
+      ><a name="2250" class="Symbol"
+      >(</a
+      ><a name="2251" href="Alpha.html#2151" class="Bound"
+      >x&#8802;y</a
+      ><a name="2254"
+      > </a
+      ><a name="2255" href="Relation.Binary.Core.html#4547" class="InductiveConstructor"
+      >refl</a
+      ><a name="2259" class="Symbol"
+      >)</a
+      ><a name="2260"
+      >
+</a
+      ><a name="2261" href="Alpha.html#1461" class="Function"
+      >lemmafree2</a
+      ><a name="2271"
+      > </a
+      ><a name="2272" class="Symbol"
+      >{</a
+      ><a name="2273" href="Alpha.html#2273" class="Bound"
+      >x</a
+      ><a name="2274" class="Symbol"
+      >}</a
+      ><a name="2275"
+      > </a
+      ><a name="2276" class="Symbol"
+      >{</a
+      ><a name="2277" href="Alpha.html#2277" class="Bound"
+      >x'</a
+      ><a name="2279" class="Symbol"
+      >}</a
+      ><a name="2280"
+      > </a
+      ><a name="2281" class="Symbol"
+      >{</a
+      ><a name="2282" href="Alpha.html#2282" class="Bound"
+      >y</a
+      ><a name="2283" class="Symbol"
+      >}</a
+      ><a name="2284"
+      > </a
+      ><a name="2285" class="DottedPattern Symbol"
+      >.{</a
+      ><a name="2287" href="Alpha.html#2282" class="DottedPattern Bound"
+      >y</a
+      ><a name="2288" class="DottedPattern Symbol"
+      >}</a
+      ><a name="2289"
+      > </a
+      ><a name="2290" class="Symbol"
+      >{</a
+      ><a name="2291" href="Alpha.html#2291" class="Bound"
+      >M</a
+      ><a name="2292" class="Symbol"
+      >}</a
+      ><a name="2293"
+      > </a
+      ><a name="2294" class="Symbol"
+      >{</a
+      ><a name="2295" href="Alpha.html#2295" class="Bound"
+      >M'</a
+      ><a name="2297" class="Symbol"
+      >}</a
+      ><a name="2298"
+      > </a
+      ><a name="2299" href="Alpha.html#2299" class="Bound"
+      >y#&#955;xM</a
+      ><a name="2304"
+      > </a
+      ><a name="2305" href="Alpha.html#2305" class="Bound"
+      >x&#8802;y</a
+      ><a name="2308"
+      > </a
+      ><a name="2309" href="Alpha.html#2309" class="Bound"
+      >yfreeM'&#953;&#8826;+x'y</a
+      ><a name="2322"
+      > </a
+      ><a name="2323" href="Alpha.html#2323" class="Bound"
+      >zfreeM</a
+      ><a name="2329"
+      >
+    </a
+      ><a name="2334" class="Symbol"
+      >|</a
+      ><a name="2335"
+      >  </a
+      ><a name="2337" class="DottedPattern Symbol"
+      >.</a
+      ><a name="2338" href="Alpha.html#2277" class="DottedPattern Bound"
+      >x'</a
+      ><a name="2340"
+      > </a
+      ><a name="2341" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="2342"
+      > </a
+      ><a name="2343" href="Alpha.html#2343" class="Bound"
+      >x'freeM'</a
+      ><a name="2351"
+      > </a
+      ><a name="2352" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="2353"
+      > </a
+      ><a name="2354" href="Alpha.html#2354" class="Bound"
+      >x'free&#953;&#8826;+x'yw</a
+      ><a name="2367"
+      > </a
+      ><a name="2368" class="Symbol"
+      >|</a
+      ><a name="2369"
+      > </a
+      ><a name="2370" href="Relation.Nullary.html#520" class="InductiveConstructor"
+      >yes</a
+      ><a name="2373"
+      > </a
+      ><a name="2374" href="Relation.Binary.Core.html#4547" class="InductiveConstructor"
+      >refl</a
+      ><a name="2378"
+      > 
+    </a
+      ><a name="2384" class="Symbol"
+      >|</a
+      ><a name="2385"
+      > </a
+      ><a name="2386" href="Term.html#3621" class="InductiveConstructor"
+      >#&#411;</a
+      ><a name="2388"
+      > </a
+      ><a name="2389" href="Alpha.html#2389" class="Bound"
+      >y#M</a
+      ><a name="2392"
+      >  </a
+      ><a name="2394" class="Symbol"
+      >|</a
+      ><a name="2395"
+      > </a
+      ><a name="2396" href="Term.html#4456" class="InductiveConstructor"
+      >*v</a
+      ><a name="2398"
+      > </a
+      ><a name="2399" class="Symbol"
+      >=</a
+      ><a name="2400"
+      > </a
+      ><a name="2401" href="Data.Empty.html#326" class="Function"
+      >&#8869;-elim</a
+      ><a name="2407"
+      > </a
+      ><a name="2408" class="Symbol"
+      >((</a
+      ><a name="2410" href="Term.html#6211" class="Function"
+      >lemma-free&#8594;&#172;#</a
+      ><a name="2423"
+      > </a
+      ><a name="2424" href="Alpha.html#2323" class="Bound"
+      >zfreeM</a
+      ><a name="2430" class="Symbol"
+      >)</a
+      ><a name="2431"
+      > </a
+      ><a name="2432" href="Alpha.html#2389" class="Bound"
+      >y#M</a
+      ><a name="2435" class="Symbol"
+      >)</a
+      ><a name="2436"
+      > </a
+      ><a name="2437" class="Comment"
+      >-- x' &#8800; y </a
+      ><a name="2447"
+      >
+
+</a
+      ><a name="2449" href="Alpha.html#2449" class="Function"
+      >lemmafree3</a
+      ><a name="2459"
+      > </a
+      ><a name="2460" class="Symbol"
+      >:</a
+      ><a name="2461"
+      > </a
+      ><a name="2462" class="Symbol"
+      >{</a
+      ><a name="2463" href="Alpha.html#2463" class="Bound"
+      >x</a
+      ><a name="2464"
+      > </a
+      ><a name="2465" href="Alpha.html#2465" class="Bound"
+      >y</a
+      ><a name="2466"
+      > </a
+      ><a name="2467" href="Alpha.html#2467" class="Bound"
+      >z</a
+      ><a name="2468"
+      > </a
+      ><a name="2469" class="Symbol"
+      >:</a
+      ><a name="2470"
+      > </a
+      ><a name="2471" href="Chi.html#1141" class="Function"
+      >V</a
+      ><a name="2472" class="Symbol"
+      >}{</a
+      ><a name="2474" href="Alpha.html#2474" class="Bound"
+      >M</a
+      ><a name="2475"
+      > </a
+      ><a name="2476" class="Symbol"
+      >:</a
+      ><a name="2477"
+      > </a
+      ><a name="2478" href="Term.html#1156" class="Datatype"
+      >&#923;</a
+      ><a name="2479" class="Symbol"
+      >}</a
+      ><a name="2480"
+      > </a
+      ><a name="2481" class="Symbol"
+      >&#8594;</a
+      ><a name="2482"
+      > </a
+      ><a name="2483" href="Alpha.html#2467" class="Bound"
+      >z</a
+      ><a name="2484"
+      > </a
+      ><a name="2485" href="Relation.Binary.Core.html#4642" class="Function Operator"
+      >&#8802;</a
+      ><a name="2486"
+      > </a
+      ><a name="2487" href="Alpha.html#2465" class="Bound"
+      >y</a
+      ><a name="2488"
+      > </a
+      ><a name="2489" class="Symbol"
+      >&#8594;</a
+      ><a name="2490"
+      > </a
+      ><a name="2491" href="Alpha.html#2467" class="Bound"
+      >z</a
+      ><a name="2492"
+      > </a
+      ><a name="2493" href="Term.html#4430" class="Datatype Operator"
+      >*</a
+      ><a name="2494"
+      > </a
+      ><a name="2495" class="Symbol"
+      >(</a
+      ><a name="2496" href="Alpha.html#2474" class="Bound"
+      >M</a
+      ><a name="2497"
+      > </a
+      ><a name="2498" href="Substitution.html#14552" class="Function Operator"
+      >&#8729;</a
+      ><a name="2499"
+      > </a
+      ><a name="2500" class="Symbol"
+      >(</a
+      ><a name="2501" href="Substitution.html#1239" class="Function"
+      >&#953;</a
+      ><a name="2502"
+      > </a
+      ><a name="2503" href="Substitution.html#1283" class="Function Operator"
+      >&#8826;+</a
+      ><a name="2505"
+      > </a
+      ><a name="2506" class="Symbol"
+      >(</a
+      ><a name="2507" href="Alpha.html#2463" class="Bound"
+      >x</a
+      ><a name="2508"
+      > </a
+      ><a name="2509" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="2510"
+      > </a
+      ><a name="2511" href="Term.html#1172" class="InductiveConstructor"
+      >v</a
+      ><a name="2512"
+      > </a
+      ><a name="2513" href="Alpha.html#2465" class="Bound"
+      >y</a
+      ><a name="2514" class="Symbol"
+      >)))</a
+      ><a name="2517"
+      > </a
+      ><a name="2518" class="Symbol"
+      >&#8594;</a
+      ><a name="2519"
+      > </a
+      ><a name="2520" href="Alpha.html#2467" class="Bound"
+      >z</a
+      ><a name="2521"
+      > </a
+      ><a name="2522" href="Term.html#4430" class="Datatype Operator"
+      >*</a
+      ><a name="2523"
+      > </a
+      ><a name="2524" href="Alpha.html#2474" class="Bound"
+      >M</a
+      ><a name="2525"
+      > 
+</a
+      ><a name="2527" href="Alpha.html#2449" class="Function"
+      >lemmafree3</a
+      ><a name="2537"
+      > </a
+      ><a name="2538" class="Symbol"
+      >{</a
+      ><a name="2539" href="Alpha.html#2539" class="Bound"
+      >x</a
+      ><a name="2540" class="Symbol"
+      >}</a
+      ><a name="2541"
+      > </a
+      ><a name="2542" class="Symbol"
+      >{</a
+      ><a name="2543" href="Alpha.html#2543" class="Bound"
+      >y</a
+      ><a name="2544" class="Symbol"
+      >}</a
+      ><a name="2545"
+      > </a
+      ><a name="2546" class="Symbol"
+      >{</a
+      ><a name="2547" href="Alpha.html#2547" class="Bound"
+      >z</a
+      ><a name="2548" class="Symbol"
+      >}</a
+      ><a name="2549"
+      > </a
+      ><a name="2550" class="Symbol"
+      >{</a
+      ><a name="2551" href="Alpha.html#2551" class="Bound"
+      >M</a
+      ><a name="2552" class="Symbol"
+      >}</a
+      ><a name="2553"
+      > </a
+      ><a name="2554" href="Alpha.html#2554" class="Bound"
+      >z&#8802;y</a
+      ><a name="2557"
+      > </a
+      ><a name="2558" href="Alpha.html#2558" class="Bound"
+      >zfreeM&#953;&#8826;+xy</a
+      ><a name="2569"
+      > 
+  </a
+      ><a name="2573" class="Keyword"
+      >with</a
+      ><a name="2577"
+      > </a
+      ><a name="2578" href="Substitution.html#17316" class="Function"
+      >lemmafree&#963;&#8594;</a
+      ><a name="2589"
+      > </a
+      ><a name="2590" class="Symbol"
+      >{</a
+      ><a name="2591" href="Alpha.html#2547" class="Bound"
+      >z</a
+      ><a name="2592" class="Symbol"
+      >}</a
+      ><a name="2593"
+      > </a
+      ><a name="2594" class="Symbol"
+      >{</a
+      ><a name="2595" href="Alpha.html#2551" class="Bound"
+      >M</a
+      ><a name="2596" class="Symbol"
+      >}</a
+      ><a name="2597"
+      > </a
+      ><a name="2598" href="Alpha.html#2558" class="Bound"
+      >zfreeM&#953;&#8826;+xy</a
+      ><a name="2609"
+      > 
+</a
+      ><a name="2611" class="Symbol"
+      >...</a
+      ><a name="2614"
+      > </a
+      ><a name="2615" class="Symbol"
+      >|</a
+      ><a name="2616"
+      > </a
+      ><a name="2617" href="Alpha.html#2617" class="Bound"
+      >w</a
+      ><a name="2618"
+      > </a
+      ><a name="2619" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="2620"
+      > </a
+      ><a name="2621" href="Alpha.html#2621" class="Bound"
+      >wfreeM</a
+      ><a name="2627"
+      > </a
+      ><a name="2628" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="2629"
+      > </a
+      ><a name="2630" href="Alpha.html#2630" class="Bound"
+      >zfree&#953;&#8826;+xyw</a
+      ><a name="2641"
+      > </a
+      ><a name="2642" class="Keyword"
+      >with</a
+      ><a name="2646"
+      > </a
+      ><a name="2647" href="Alpha.html#2539" class="Bound"
+      >x</a
+      ><a name="2648"
+      > </a
+      ><a name="2649" href="Data.Nat.Base.html#3467" class="Function Operator"
+      >&#8799;</a
+      ><a name="2650"
+      > </a
+      ><a name="2651" href="Alpha.html#2617" class="Bound"
+      >w</a
+      ><a name="2652"
+      > </a
+      ><a name="2653" class="Symbol"
+      >|</a
+      ><a name="2654"
+      > </a
+      ><a name="2655" href="Alpha.html#2630" class="Bound"
+      >zfree&#953;&#8826;+xyw</a
+      ><a name="2666"
+      >
+</a
+      ><a name="2667" href="Alpha.html#2449" class="Function"
+      >lemmafree3</a
+      ><a name="2677"
+      > </a
+      ><a name="2678" class="Symbol"
+      >{</a
+      ><a name="2679" href="Alpha.html#2679" class="Bound"
+      >x</a
+      ><a name="2680" class="Symbol"
+      >}</a
+      ><a name="2681"
+      > </a
+      ><a name="2682" class="Symbol"
+      >{</a
+      ><a name="2683" href="Alpha.html#2683" class="Bound"
+      >y</a
+      ><a name="2684" class="Symbol"
+      >}</a
+      ><a name="2685"
+      > </a
+      ><a name="2686" class="DottedPattern Symbol"
+      >.{</a
+      ><a name="2688" href="Alpha.html#2683" class="DottedPattern Bound"
+      >y</a
+      ><a name="2689" class="DottedPattern Symbol"
+      >}</a
+      ><a name="2690"
+      > </a
+      ><a name="2691" class="Symbol"
+      >{</a
+      ><a name="2692" href="Alpha.html#2692" class="Bound"
+      >M</a
+      ><a name="2693" class="Symbol"
+      >}</a
+      ><a name="2694"
+      > </a
+      ><a name="2695" href="Alpha.html#2695" class="Bound"
+      >y&#8802;y</a
+      ><a name="2698"
+      > </a
+      ><a name="2699" href="Alpha.html#2699" class="Bound"
+      >yfreeM&#953;&#8826;+xy</a
+      ><a name="2710"
+      > 
+    </a
+      ><a name="2716" class="Symbol"
+      >|</a
+      ><a name="2717"
+      > </a
+      ><a name="2718" href="Alpha.html#2718" class="Bound"
+      >w</a
+      ><a name="2719"
+      > </a
+      ><a name="2720" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="2721"
+      > </a
+      ><a name="2722" href="Alpha.html#2722" class="Bound"
+      >wfreeM</a
+      ><a name="2728"
+      > </a
+      ><a name="2729" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="2730"
+      > </a
+      ><a name="2731" href="Alpha.html#2731" class="Bound"
+      >yfree&#953;&#8826;+xyw</a
+      ><a name="2742"
+      > 
+    </a
+      ><a name="2748" class="Symbol"
+      >|</a
+      ><a name="2749"
+      > </a
+      ><a name="2750" href="Relation.Nullary.html#520" class="InductiveConstructor"
+      >yes</a
+      ><a name="2753"
+      > </a
+      ><a name="2754" href="Alpha.html#2754" class="Bound"
+      >x&#8801;w</a
+      ><a name="2757"
+      > </a
+      ><a name="2758" class="Symbol"
+      >|</a
+      ><a name="2759"
+      > </a
+      ><a name="2760" href="Term.html#4456" class="InductiveConstructor"
+      >*v</a
+      ><a name="2762"
+      > </a
+      ><a name="2763" class="Symbol"
+      >=</a
+      ><a name="2764"
+      > </a
+      ><a name="2765" href="Data.Empty.html#326" class="Function"
+      >&#8869;-elim</a
+      ><a name="2771"
+      > </a
+      ><a name="2772" class="Symbol"
+      >(</a
+      ><a name="2773" href="Alpha.html#2695" class="Bound"
+      >y&#8802;y</a
+      ><a name="2776"
+      > </a
+      ><a name="2777" href="Relation.Binary.Core.html#4547" class="InductiveConstructor"
+      >refl</a
+      ><a name="2781" class="Symbol"
+      >)</a
+      ><a name="2782"
+      >
+</a
+      ><a name="2783" href="Alpha.html#2449" class="Function"
+      >lemmafree3</a
+      ><a name="2793"
+      > </a
+      ><a name="2794" class="Symbol"
+      >{</a
+      ><a name="2795" href="Alpha.html#2795" class="Bound"
+      >x</a
+      ><a name="2796" class="Symbol"
+      >}</a
+      ><a name="2797"
+      > </a
+      ><a name="2798" class="Symbol"
+      >{</a
+      ><a name="2799" href="Alpha.html#2799" class="Bound"
+      >y</a
+      ><a name="2800" class="Symbol"
+      >}</a
+      ><a name="2801"
+      > </a
+      ><a name="2802" class="Symbol"
+      >{</a
+      ><a name="2803" href="Alpha.html#2803" class="Bound"
+      >z</a
+      ><a name="2804" class="Symbol"
+      >}</a
+      ><a name="2805"
+      > </a
+      ><a name="2806" class="Symbol"
+      >{</a
+      ><a name="2807" href="Alpha.html#2807" class="Bound"
+      >M</a
+      ><a name="2808" class="Symbol"
+      >}</a
+      ><a name="2809"
+      > </a
+      ><a name="2810" href="Alpha.html#2810" class="Bound"
+      >z&#8802;y</a
+      ><a name="2813"
+      > </a
+      ><a name="2814" href="Alpha.html#2814" class="Bound"
+      >zfreeM&#953;&#8826;+xy</a
+      ><a name="2825"
+      > 
+    </a
+      ><a name="2831" class="Symbol"
+      >|</a
+      ><a name="2832"
+      > </a
+      ><a name="2833" class="DottedPattern Symbol"
+      >.</a
+      ><a name="2834" href="Alpha.html#2803" class="DottedPattern Bound"
+      >z</a
+      ><a name="2835"
+      > </a
+      ><a name="2836" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="2837"
+      > </a
+      ><a name="2838" href="Alpha.html#2838" class="Bound"
+      >zfreeM</a
+      ><a name="2844"
+      > </a
+      ><a name="2845" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="2846"
+      > </a
+      ><a name="2847" class="Symbol"
+      >_</a
+      ><a name="2848"
+      >
+    </a
+      ><a name="2853" class="Symbol"
+      >|</a
+      ><a name="2854"
+      > </a
+      ><a name="2855" href="Relation.Nullary.html#547" class="InductiveConstructor"
+      >no</a
+      ><a name="2857"
+      >  </a
+      ><a name="2859" href="Alpha.html#2859" class="Bound"
+      >x&#8801;w</a
+      ><a name="2862"
+      > </a
+      ><a name="2863" class="Symbol"
+      >|</a
+      ><a name="2864"
+      > </a
+      ><a name="2865" href="Term.html#4456" class="InductiveConstructor"
+      >*v</a
+      ><a name="2867"
+      > </a
+      ><a name="2868" class="Symbol"
+      >=</a
+      ><a name="2869"
+      > </a
+      ><a name="2870" href="Alpha.html#2838" class="Bound"
+      >zfreeM</a
+      ><a name="2876"
+      >
+
+</a
+      ><a name="2878" href="Alpha.html#2878" class="Function"
+      >lemmafree4</a
+      ><a name="2888"
+      > </a
+      ><a name="2889" class="Symbol"
+      >:</a
+      ><a name="2890"
+      > </a
+      ><a name="2891" class="Symbol"
+      >{</a
+      ><a name="2892" href="Alpha.html#2892" class="Bound"
+      >x</a
+      ><a name="2893"
+      > </a
+      ><a name="2894" href="Alpha.html#2894" class="Bound"
+      >y</a
+      ><a name="2895"
+      > </a
+      ><a name="2896" href="Alpha.html#2896" class="Bound"
+      >z</a
+      ><a name="2897"
+      > </a
+      ><a name="2898" class="Symbol"
+      >:</a
+      ><a name="2899"
+      > </a
+      ><a name="2900" href="Chi.html#1141" class="Function"
+      >V</a
+      ><a name="2901" class="Symbol"
+      >}{</a
+      ><a name="2903" href="Alpha.html#2903" class="Bound"
+      >M</a
+      ><a name="2904"
+      > </a
+      ><a name="2905" class="Symbol"
+      >:</a
+      ><a name="2906"
+      > </a
+      ><a name="2907" href="Term.html#1156" class="Datatype"
+      >&#923;</a
+      ><a name="2908" class="Symbol"
+      >}</a
+      ><a name="2909"
+      > </a
+      ><a name="2910" class="Symbol"
+      >&#8594;</a
+      ><a name="2911"
+      > </a
+      ><a name="2912" href="Alpha.html#2892" class="Bound"
+      >x</a
+      ><a name="2913"
+      > </a
+      ><a name="2914" href="Relation.Binary.Core.html#4642" class="Function Operator"
+      >&#8802;</a
+      ><a name="2915"
+      > </a
+      ><a name="2916" href="Alpha.html#2896" class="Bound"
+      >z</a
+      ><a name="2917"
+      > </a
+      ><a name="2918" class="Symbol"
+      >&#8594;</a
+      ><a name="2919"
+      > </a
+      ><a name="2920" href="Alpha.html#2896" class="Bound"
+      >z</a
+      ><a name="2921"
+      > </a
+      ><a name="2922" href="Term.html#4430" class="Datatype Operator"
+      >*</a
+      ><a name="2923"
+      > </a
+      ><a name="2924" href="Alpha.html#2903" class="Bound"
+      >M</a
+      ><a name="2925"
+      > </a
+      ><a name="2926" class="Symbol"
+      >&#8594;</a
+      ><a name="2927"
+      > </a
+      ><a name="2928" href="Alpha.html#2894" class="Bound"
+      >y</a
+      ><a name="2929"
+      > </a
+      ><a name="2930" href="Term.html#3423" class="Datatype Operator"
+      >#</a
+      ><a name="2931"
+      > </a
+      ><a name="2932" class="Symbol"
+      >(</a
+      ><a name="2933" href="Term.html#1208" class="InductiveConstructor"
+      >&#411;</a
+      ><a name="2934"
+      > </a
+      ><a name="2935" href="Alpha.html#2892" class="Bound"
+      >x</a
+      ><a name="2936"
+      > </a
+      ><a name="2937" href="Alpha.html#2903" class="Bound"
+      >M</a
+      ><a name="2938" class="Symbol"
+      >)</a
+      ><a name="2939"
+      > </a
+      ><a name="2940" class="Symbol"
+      >&#8594;</a
+      ><a name="2941"
+      > </a
+      ><a name="2942" href="Alpha.html#2896" class="Bound"
+      >z</a
+      ><a name="2943"
+      > </a
+      ><a name="2944" href="Relation.Binary.Core.html#4642" class="Function Operator"
+      >&#8802;</a
+      ><a name="2945"
+      > </a
+      ><a name="2946" href="Alpha.html#2894" class="Bound"
+      >y</a
+      ><a name="2947"
+      >
+</a
+      ><a name="2948" href="Alpha.html#2878" class="Function"
+      >lemmafree4</a
+      ><a name="2958"
+      > </a
+      ><a name="2959" class="Symbol"
+      >{</a
+      ><a name="2960" href="Alpha.html#2960" class="Bound"
+      >x</a
+      ><a name="2961" class="Symbol"
+      >}</a
+      ><a name="2962"
+      > </a
+      ><a name="2963" class="DottedPattern Symbol"
+      >.{</a
+      ><a name="2965" href="Alpha.html#2960" class="DottedPattern Bound"
+      >x</a
+      ><a name="2966" class="DottedPattern Symbol"
+      >}</a
+      ><a name="2967"
+      > </a
+      ><a name="2968" class="Symbol"
+      >{</a
+      ><a name="2969" href="Alpha.html#2969" class="Bound"
+      >z</a
+      ><a name="2970" class="Symbol"
+      >}</a
+      ><a name="2971"
+      > </a
+      ><a name="2972" href="Alpha.html#2972" class="Bound"
+      >x&#8802;z</a
+      ><a name="2975"
+      > </a
+      ><a name="2976" href="Alpha.html#2976" class="Bound"
+      >zfreeM</a
+      ><a name="2982"
+      > </a
+      ><a name="2983" href="Term.html#3563" class="InductiveConstructor"
+      >#&#411;&#8801;</a
+      ><a name="2986"
+      > </a
+      ><a name="2987" class="Symbol"
+      >=</a
+      ><a name="2988"
+      > </a
+      ><a name="2989" href="Substitution.html#15979" class="Function"
+      >sym&#8802;</a
+      ><a name="2993"
+      > </a
+      ><a name="2994" href="Alpha.html#2972" class="Bound"
+      >x&#8802;z</a
+      ><a name="2997"
+      >
+</a
+      ><a name="2998" href="Alpha.html#2878" class="Function"
+      >lemmafree4</a
+      ><a name="3008"
+      > </a
+      ><a name="3009" class="Symbol"
+      >{</a
+      ><a name="3010" href="Alpha.html#3010" class="Bound"
+      >x</a
+      ><a name="3011" class="Symbol"
+      >}</a
+      ><a name="3012"
+      > </a
+      ><a name="3013" class="Symbol"
+      >{</a
+      ><a name="3014" href="Alpha.html#3014" class="Bound"
+      >y</a
+      ><a name="3015" class="Symbol"
+      >}</a
+      ><a name="3016"
+      > </a
+      ><a name="3017" class="Symbol"
+      >{</a
+      ><a name="3018" href="Alpha.html#3018" class="Bound"
+      >z</a
+      ><a name="3019" class="Symbol"
+      >}</a
+      ><a name="3020"
+      >  </a
+      ><a name="3022" href="Alpha.html#3022" class="Bound"
+      >x&#8802;z</a
+      ><a name="3025"
+      > </a
+      ><a name="3026" href="Alpha.html#3026" class="Bound"
+      >zfreeM</a
+      ><a name="3032"
+      > </a
+      ><a name="3033" class="Symbol"
+      >(</a
+      ><a name="3034" href="Term.html#3621" class="InductiveConstructor"
+      >#&#411;</a
+      ><a name="3036"
+      > </a
+      ><a name="3037" href="Alpha.html#3037" class="Bound"
+      >y#M</a
+      ><a name="3040" class="Symbol"
+      >)</a
+      ><a name="3041"
+      > </a
+      ><a name="3042" class="Keyword"
+      >with</a
+      ><a name="3046"
+      > </a
+      ><a name="3047" href="Alpha.html#3018" class="Bound"
+      >z</a
+      ><a name="3048"
+      > </a
+      ><a name="3049" href="Data.Nat.Base.html#3467" class="Function Operator"
+      >&#8799;</a
+      ><a name="3050"
+      > </a
+      ><a name="3051" href="Alpha.html#3014" class="Bound"
+      >y</a
+      ><a name="3052"
+      >
+</a
+      ><a name="3053" class="Symbol"
+      >...</a
+      ><a name="3056"
+      > </a
+      ><a name="3057" class="Symbol"
+      >|</a
+      ><a name="3058"
+      > </a
+      ><a name="3059" href="Relation.Nullary.html#547" class="InductiveConstructor"
+      >no</a
+      ><a name="3061"
+      >  </a
+      ><a name="3063" href="Alpha.html#3063" class="Bound"
+      >z&#8802;y</a
+      ><a name="3066"
+      > </a
+      ><a name="3067" class="Symbol"
+      >=</a
+      ><a name="3068"
+      > </a
+      ><a name="3069" href="Alpha.html#3063" class="Bound"
+      >z&#8802;y</a
+      ><a name="3072"
+      >
+</a
+      ><a name="3073" href="Alpha.html#2878" class="Function"
+      >lemmafree4</a
+      ><a name="3083"
+      > </a
+      ><a name="3084" class="Symbol"
+      >{</a
+      ><a name="3085" href="Alpha.html#3085" class="Bound"
+      >x</a
+      ><a name="3086" class="Symbol"
+      >}</a
+      ><a name="3087"
+      > </a
+      ><a name="3088" class="Symbol"
+      >{</a
+      ><a name="3089" href="Alpha.html#3089" class="Bound"
+      >y</a
+      ><a name="3090" class="Symbol"
+      >}</a
+      ><a name="3091"
+      > </a
+      ><a name="3092" class="DottedPattern Symbol"
+      >.{</a
+      ><a name="3094" href="Alpha.html#3089" class="DottedPattern Bound"
+      >y</a
+      ><a name="3095" class="DottedPattern Symbol"
+      >}</a
+      ><a name="3096"
+      >  </a
+      ><a name="3098" href="Alpha.html#3098" class="Bound"
+      >x&#8802;y</a
+      ><a name="3101"
+      > </a
+      ><a name="3102" href="Alpha.html#3102" class="Bound"
+      >yfreeM</a
+      ><a name="3108"
+      > </a
+      ><a name="3109" class="Symbol"
+      >(</a
+      ><a name="3110" href="Term.html#3621" class="InductiveConstructor"
+      >#&#411;</a
+      ><a name="3112"
+      >  </a
+      ><a name="3114" href="Alpha.html#3114" class="Bound"
+      >y#M</a
+      ><a name="3117" class="Symbol"
+      >)</a
+      ><a name="3118"
+      >
+    </a
+      ><a name="3123" class="Symbol"
+      >|</a
+      ><a name="3124"
+      > </a
+      ><a name="3125" href="Relation.Nullary.html#520" class="InductiveConstructor"
+      >yes</a
+      ><a name="3128"
+      > </a
+      ><a name="3129" href="Relation.Binary.Core.html#4547" class="InductiveConstructor"
+      >refl</a
+      ><a name="3133"
+      > </a
+      ><a name="3134" class="Symbol"
+      >=</a
+      ><a name="3135"
+      > </a
+      ><a name="3136" href="Data.Empty.html#326" class="Function"
+      >&#8869;-elim</a
+      ><a name="3142"
+      > </a
+      ><a name="3143" class="Symbol"
+      >((</a
+      ><a name="3145" href="Term.html#6211" class="Function"
+      >lemma-free&#8594;&#172;#</a
+      ><a name="3158"
+      > </a
+      ><a name="3159" href="Alpha.html#3102" class="Bound"
+      >yfreeM</a
+      ><a name="3165" class="Symbol"
+      >)</a
+      ><a name="3166"
+      > </a
+      ><a name="3167" href="Alpha.html#3114" class="Bound"
+      >y#M</a
+      ><a name="3170" class="Symbol"
+      >)</a
+      ><a name="3171"
+      >
+\end{code}
+
+\begin{code}
+</a
+      ><a name="3197" href="Alpha.html#3197" class="Function"
+      >lemmaM&#8764;M'&#8594;free&#8594;</a
+      ><a name="3212"
+      > </a
+      ><a name="3213" class="Symbol"
+      >:</a
+      ><a name="3214"
+      > </a
+      ><a name="3215" class="Symbol"
+      >{</a
+      ><a name="3216" href="Alpha.html#3216" class="Bound"
+      >M</a
+      ><a name="3217"
+      > </a
+      ><a name="3218" href="Alpha.html#3218" class="Bound"
+      >M'</a
+      ><a name="3220"
+      > </a
+      ><a name="3221" class="Symbol"
+      >:</a
+      ><a name="3222"
+      > </a
+      ><a name="3223" href="Term.html#1156" class="Datatype"
+      >&#923;</a
+      ><a name="3224" class="Symbol"
+      >}</a
+      ><a name="3225"
+      > </a
+      ><a name="3226" class="Symbol"
+      >&#8594;</a
+      ><a name="3227"
+      > </a
+      ><a name="3228" href="Alpha.html#3216" class="Bound"
+      >M</a
+      ><a name="3229"
+      > </a
+      ><a name="3230" href="Alpha.html#464" class="Datatype Operator"
+      >&#8764;&#945;</a
+      ><a name="3232"
+      > </a
+      ><a name="3233" href="Alpha.html#3218" class="Bound"
+      >M'</a
+      ><a name="3235"
+      > </a
+      ><a name="3236" class="Symbol"
+      >&#8594;</a
+      ><a name="3237"
+      >
+                  </a
+      ><a name="3256" class="Symbol"
+      >(</a
+      ><a name="3257" href="Alpha.html#3257" class="Bound"
+      >z</a
+      ><a name="3258"
+      > </a
+      ><a name="3259" class="Symbol"
+      >:</a
+      ><a name="3260"
+      > </a
+      ><a name="3261" href="Chi.html#1141" class="Function"
+      >V</a
+      ><a name="3262" class="Symbol"
+      >)</a
+      ><a name="3263"
+      > </a
+      ><a name="3264" class="Symbol"
+      >&#8594;</a
+      ><a name="3265"
+      > </a
+      ><a name="3266" href="Alpha.html#3257" class="Bound"
+      >z</a
+      ><a name="3267"
+      > </a
+      ><a name="3268" href="Term.html#4430" class="Datatype Operator"
+      >*</a
+      ><a name="3269"
+      > </a
+      ><a name="3270" href="Alpha.html#3216" class="Bound"
+      >M</a
+      ><a name="3271"
+      > </a
+      ><a name="3272" class="Symbol"
+      >&#8594;</a
+      ><a name="3273"
+      > </a
+      ><a name="3274" href="Alpha.html#3257" class="Bound"
+      >z</a
+      ><a name="3275"
+      > </a
+      ><a name="3276" href="Term.html#4430" class="Datatype Operator"
+      >*</a
+      ><a name="3277"
+      > </a
+      ><a name="3278" href="Alpha.html#3218" class="Bound"
+      >M'</a
+      ><a name="3280"
+      >
+</a
+      ><a name="3281" href="Alpha.html#3197" class="Function"
+      >lemmaM&#8764;M'&#8594;free&#8594;</a
+      ><a name="3296"
+      > </a
+      ><a name="3297" href="Alpha.html#491" class="InductiveConstructor"
+      >&#8764;v</a
+      ><a name="3299"
+      >                                 </a
+      ><a name="3332" href="Alpha.html#3332" class="Bound"
+      >z</a
+      ><a name="3333"
+      > </a
+      ><a name="3334" href="Alpha.html#3334" class="Bound"
+      >zfreex</a
+      ><a name="3340"
+      >           
+  </a
+      ><a name="3354" class="Symbol"
+      >=</a
+      ><a name="3355"
+      > </a
+      ><a name="3356" href="Alpha.html#3334" class="Bound"
+      >zfreex</a
+      ><a name="3362"
+      >
+</a
+      ><a name="3363" href="Alpha.html#3197" class="Function"
+      >lemmaM&#8764;M'&#8594;free&#8594;</a
+      ><a name="3378"
+      > </a
+      ><a name="3379" class="Symbol"
+      >(</a
+      ><a name="3380" href="Alpha.html#522" class="InductiveConstructor"
+      >&#8764;&#183;</a
+      ><a name="3382"
+      > </a
+      ><a name="3383" href="Alpha.html#3383" class="Bound"
+      >M&#8764;M'</a
+      ><a name="3387"
+      > </a
+      ><a name="3388" href="Alpha.html#3388" class="Bound"
+      >N&#8764;N'</a
+      ><a name="3392" class="Symbol"
+      >)</a
+      ><a name="3393"
+      >                     </a
+      ><a name="3414" href="Alpha.html#3414" class="Bound"
+      >z</a
+      ><a name="3415"
+      > </a
+      ><a name="3416" class="Symbol"
+      >(</a
+      ><a name="3417" href="Term.html#4510" class="InductiveConstructor"
+      >*&#183;l</a
+      ><a name="3420"
+      > </a
+      ><a name="3421" href="Alpha.html#3421" class="Bound"
+      >zfreeM</a
+      ><a name="3427" class="Symbol"
+      >)</a
+      ><a name="3428"
+      >    
+  </a
+      ><a name="3435" class="Symbol"
+      >=</a
+      ><a name="3436"
+      > </a
+      ><a name="3437" href="Term.html#4510" class="InductiveConstructor"
+      >*&#183;l</a
+      ><a name="3440"
+      > </a
+      ><a name="3441" class="Symbol"
+      >(</a
+      ><a name="3442" href="Alpha.html#3197" class="Function"
+      >lemmaM&#8764;M'&#8594;free&#8594;</a
+      ><a name="3457"
+      > </a
+      ><a name="3458" href="Alpha.html#3383" class="Bound"
+      >M&#8764;M'</a
+      ><a name="3462"
+      > </a
+      ><a name="3463" href="Alpha.html#3414" class="Bound"
+      >z</a
+      ><a name="3464"
+      > </a
+      ><a name="3465" href="Alpha.html#3421" class="Bound"
+      >zfreeM</a
+      ><a name="3471" class="Symbol"
+      >)</a
+      ><a name="3472"
+      > 
+</a
+      ><a name="3474" href="Alpha.html#3197" class="Function"
+      >lemmaM&#8764;M'&#8594;free&#8594;</a
+      ><a name="3489"
+      > </a
+      ><a name="3490" class="Symbol"
+      >(</a
+      ><a name="3491" href="Alpha.html#522" class="InductiveConstructor"
+      >&#8764;&#183;</a
+      ><a name="3493"
+      > </a
+      ><a name="3494" href="Alpha.html#3494" class="Bound"
+      >M&#8764;M'</a
+      ><a name="3498"
+      > </a
+      ><a name="3499" href="Alpha.html#3499" class="Bound"
+      >N&#8764;N'</a
+      ><a name="3503" class="Symbol"
+      >)</a
+      ><a name="3504"
+      >                     </a
+      ><a name="3525" href="Alpha.html#3525" class="Bound"
+      >z</a
+      ><a name="3526"
+      > </a
+      ><a name="3527" class="Symbol"
+      >(</a
+      ><a name="3528" href="Term.html#4566" class="InductiveConstructor"
+      >*&#183;r</a
+      ><a name="3531"
+      > </a
+      ><a name="3532" href="Alpha.html#3532" class="Bound"
+      >zfreeN</a
+      ><a name="3538" class="Symbol"
+      >)</a
+      ><a name="3539"
+      >    
+  </a
+      ><a name="3546" class="Symbol"
+      >=</a
+      ><a name="3547"
+      > </a
+      ><a name="3548" href="Term.html#4566" class="InductiveConstructor"
+      >*&#183;r</a
+      ><a name="3551"
+      > </a
+      ><a name="3552" class="Symbol"
+      >(</a
+      ><a name="3553" href="Alpha.html#3197" class="Function"
+      >lemmaM&#8764;M'&#8594;free&#8594;</a
+      ><a name="3568"
+      > </a
+      ><a name="3569" href="Alpha.html#3499" class="Bound"
+      >N&#8764;N'</a
+      ><a name="3573"
+      > </a
+      ><a name="3574" href="Alpha.html#3525" class="Bound"
+      >z</a
+      ><a name="3575"
+      > </a
+      ><a name="3576" href="Alpha.html#3532" class="Bound"
+      >zfreeN</a
+      ><a name="3582" class="Symbol"
+      >)</a
+      ><a name="3583"
+      > 
+</a
+      ><a name="3585" href="Alpha.html#3197" class="Function"
+      >lemmaM&#8764;M'&#8594;free&#8594;</a
+      ><a name="3600"
+      > </a
+      ><a name="3601" class="Symbol"
+      >(</a
+      ><a name="3602" href="Alpha.html#592" class="InductiveConstructor"
+      >&#8764;&#411;</a
+      ><a name="3604"
+      > </a
+      ><a name="3605" class="Symbol"
+      >{</a
+      ><a name="3606" href="Alpha.html#3606" class="Bound"
+      >M</a
+      ><a name="3607" class="Symbol"
+      >}</a
+      ><a name="3608"
+      > </a
+      ><a name="3609" class="Symbol"
+      >{</a
+      ><a name="3610" href="Alpha.html#3610" class="Bound"
+      >M'</a
+      ><a name="3612" class="Symbol"
+      >}</a
+      ><a name="3613"
+      > </a
+      ><a name="3614" class="Symbol"
+      >{</a
+      ><a name="3615" href="Alpha.html#3615" class="Bound"
+      >x</a
+      ><a name="3616" class="Symbol"
+      >}</a
+      ><a name="3617"
+      > </a
+      ><a name="3618" class="Symbol"
+      >{</a
+      ><a name="3619" href="Alpha.html#3619" class="Bound"
+      >x'</a
+      ><a name="3621" class="Symbol"
+      >}</a
+      ><a name="3622"
+      > </a
+      ><a name="3623" class="Symbol"
+      >{</a
+      ><a name="3624" href="Alpha.html#3624" class="Bound"
+      >y</a
+      ><a name="3625" class="Symbol"
+      >}</a
+      ><a name="3626"
+      > 
+                </a
+      ><a name="3644" href="Alpha.html#3644" class="Bound"
+      >y#&#955;xM</a
+      ><a name="3649"
+      > </a
+      ><a name="3650" href="Alpha.html#3650" class="Bound"
+      >y#&#955;x'M'</a
+      ><a name="3657"
+      > </a
+      ><a name="3658" href="Alpha.html#3658" class="Bound"
+      >M&#953;&#8826;+xy&#8764;M'&#953;&#8826;+x'y</a
+      ><a name="3673" class="Symbol"
+      >)</a
+      ><a name="3674"
+      > </a
+      ><a name="3675" href="Alpha.html#3675" class="Bound"
+      >z</a
+      ><a name="3676"
+      > </a
+      ><a name="3677" class="Symbol"
+      >(</a
+      ><a name="3678" href="Term.html#4622" class="InductiveConstructor"
+      >*&#411;</a
+      ><a name="3680"
+      > </a
+      ><a name="3681" href="Alpha.html#3681" class="Bound"
+      >zfreeM</a
+      ><a name="3687"
+      > </a
+      ><a name="3688" href="Alpha.html#3688" class="Bound"
+      >x&#8802;z</a
+      ><a name="3691" class="Symbol"
+      >)</a
+      ><a name="3692"
+      > 
+  </a
+      ><a name="3696" class="Symbol"
+      >=</a
+      ><a name="3697"
+      > </a
+      ><a name="3698" href="Term.html#4622" class="InductiveConstructor"
+      >*&#411;</a
+      ><a name="3700"
+      > </a
+      ><a name="3701" class="Symbol"
+      >(</a
+      ><a name="3702" href="Alpha.html#2449" class="Function"
+      >lemmafree3</a
+      ><a name="3712"
+      > </a
+      ><a name="3713" class="Symbol"
+      >{</a
+      ><a name="3714" href="Alpha.html#3619" class="Bound"
+      >x'</a
+      ><a name="3716" class="Symbol"
+      >}</a
+      ><a name="3717"
+      > </a
+      ><a name="3718" class="Symbol"
+      >{</a
+      ><a name="3719" href="Alpha.html#3624" class="Bound"
+      >y</a
+      ><a name="3720" class="Symbol"
+      >}</a
+      ><a name="3721"
+      > </a
+      ><a name="3722" class="Symbol"
+      >{</a
+      ><a name="3723" href="Alpha.html#3675" class="Bound"
+      >z</a
+      ><a name="3724" class="Symbol"
+      >}</a
+      ><a name="3725"
+      > </a
+      ><a name="3726" class="Symbol"
+      >{</a
+      ><a name="3727" href="Alpha.html#3610" class="Bound"
+      >M'</a
+      ><a name="3729" class="Symbol"
+      >}</a
+      ><a name="3730"
+      > </a
+      ><a name="3731" class="Symbol"
+      >(</a
+      ><a name="3732" href="Alpha.html#2878" class="Function"
+      >lemmafree4</a
+      ><a name="3742"
+      > </a
+      ><a name="3743" href="Alpha.html#3688" class="Bound"
+      >x&#8802;z</a
+      ><a name="3746"
+      > </a
+      ><a name="3747" href="Alpha.html#3681" class="Bound"
+      >zfreeM</a
+      ><a name="3753"
+      > </a
+      ><a name="3754" href="Alpha.html#3644" class="Bound"
+      >y#&#955;xM</a
+      ><a name="3759" class="Symbol"
+      >)</a
+      ><a name="3760"
+      > </a
+      ><a name="3761" href="Alpha.html#3855" class="Function"
+      >lemma</a
+      ><a name="3766" class="Symbol"
+      >)</a
+      ><a name="3767"
+      > 
+       </a
+      ><a name="3776" class="Symbol"
+      >(</a
+      ><a name="3777" href="Alpha.html#1461" class="Function"
+      >lemmafree2</a
+      ><a name="3787"
+      > </a
+      ><a name="3788" class="Symbol"
+      >{</a
+      ><a name="3789" href="Alpha.html#3615" class="Bound"
+      >x</a
+      ><a name="3790" class="Symbol"
+      >}</a
+      ><a name="3791"
+      > </a
+      ><a name="3792" class="Symbol"
+      >{</a
+      ><a name="3793" href="Alpha.html#3619" class="Bound"
+      >x'</a
+      ><a name="3795" class="Symbol"
+      >}</a
+      ><a name="3796"
+      > </a
+      ><a name="3797" class="Symbol"
+      >{</a
+      ><a name="3798" href="Alpha.html#3624" class="Bound"
+      >y</a
+      ><a name="3799" class="Symbol"
+      >}</a
+      ><a name="3800"
+      > </a
+      ><a name="3801" class="Symbol"
+      >{</a
+      ><a name="3802" href="Alpha.html#3675" class="Bound"
+      >z</a
+      ><a name="3803" class="Symbol"
+      >}</a
+      ><a name="3804"
+      > </a
+      ><a name="3805" class="Symbol"
+      >{</a
+      ><a name="3806" href="Alpha.html#3606" class="Bound"
+      >M</a
+      ><a name="3807" class="Symbol"
+      >}</a
+      ><a name="3808"
+      > </a
+      ><a name="3809" class="Symbol"
+      >{</a
+      ><a name="3810" href="Alpha.html#3610" class="Bound"
+      >M'</a
+      ><a name="3812" class="Symbol"
+      >}</a
+      ><a name="3813"
+      > </a
+      ><a name="3814" href="Alpha.html#3644" class="Bound"
+      >y#&#955;xM</a
+      ><a name="3819"
+      > </a
+      ><a name="3820" href="Alpha.html#3688" class="Bound"
+      >x&#8802;z</a
+      ><a name="3823"
+      > </a
+      ><a name="3824" href="Alpha.html#3855" class="Function"
+      >lemma</a
+      ><a name="3829"
+      > </a
+      ><a name="3830" href="Alpha.html#3681" class="Bound"
+      >zfreeM</a
+      ><a name="3836" class="Symbol"
+      >)</a
+      ><a name="3837"
+      >  
+    </a
+      ><a name="3844" class="Keyword"
+      >where</a
+      ><a name="3849"
+      > 
+    </a
+      ><a name="3855" href="Alpha.html#3855" class="Function"
+      >lemma</a
+      ><a name="3860"
+      > </a
+      ><a name="3861" class="Symbol"
+      >:</a
+      ><a name="3862"
+      > </a
+      ><a name="3863" href="Alpha.html#3675" class="Bound"
+      >z</a
+      ><a name="3864"
+      > </a
+      ><a name="3865" href="Term.html#4430" class="Datatype Operator"
+      >*</a
+      ><a name="3866"
+      > </a
+      ><a name="3867" class="Symbol"
+      >(</a
+      ><a name="3868" href="Alpha.html#3610" class="Bound"
+      >M'</a
+      ><a name="3870"
+      > </a
+      ><a name="3871" href="Substitution.html#14552" class="Function Operator"
+      >&#8729;</a
+      ><a name="3872"
+      > </a
+      ><a name="3873" class="Symbol"
+      >(</a
+      ><a name="3874" href="Substitution.html#1239" class="Function"
+      >&#953;</a
+      ><a name="3875"
+      > </a
+      ><a name="3876" href="Substitution.html#1283" class="Function Operator"
+      >&#8826;+</a
+      ><a name="3878"
+      > </a
+      ><a name="3879" class="Symbol"
+      >(</a
+      ><a name="3880" href="Alpha.html#3619" class="Bound"
+      >x'</a
+      ><a name="3882"
+      > </a
+      ><a name="3883" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="3884"
+      > </a
+      ><a name="3885" href="Term.html#1172" class="InductiveConstructor"
+      >v</a
+      ><a name="3886"
+      > </a
+      ><a name="3887" href="Alpha.html#3624" class="Bound"
+      >y</a
+      ><a name="3888" class="Symbol"
+      >)))</a
+      ><a name="3891"
+      >
+    </a
+      ><a name="3896" href="Alpha.html#3855" class="Function"
+      >lemma</a
+      ><a name="3901"
+      > </a
+      ><a name="3902" class="Symbol"
+      >=</a
+      ><a name="3903"
+      > </a
+      ><a name="3904" href="Alpha.html#3197" class="Function"
+      >lemmaM&#8764;M'&#8594;free&#8594;</a
+      ><a name="3919"
+      > </a
+      ><a name="3920" href="Alpha.html#3658" class="Bound"
+      >M&#953;&#8826;+xy&#8764;M'&#953;&#8826;+x'y</a
+      ><a name="3935"
+      > </a
+      ><a name="3936" href="Alpha.html#3675" class="Bound"
+      >z</a
+      ><a name="3937"
+      > </a
+      ><a name="3938" class="Symbol"
+      >(</a
+      ><a name="3939" href="Alpha.html#1167" class="Function"
+      >lemmafree1</a
+      ><a name="3949"
+      > </a
+      ><a name="3950" href="Alpha.html#3688" class="Bound"
+      >x&#8802;z</a
+      ><a name="3953"
+      > </a
+      ><a name="3954" href="Alpha.html#3681" class="Bound"
+      >zfreeM</a
+      ><a name="3960" class="Symbol"
+      >)</a
+      ><a name="3961"
+      >
+\end{code}
+
+\begin{code}
+</a
+      ><a name="3987" href="Alpha.html#3987" class="Function"
+      >lemmaM&#8764;M'&#8594;free&#8592;</a
+      ><a name="4002"
+      > </a
+      ><a name="4003" class="Symbol"
+      >:</a
+      ><a name="4004"
+      > </a
+      ><a name="4005" class="Symbol"
+      >{</a
+      ><a name="4006" href="Alpha.html#4006" class="Bound"
+      >M</a
+      ><a name="4007"
+      > </a
+      ><a name="4008" href="Alpha.html#4008" class="Bound"
+      >M'</a
+      ><a name="4010"
+      > </a
+      ><a name="4011" class="Symbol"
+      >:</a
+      ><a name="4012"
+      > </a
+      ><a name="4013" href="Term.html#1156" class="Datatype"
+      >&#923;</a
+      ><a name="4014" class="Symbol"
+      >}</a
+      ><a name="4015"
+      > </a
+      ><a name="4016" class="Symbol"
+      >&#8594;</a
+      ><a name="4017"
+      > </a
+      ><a name="4018" href="Alpha.html#4006" class="Bound"
+      >M</a
+      ><a name="4019"
+      > </a
+      ><a name="4020" href="Alpha.html#464" class="Datatype Operator"
+      >&#8764;&#945;</a
+      ><a name="4022"
+      > </a
+      ><a name="4023" href="Alpha.html#4008" class="Bound"
+      >M'</a
+      ><a name="4025"
+      > </a
+      ><a name="4026" class="Symbol"
+      >&#8594;</a
+      ><a name="4027"
+      > 
+                  </a
+      ><a name="4047" class="Symbol"
+      >(</a
+      ><a name="4048" href="Alpha.html#4048" class="Bound"
+      >z</a
+      ><a name="4049"
+      > </a
+      ><a name="4050" class="Symbol"
+      >:</a
+      ><a name="4051"
+      > </a
+      ><a name="4052" href="Chi.html#1141" class="Function"
+      >V</a
+      ><a name="4053" class="Symbol"
+      >)</a
+      ><a name="4054"
+      > </a
+      ><a name="4055" class="Symbol"
+      >&#8594;</a
+      ><a name="4056"
+      > </a
+      ><a name="4057" href="Alpha.html#4048" class="Bound"
+      >z</a
+      ><a name="4058"
+      > </a
+      ><a name="4059" href="Term.html#4430" class="Datatype Operator"
+      >*</a
+      ><a name="4060"
+      > </a
+      ><a name="4061" href="Alpha.html#4008" class="Bound"
+      >M'</a
+      ><a name="4063"
+      > </a
+      ><a name="4064" class="Symbol"
+      >&#8594;</a
+      ><a name="4065"
+      > </a
+      ><a name="4066" href="Alpha.html#4048" class="Bound"
+      >z</a
+      ><a name="4067"
+      > </a
+      ><a name="4068" href="Term.html#4430" class="Datatype Operator"
+      >*</a
+      ><a name="4069"
+      > </a
+      ><a name="4070" href="Alpha.html#4006" class="Bound"
+      >M</a
+      ><a name="4071"
+      >
+</a
+      ><a name="4072" href="Alpha.html#3987" class="Function"
+      >lemmaM&#8764;M'&#8594;free&#8592;</a
+      ><a name="4087"
+      > </a
+      ><a name="4088" href="Alpha.html#491" class="InductiveConstructor"
+      >&#8764;v</a
+      ><a name="4090"
+      >                                 </a
+      ><a name="4123" href="Alpha.html#4123" class="Bound"
+      >z</a
+      ><a name="4124"
+      > </a
+      ><a name="4125" href="Alpha.html#4125" class="Bound"
+      >zfreex</a
+      ><a name="4131"
+      >           
+  </a
+      ><a name="4145" class="Symbol"
+      >=</a
+      ><a name="4146"
+      > </a
+      ><a name="4147" href="Alpha.html#4125" class="Bound"
+      >zfreex</a
+      ><a name="4153"
+      >
+</a
+      ><a name="4154" href="Alpha.html#3987" class="Function"
+      >lemmaM&#8764;M'&#8594;free&#8592;</a
+      ><a name="4169"
+      > </a
+      ><a name="4170" class="Symbol"
+      >(</a
+      ><a name="4171" href="Alpha.html#522" class="InductiveConstructor"
+      >&#8764;&#183;</a
+      ><a name="4173"
+      > </a
+      ><a name="4174" href="Alpha.html#4174" class="Bound"
+      >M&#8764;M'</a
+      ><a name="4178"
+      > </a
+      ><a name="4179" href="Alpha.html#4179" class="Bound"
+      >N&#8764;N'</a
+      ><a name="4183" class="Symbol"
+      >)</a
+      ><a name="4184"
+      >                     </a
+      ><a name="4205" href="Alpha.html#4205" class="Bound"
+      >z</a
+      ><a name="4206"
+      > </a
+      ><a name="4207" class="Symbol"
+      >(</a
+      ><a name="4208" href="Term.html#4510" class="InductiveConstructor"
+      >*&#183;l</a
+      ><a name="4211"
+      > </a
+      ><a name="4212" href="Alpha.html#4212" class="Bound"
+      >zfreeM'</a
+      ><a name="4219" class="Symbol"
+      >)</a
+      ><a name="4220"
+      >    
+  </a
+      ><a name="4227" class="Symbol"
+      >=</a
+      ><a name="4228"
+      > </a
+      ><a name="4229" href="Term.html#4510" class="InductiveConstructor"
+      >*&#183;l</a
+      ><a name="4232"
+      > </a
+      ><a name="4233" class="Symbol"
+      >(</a
+      ><a name="4234" href="Alpha.html#3987" class="Function"
+      >lemmaM&#8764;M'&#8594;free&#8592;</a
+      ><a name="4249"
+      > </a
+      ><a name="4250" href="Alpha.html#4174" class="Bound"
+      >M&#8764;M'</a
+      ><a name="4254"
+      > </a
+      ><a name="4255" href="Alpha.html#4205" class="Bound"
+      >z</a
+      ><a name="4256"
+      > </a
+      ><a name="4257" href="Alpha.html#4212" class="Bound"
+      >zfreeM'</a
+      ><a name="4264" class="Symbol"
+      >)</a
+      ><a name="4265"
+      > 
+</a
+      ><a name="4267" href="Alpha.html#3987" class="Function"
+      >lemmaM&#8764;M'&#8594;free&#8592;</a
+      ><a name="4282"
+      > </a
+      ><a name="4283" class="Symbol"
+      >(</a
+      ><a name="4284" href="Alpha.html#522" class="InductiveConstructor"
+      >&#8764;&#183;</a
+      ><a name="4286"
+      > </a
+      ><a name="4287" href="Alpha.html#4287" class="Bound"
+      >M&#8764;M'</a
+      ><a name="4291"
+      > </a
+      ><a name="4292" href="Alpha.html#4292" class="Bound"
+      >N&#8764;N'</a
+      ><a name="4296" class="Symbol"
+      >)</a
+      ><a name="4297"
+      >                     </a
+      ><a name="4318" href="Alpha.html#4318" class="Bound"
+      >z</a
+      ><a name="4319"
+      > </a
+      ><a name="4320" class="Symbol"
+      >(</a
+      ><a name="4321" href="Term.html#4566" class="InductiveConstructor"
+      >*&#183;r</a
+      ><a name="4324"
+      > </a
+      ><a name="4325" href="Alpha.html#4325" class="Bound"
+      >zfreeN'</a
+      ><a name="4332" class="Symbol"
+      >)</a
+      ><a name="4333"
+      >    
+  </a
+      ><a name="4340" class="Symbol"
+      >=</a
+      ><a name="4341"
+      > </a
+      ><a name="4342" href="Term.html#4566" class="InductiveConstructor"
+      >*&#183;r</a
+      ><a name="4345"
+      > </a
+      ><a name="4346" class="Symbol"
+      >(</a
+      ><a name="4347" href="Alpha.html#3987" class="Function"
+      >lemmaM&#8764;M'&#8594;free&#8592;</a
+      ><a name="4362"
+      > </a
+      ><a name="4363" href="Alpha.html#4292" class="Bound"
+      >N&#8764;N'</a
+      ><a name="4367"
+      > </a
+      ><a name="4368" href="Alpha.html#4318" class="Bound"
+      >z</a
+      ><a name="4369"
+      > </a
+      ><a name="4370" href="Alpha.html#4325" class="Bound"
+      >zfreeN'</a
+      ><a name="4377" class="Symbol"
+      >)</a
+      ><a name="4378"
+      > 
+</a
+      ><a name="4380" href="Alpha.html#3987" class="Function"
+      >lemmaM&#8764;M'&#8594;free&#8592;</a
+      ><a name="4395"
+      > </a
+      ><a name="4396" class="Symbol"
+      >(</a
+      ><a name="4397" href="Alpha.html#592" class="InductiveConstructor"
+      >&#8764;&#411;</a
+      ><a name="4399"
+      > </a
+      ><a name="4400" class="Symbol"
+      >{</a
+      ><a name="4401" href="Alpha.html#4401" class="Bound"
+      >M</a
+      ><a name="4402" class="Symbol"
+      >}</a
+      ><a name="4403"
+      > </a
+      ><a name="4404" class="Symbol"
+      >{</a
+      ><a name="4405" href="Alpha.html#4405" class="Bound"
+      >M'</a
+      ><a name="4407" class="Symbol"
+      >}</a
+      ><a name="4408"
+      > </a
+      ><a name="4409" class="Symbol"
+      >{</a
+      ><a name="4410" href="Alpha.html#4410" class="Bound"
+      >x</a
+      ><a name="4411" class="Symbol"
+      >}</a
+      ><a name="4412"
+      > </a
+      ><a name="4413" class="Symbol"
+      >{</a
+      ><a name="4414" href="Alpha.html#4414" class="Bound"
+      >x'</a
+      ><a name="4416" class="Symbol"
+      >}</a
+      ><a name="4417"
+      > </a
+      ><a name="4418" class="Symbol"
+      >{</a
+      ><a name="4419" href="Alpha.html#4419" class="Bound"
+      >y</a
+      ><a name="4420" class="Symbol"
+      >}</a
+      ><a name="4421"
+      > 
+                </a
+      ><a name="4439" href="Alpha.html#4439" class="Bound"
+      >y#&#955;xM</a
+      ><a name="4444"
+      > </a
+      ><a name="4445" href="Alpha.html#4445" class="Bound"
+      >y#&#955;x'M'</a
+      ><a name="4452"
+      > </a
+      ><a name="4453" href="Alpha.html#4453" class="Bound"
+      >M&#953;&#8826;+xy&#8764;M'&#953;&#8826;+x'y</a
+      ><a name="4468" class="Symbol"
+      >)</a
+      ><a name="4469"
+      > </a
+      ><a name="4470" href="Alpha.html#4470" class="Bound"
+      >z</a
+      ><a name="4471"
+      > </a
+      ><a name="4472" class="Symbol"
+      >(</a
+      ><a name="4473" href="Term.html#4622" class="InductiveConstructor"
+      >*&#411;</a
+      ><a name="4475"
+      > </a
+      ><a name="4476" href="Alpha.html#4476" class="Bound"
+      >zfreeM'</a
+      ><a name="4483"
+      > </a
+      ><a name="4484" href="Alpha.html#4484" class="Bound"
+      >x'&#8802;z</a
+      ><a name="4488" class="Symbol"
+      >)</a
+      ><a name="4489"
+      > 
+  </a
+      ><a name="4493" class="Symbol"
+      >=</a
+      ><a name="4494"
+      > </a
+      ><a name="4495" href="Term.html#4622" class="InductiveConstructor"
+      >*&#411;</a
+      ><a name="4497"
+      > </a
+      ><a name="4498" class="Symbol"
+      >(</a
+      ><a name="4499" href="Alpha.html#2449" class="Function"
+      >lemmafree3</a
+      ><a name="4509"
+      > </a
+      ><a name="4510" class="Symbol"
+      >{</a
+      ><a name="4511" href="Alpha.html#4410" class="Bound"
+      >x</a
+      ><a name="4512" class="Symbol"
+      >}</a
+      ><a name="4513"
+      > </a
+      ><a name="4514" class="Symbol"
+      >{</a
+      ><a name="4515" href="Alpha.html#4419" class="Bound"
+      >y</a
+      ><a name="4516" class="Symbol"
+      >}</a
+      ><a name="4517"
+      > </a
+      ><a name="4518" class="Symbol"
+      >{</a
+      ><a name="4519" href="Alpha.html#4470" class="Bound"
+      >z</a
+      ><a name="4520" class="Symbol"
+      >}</a
+      ><a name="4521"
+      > </a
+      ><a name="4522" class="Symbol"
+      >{</a
+      ><a name="4523" href="Alpha.html#4401" class="Bound"
+      >M</a
+      ><a name="4524" class="Symbol"
+      >}</a
+      ><a name="4525"
+      > </a
+      ><a name="4526" class="Symbol"
+      >(</a
+      ><a name="4527" href="Alpha.html#2878" class="Function"
+      >lemmafree4</a
+      ><a name="4537"
+      > </a
+      ><a name="4538" href="Alpha.html#4484" class="Bound"
+      >x'&#8802;z</a
+      ><a name="4542"
+      > </a
+      ><a name="4543" href="Alpha.html#4476" class="Bound"
+      >zfreeM'</a
+      ><a name="4550"
+      > </a
+      ><a name="4551" href="Alpha.html#4445" class="Bound"
+      >y#&#955;x'M'</a
+      ><a name="4558" class="Symbol"
+      >)</a
+      ><a name="4559"
+      > </a
+      ><a name="4560" href="Alpha.html#4652" class="Function"
+      >lemma</a
+      ><a name="4565" class="Symbol"
+      >)</a
+      ><a name="4566"
+      > 
+       </a
+      ><a name="4575" class="Symbol"
+      >(</a
+      ><a name="4576" href="Alpha.html#1461" class="Function"
+      >lemmafree2</a
+      ><a name="4586"
+      > </a
+      ><a name="4587" class="Symbol"
+      >{</a
+      ><a name="4588" href="Alpha.html#4414" class="Bound"
+      >x'</a
+      ><a name="4590" class="Symbol"
+      >}</a
+      ><a name="4591"
+      > </a
+      ><a name="4592" class="Symbol"
+      >{</a
+      ><a name="4593" href="Alpha.html#4410" class="Bound"
+      >x</a
+      ><a name="4594" class="Symbol"
+      >}</a
+      ><a name="4595"
+      > </a
+      ><a name="4596" class="Symbol"
+      >{</a
+      ><a name="4597" href="Alpha.html#4419" class="Bound"
+      >y</a
+      ><a name="4598" class="Symbol"
+      >}</a
+      ><a name="4599"
+      > </a
+      ><a name="4600" class="Symbol"
+      >{</a
+      ><a name="4601" href="Alpha.html#4470" class="Bound"
+      >z</a
+      ><a name="4602" class="Symbol"
+      >}</a
+      ><a name="4603"
+      > </a
+      ><a name="4604" class="Symbol"
+      >{</a
+      ><a name="4605" href="Alpha.html#4405" class="Bound"
+      >M'</a
+      ><a name="4607" class="Symbol"
+      >}</a
+      ><a name="4608"
+      > </a
+      ><a name="4609" class="Symbol"
+      >{</a
+      ><a name="4610" href="Alpha.html#4401" class="Bound"
+      >M</a
+      ><a name="4611" class="Symbol"
+      >}</a
+      ><a name="4612"
+      > </a
+      ><a name="4613" href="Alpha.html#4445" class="Bound"
+      >y#&#955;x'M'</a
+      ><a name="4620"
+      > </a
+      ><a name="4621" href="Alpha.html#4484" class="Bound"
+      >x'&#8802;z</a
+      ><a name="4625"
+      > </a
+      ><a name="4626" href="Alpha.html#4652" class="Function"
+      >lemma</a
+      ><a name="4631"
+      > </a
+      ><a name="4632" href="Alpha.html#4476" class="Bound"
+      >zfreeM'</a
+      ><a name="4639" class="Symbol"
+      >)</a
+      ><a name="4640"
+      >
+  </a
+      ><a name="4643" class="Keyword"
+      >where</a
+      ><a name="4648"
+      > 
+  </a
+      ><a name="4652" href="Alpha.html#4652" class="Function"
+      >lemma</a
+      ><a name="4657"
+      > </a
+      ><a name="4658" class="Symbol"
+      >:</a
+      ><a name="4659"
+      > </a
+      ><a name="4660" href="Alpha.html#4470" class="Bound"
+      >z</a
+      ><a name="4661"
+      > </a
+      ><a name="4662" href="Term.html#4430" class="Datatype Operator"
+      >*</a
+      ><a name="4663"
+      > </a
+      ><a name="4664" class="Symbol"
+      >(</a
+      ><a name="4665" href="Alpha.html#4401" class="Bound"
+      >M</a
+      ><a name="4666"
+      > </a
+      ><a name="4667" href="Substitution.html#14552" class="Function Operator"
+      >&#8729;</a
+      ><a name="4668"
+      > </a
+      ><a name="4669" class="Symbol"
+      >(</a
+      ><a name="4670" href="Substitution.html#1239" class="Function"
+      >&#953;</a
+      ><a name="4671"
+      > </a
+      ><a name="4672" href="Substitution.html#1283" class="Function Operator"
+      >&#8826;+</a
+      ><a name="4674"
+      > </a
+      ><a name="4675" class="Symbol"
+      >(</a
+      ><a name="4676" href="Alpha.html#4410" class="Bound"
+      >x</a
+      ><a name="4677"
+      > </a
+      ><a name="4678" href="Data.Product.html#509" class="InductiveConstructor Operator"
+      >,</a
+      ><a name="4679"
+      > </a
+      ><a name="4680" href="Term.html#1172" class="InductiveConstructor"
+      >v</a
+      ><a name="4681"
+      > </a
+      ><a name="4682" href="Alpha.html#4419" class="Bound"
+      >y</a
+      ><a name="4683" class="Symbol"
+      >)))</a
+      ><a name="4686"
+      >
+  </a
+      ><a name="4689" href="Alpha.html#4652" class="Function"
+      >lemma</a
+      ><a name="4694"
+      > </a
+      ><a name="4695" class="Symbol"
+      >=</a
+      ><a name="4696"
+      > </a
+      ><a name="4697" href="Alpha.html#3987" class="Function"
+      >lemmaM&#8764;M'&#8594;free&#8592;</a
+      ><a name="4712"
+      > </a
+      ><a name="4713" href="Alpha.html#4453" class="Bound"
+      >M&#953;&#8826;+xy&#8764;M'&#953;&#8826;+x'y</a
+      ><a name="4728"
+      > </a
+      ><a name="4729" href="Alpha.html#4470" class="Bound"
+      >z</a
+      ><a name="4730"
+      > </a
+      ><a name="4731" class="Symbol"
+      >(</a
+      ><a name="4732" href="Alpha.html#1167" class="Function"
+      >lemmafree1</a
+      ><a name="4742"
+      > </a
+      ><a name="4743" href="Alpha.html#4484" class="Bound"
+      >x'&#8802;z</a
+      ><a name="4747"
+      > </a
+      ><a name="4748" href="Alpha.html#4476" class="Bound"
+      >zfreeM'</a
+      ><a name="4755" class="Symbol"
+      >)</a
+      ><a name="4756"
+      >
+\end{code}
+
+\begin{code}
+</a
+      ><a name="4782" href="Alpha.html#4782" class="Function"
+      >lemmaM&#8764;N#</a
+      ><a name="4791"
+      > </a
+      ><a name="4792" class="Symbol"
+      >:</a
+      ><a name="4793"
+      >  </a
+      ><a name="4795" class="Symbol"
+      >{</a
+      ><a name="4796" href="Alpha.html#4796" class="Bound"
+      >M</a
+      ><a name="4797"
+      > </a
+      ><a name="4798" href="Alpha.html#4798" class="Bound"
+      >N</a
+      ><a name="4799"
+      > </a
+      ><a name="4800" class="Symbol"
+      >:</a
+      ><a name="4801"
+      > </a
+      ><a name="4802" href="Term.html#1156" class="Datatype"
+      >&#923;</a
+      ><a name="4803" class="Symbol"
+      >}</a
+      ><a name="4804"
+      >
+             </a
+      ><a name="4818" class="Symbol"
+      >&#8594;</a
+      ><a name="4819"
+      > </a
+      ><a name="4820" href="Alpha.html#4796" class="Bound"
+      >M</a
+      ><a name="4821"
+      > </a
+      ><a name="4822" href="Alpha.html#464" class="Datatype Operator"
+      >&#8764;&#945;</a
+      ><a name="4824"
+      > </a
+      ><a name="4825" href="Alpha.html#4798" class="Bound"
+      >N</a
+      ><a name="4826"
+      >
+             </a
+      ><a name="4840" class="Symbol"
+      >&#8594;</a
+      ><a name="4841"
+      > </a
+      ><a name="4842" class="Symbol"
+      >(</a
+      ><a name="4843" href="Alpha.html#4843" class="Bound"
+      >z</a
+      ><a name="4844"
+      > </a
+      ><a name="4845" class="Symbol"
+      >:</a
+      ><a name="4846"
+      > </a
+      ><a name="4847" href="Chi.html#1141" class="Function"
+      >V</a
+      ><a name="4848" class="Symbol"
+      >)</a
+      ><a name="4849"
+      > </a
+      ><a name="4850" class="Symbol"
+      >&#8594;</a
+      ><a name="4851"
+      > </a
+      ><a name="4852" href="Alpha.html#4843" class="Bound"
+      >z</a
+      ><a name="4853"
+      > </a
+      ><a name="4854" href="Term.html#3423" class="Datatype Operator"
+      >#</a
+      ><a name="4855"
+      > </a
+      ><a name="4856" href="Alpha.html#4796" class="Bound"
+      >M</a
+      ><a name="4857"
+      > </a
+      ><a name="4858" class="Symbol"
+      >&#8594;</a
+      ><a name="4859"
+      > </a
+      ><a name="4860" href="Alpha.html#4843" class="Bound"
+      >z</a
+      ><a name="4861"
+      > </a
+      ><a name="4862" href="Term.html#3423" class="Datatype Operator"
+      >#</a
+      ><a name="4863"
+      > </a
+      ><a name="4864" href="Alpha.html#4798" class="Bound"
+      >N</a
+      ><a name="4865"
+      >
+</a
+      ><a name="4866" href="Alpha.html#4782" class="Function"
+      >lemmaM&#8764;N#</a
+      ><a name="4875"
+      > </a
+      ><a name="4876" class="Symbol"
+      >{</a
+      ><a name="4877" href="Alpha.html#4877" class="Bound"
+      >M</a
+      ><a name="4878" class="Symbol"
+      >}</a
+      ><a name="4879"
+      > </a
+      ><a name="4880" class="Symbol"
+      >{</a
+      ><a name="4881" href="Alpha.html#4881" class="Bound"
+      >N</a
+      ><a name="4882" class="Symbol"
+      >}</a
+      ><a name="4883"
+      > </a
+      ><a name="4884" href="Alpha.html#4884" class="Bound"
+      >M&#8764;N</a
+      ><a name="4887"
+      > </a
+      ><a name="4888" href="Alpha.html#4888" class="Bound"
+      >z</a
+      ><a name="4889"
+      > </a
+      ><a name="4890" href="Alpha.html#4890" class="Bound"
+      >z#M</a
+      ><a name="4893"
+      > </a
+      ><a name="4894" class="Keyword"
+      >with</a
+      ><a name="4898"
+      > </a
+      ><a name="4899" href="Alpha.html#4888" class="Bound"
+      >z</a
+      ><a name="4900"
+      > </a
+      ><a name="4901" href="Term.html#4795" class="Function Operator"
+      >#?</a
+      ><a name="4903"
+      > </a
+      ><a name="4904" href="Alpha.html#4881" class="Bound"
+      >N</a
+      ><a name="4905"
+      >
+</a
+      ><a name="4906" class="Symbol"
+      >...</a
+      ><a name="4909"
+      > </a
+      ><a name="4910" class="Symbol"
+      >|</a
+      ><a name="4911"
+      > </a
+      ><a name="4912" href="Relation.Nullary.html#520" class="InductiveConstructor"
+      >yes</a
+      ><a name="4915"
+      > </a
+      ><a name="4916" href="Alpha.html#4916" class="Bound"
+      >z#N</a
+      ><a name="4919"
+      >   </a
+      ><a name="4922" class="Symbol"
+      >=</a
+      ><a name="4923"
+      > </a
+      ><a name="4924" href="Alpha.html#4916" class="Bound"
+      >z#N</a
+      ><a name="4927"
+      >
+</a
+      ><a name="4928" class="Symbol"
+      >...</a
+      ><a name="4931"
+      > </a
+      ><a name="4932" class="Symbol"
+      >|</a
+      ><a name="4933"
+      > </a
+      ><a name="4934" href="Relation.Nullary.html#547" class="InductiveConstructor"
+      >no</a
+      ><a name="4936"
+      >  </a
+      ><a name="4938" href="Alpha.html#4938" class="Bound"
+      >&#172;z#N</a
+      ><a name="4942"
+      >  </a
+      ><a name="4944" class="Symbol"
+      >=</a
+      ><a name="4945"
+      > </a
+      ><a name="4946" href="Data.Empty.html#326" class="Function"
+      >&#8869;-elim</a
+      ><a name="4952"
+      > </a
+      ><a name="4953" class="Symbol"
+      >((</a
+      ><a name="4955" href="Term.html#6211" class="Function"
+      >lemma-free&#8594;&#172;#</a
+      ><a name="4968"
+      > </a
+      ><a name="4969" class="Symbol"
+      >(</a
+      ><a name="4970" href="Alpha.html#3987" class="Function"
+      >lemmaM&#8764;M'&#8594;free&#8592;</a
+      ><a name="4985"
+      > </a
+      ><a name="4986" href="Alpha.html#4884" class="Bound"
+      >M&#8764;N</a
+      ><a name="4989"
+      > </a
+      ><a name="4990" href="Alpha.html#4888" class="Bound"
+      >z</a
+      ><a name="4991"
+      > </a
+      ><a name="4992" class="Symbol"
+      >(</a
+      ><a name="4993" href="Term.html#5546" class="Function"
+      >lemma&#172;#&#8594;free</a
+      ><a name="5005"
+      > </a
+      ><a name="5006" href="Alpha.html#4938" class="Bound"
+      >&#172;z#N</a
+      ><a name="5010" class="Symbol"
+      >)))</a
+      ><a name="5013"
+      > </a
+      ><a name="5014" href="Alpha.html#4890" class="Bound"
+      >z#M</a
+      ><a name="5017" class="Symbol"
+      >)</a
+      ><a name="5018"
+      > 
+\end{code}
+
+</a
+      ></pre
+    ></body
+  ></html
+>

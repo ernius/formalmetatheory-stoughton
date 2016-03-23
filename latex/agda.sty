@@ -313,6 +313,7 @@
     {\AgdaNoSpaceMath{\AgdaFontStyle{\textcolor{AgdaArgument}{\AgdaLink{#1}}}}}
 
 % Other aspect commands.
+\newcommand{\AgdaFixityOp}          [1]{\AgdaNoSpaceMath{$#1$}}
 \newcommand{\AgdaDottedPattern}     [1]{\textcolor{AgdaDottedPattern}{#1}}
 \newcommand{\AgdaUnsolvedMeta}      [1]
     {\AgdaFontStyle{\colorbox{AgdaUnsolvedMeta}{#1}}}
@@ -341,8 +342,8 @@
 \fi
 
 \newenvironment{code}%
-{\noindent\ignorespaces\advance\leftskip\mathindent\AgdaCodeStyle\pboxed}%
-{\endpboxed\par\noindent%
+{\vspace{1ex}\noindent\ignorespaces\advance\leftskip\mathindent\AgdaCodeStyle\pboxed}%
+{\vspace{1ex}\endpboxed\par\noindent%
 \ignorespacesafterend}
 
 % Default column for polytable.

@@ -1,0 +1,660 @@
+\documentclass{article} 
+
+% no margen
+%\usepackage[margin=0.1in]{geometry}
+
+\usepackage{graphicx}
+
+%\usepackage[bw,references]{latex/agda}
+%\usepackage[conor,references]{latex/agda}
+\usepackage[hidelinks]{hyperref}
+\usepackage[references,links]{agda}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{mathtools}
+\usepackage{textgreek}
+\usepackage{catchfilebetweentags}
+\usepackage{tipa}
+\usepackage{bussproofs}
+
+%math
+\newcommand{\noalp}{\ensuremath{no\alpha}}
+\newcommand{\p}{\ensuremath{\rightrightarrows}}
+\newcommand{\betaalpha}{\ensuremath{\rightarrow_\alpha}}
+\newcommand{\alp}{\ensuremath{\alpha}}
+\newcommand{\alpsy}{\ensuremath{\sim}}
+\newcommand{\lam}{\ensuremath{\lambda}}
+\newcommand{\alphaeqsym}{\ensuremath{\sim_\alpha}}
+\newcommand{\choice}{\ensuremath{\chi}}
+\newcommand{\add}[2]{\ensuremath{\prec\!\!+(#1,#2)}}
+
+%Agda
+\newcommand{\freshin}[2]{\ensuremath{#1 \mathbin{\AgdaDatatype{\#}} #2}}
+\newcommand{\lambAg}[2]{\ensuremath{\AgdaInductiveConstructor{ƛ}\, #1\, #2}}
+\newcommand{\inAg}{\ensuremath{\mathbin{\AgdaFunction{∈}}}}
+\newcommand{\ninAg}{\ensuremath{\mathbin{\AgdaFunction{∉}}}}
+\newcommand{\neqAg}{\ensuremath{\mathbin{\AgdaInductiveConstructor{≢}}}}
+\newcommand{\ap}[2]{#1 \ensuremath{\mathbin{\AgdaInductiveConstructorFunction{·}} #2}}
+\newcommand{\var}[1]{\ensuremath{\AgdaInductiveConstructorFunction{v}\, #1}}
+\newcommand{\fv}{\ensuremath{{\AgdaFunction{fv}}\,}}
+\newcommand{\perm}{\ensuremath{\mathbin{\AgdaFunction{∙}}}}
+\newcommand{\perma}{\ensuremath{\mathbin{\AgdaFunction{∙}_a}}}
+\newcommand{\free}{\ensuremath{\mathbin{\AgdaFunction{*}}}}
+\newcommand{\choiceAg}{\ensuremath{\AgdaFunction{χ}\,}}
+\newcommand{\choiceAgaux}{\ensuremath{\AgdaFunction{χ'}\,}}
+\newcommand{\alpeqAg}{\ensuremath{\mathbin{\AgdaDatatype{∼α}}}}
+\newcommand{\swap}[3]{\ensuremath{(#1 \mathbin{\AgdaFunction{∙}} #2)\, #3}}
+
+% \newcommand{\agdaf}[1]{\ensuremath{\AgdaFunction{#1}\,}}
+% \newcommand{\agdaD}[1]{\ensuremath{\AgdaDatatype{#1}\,}}
+% \newcommand{\agdav}[1]{\ensuremath{\AgdaBound{#1}\,}}
+
+\DeclareUnicodeCharacter{411}{\textipa{\textcrlambda}}
+\DeclareUnicodeCharacter{65288}{(}
+\DeclareUnicodeCharacter{65289}{)}
+\DeclareUnicodeCharacter{8788}{\ensuremath{\coloneqq}}
+\DeclareUnicodeCharacter{8336}{\ensuremath{_a}}
+\DeclareUnicodeCharacter{8799}{\ensuremath{\overset{?}{=}}}
+\DeclareUnicodeCharacter{8759}{\ensuremath{\dblcolon}}
+\DeclareUnicodeCharacter{8718}{\ensuremath{\square}}
+\DeclareUnicodeCharacter{9657}{\ensuremath{\triangleright}}
+\DeclareUnicodeCharacter{8649}{\ensuremath{\rightrightarrows}}
+\DeclareUnicodeCharacter{8339}{}
+\DeclareUnicodeCharacter{8347}{}
+\DeclareUnicodeCharacter{9635}{\ensuremath{\qed}}
+
+\newtheorem{lem}{Lemma}
+
+\begin{document}
+
+Parallel Reduction of Stoughton's paper:
+
+\ExecuteMetaData[ParallelReduction.tex]{parallel} 
+
+We already have the following result in the paper:
+
+\ExecuteMetaData[SubstitutionLemmas.tex]{parallelsubstitutionlemma}
+
+The alpha rule of this parallel relation definition brings high non determinism in the construction evidence. In fact, infinite of them exists for any two related lambda terms.
+So we define a predicate that holds only if a parallel reduction has no alpha rules in it.
+
+\ExecuteMetaData[ChurchRosser.tex]{noalphaparallel} 
+
+Next, we prove that given a parallel reduction $M \p N$\ then it exists a term $P$, alpha equivalent to $N$, such that $M \p P$ with no alpha rules in the derivations. 
+
+\ExecuteMetaData[ChurchRosser.tex]{noalphaparallellemma} 
+
+\begin{proof} By induction on parallel relation.
+\begin{itemize}
+   \item[var. rule:] The proof is direct.
+   \item[abs. rule:]       
+\begin{minipage}{0.2\linewidth}
+     Hypotheses:
+\end{minipage}
+\begin{minipage}{0.4\linewidth}
+\AxiomC{$M  \p N$}
+\LeftLabel{$\lam$}
+\UnaryInfC{$\lam x M \p \lam x N$}
+\DisplayProof
+\end{minipage}
+
+Thesis: $\exists P, \lam x N \alpsy P, \lam x M \p P$ with no \alp\ rules.
+
+Proof:
+
+\AxiomC{$M  \p N$}
+\LeftLabel{ind. hyp}
+\UnaryInfC{$\exists P', P' \alpsy N, M \p P'$ with no \alp\ rules}
+\LeftLabel{\p\lam}
+\UnaryInfC{$\lam x M \p \lam x P'$ with no \alp\ rules}
+\AxiomC{$P'  \alpsy N$}
+\UnaryInfC{$\lam x P' \alpsy \lam x N$}
+\BinaryInfC{$\exists P = \lam x P', \lam x N \alpsy P, \lam x M \p P$ with no \alp\ rules}
+\DisplayProof
+
+   \item[app. rule:]       
+\begin{minipage}{0.2\linewidth}
+     Hypotheses:
+\end{minipage}
+\begin{minipage}{0.4\linewidth}
+\AxiomC{$M  \p M'$}
+\AxiomC{$N  \p N'$}
+\LeftLabel{\p app}
+\BinaryInfC{$M N \p M' N'$}
+\DisplayProof
+\end{minipage}
+
+Thesis: $\exists P, M N \alpsy P, M N \p P$ with no \alp\ rules.
+
+Proof:
+\AxiomC{$M  \p M'$}
+\LeftLabel{ind. hyp}
+\UnaryInfC{$\exists Q, Q \alpsy M', M \p Q$ with no \alp\ rules}
+\DisplayProof
+
+\AxiomC{$N  \p N'$}
+\LeftLabel{ind. hyp}
+\UnaryInfC{$\exists R, R \alpsy N', M \p R$ with no \alp\ rules}
+\DisplayProof
+
+Then exists $P = Q R$ such that $M' N' \alpsy P$ by alpha application rule, and $M N \p P$ by parallel application rules with no \alp\ rules in the derivation.
+
+   \item[$\beta$ rule:]       
+\begin{minipage}{0.2\linewidth}
+     Hypotheses:
+\end{minipage}
+\begin{minipage}{0.4\linewidth}
+\AxiomC{$M  \p M'$}
+\AxiomC{$N  \p N'$}
+\LeftLabel{$\p \beta$}
+\BinaryInfC{$\lam x M N \p M' [x := N']$}
+\DisplayProof
+\end{minipage}
+
+Thesis: $\exists P, M' [x := N'] \alpsy P, \lam x M N \p P$ with no \alp\ rules.
+
+Proof:
+\AxiomC{$M  \p M'$}
+\LeftLabel{ind. hyp}
+\UnaryInfC{$\exists Q, Q \alpsy M', M \p Q$ with no \alp\ rules}
+\DisplayProof
+
+\AxiomC{$N  \p N'$}
+\LeftLabel{ind. hyp}
+\UnaryInfC{$\exists R, R \alpsy N', N \p R$ with no \alp\ rules}
+\DisplayProof
+
+\begin{minipage}{0.1\linewidth}
+(1)
+\end{minipage}
+\begin{minipage}{0.9\linewidth}
+\AxiomC{$M'  \alpsy Q$}
+\AxiomC{$N'  \alpsy R$}
+\LeftLabel{subst. lemma}
+\BinaryInfC{$M' [x := N'] \alpsy Q [x := R']$}
+\DisplayProof
+\end{minipage}
+
+\begin{minipage}{0.1\linewidth}
+(2)
+\end{minipage}
+\begin{minipage}{0.9\linewidth}
+\AxiomC{$M  \p Q$ no \alp\ rules}
+\AxiomC{$N  \p R$ no \alp\ rules}
+\LeftLabel{$\p\beta$}
+\BinaryInfC{$\lam x M N \alpsy Q [x := R]$ no \alp\ rules}
+\DisplayProof
+\end{minipage}
+
+Then exists $P = Q [x := R]$\ such that $M' [x := N'] \alpsy P$ by (1)$, \lam x M N \p P$ with no \alp\ rules by (2).
+
+   \item[\alp\ rule:]       
+\begin{minipage}{0.2\linewidth}
+     Hypotheses:
+\end{minipage}
+\begin{minipage}{0.4\linewidth}
+\AxiomC{$M  \p N$}
+\AxiomC{$N  \alpsy Q$}
+\LeftLabel{$\p\alpha$}
+\BinaryInfC{$M \p Q$}
+\DisplayProof
+\end{minipage}
+
+Thesis: $\exists P, Q \alpsy P, M \p P$ with no \alp\ rules.
+
+Proof:
+\AxiomC{$M  \p N$}
+\LeftLabel{ind. hyp}
+\UnaryInfC{$\exists R, R \alpsy N, M \p R$ with no \alp\ rules}
+\UnaryInfC{$\exists P = R/$ by transitive of \alpsy\ $Q \alpsy P, M \p P$ with no \alp\ rules}
+\DisplayProof
+
+
+\end{itemize}
+\end{proof}
+
+With previous result we are able to prove that the parallel relation is also alpha compatible in the left term of the relation.
+
+\ExecuteMetaData[ChurchRosser.tex]{parallelleftalpha}
+
+To prove this result we will use the next similar one, it adds the extra premise that the parallel relation hypothesis has no alpha rules in its derivation.
+
+\ExecuteMetaData[ChurchRosser.tex]{parallellnoalphaeftalpha}
+
+With this weakened lemma and the previously proved lemma\p no\alp\ we directly prove the desired result.
+
+\begin{proof}
+\AxiomC{$M  \alpsy N$}
+\AxiomC{$N  \p P$}
+\LeftLabel{lemma\p no\alp}
+\UnaryInfC{$\exists Q, Q \alpsy P, N \p Q$ with no \alp rules}
+\LeftLabel{prev. lemma}
+\BinaryInfC{$M \p Q$}
+\AxiomC{$Q  \alpsy P$}
+\LeftLabel{\p \alp}
+\BinaryInfC{$M \p P$}
+\DisplayProof 
+\end{proof}
+
+Next, we prove our auxiliary lemma.
+
+\begin{proof} By structural induction on the left term $N$ of the parallel relation hypothesis
+
+\begin{itemize}
+   \item[var. case:] $N = x$\ this case is direct.
+   \item[app. case:] $N = N N'$\ it has two subcases depending on the last rule on the parallel relation derivation, which could be an application or beta rule (alpha rule case is discared by the extra hypothesis).
+
+     \begin{itemize}
+     \item[app. rule:] 
+
+         \begin{tabular}[t]{cc}
+           Hypotheses: & 
+\AxiomC{$M  \alpsy N$}
+\AxiomC{$M'  \alpsy N'$}
+\LeftLabel{$\alpsy\ app.$}
+\BinaryInfC{$M M' \alpsy N N'$}
+\DisplayProof          \\
+
+                        & 
+\AxiomC{$N  \p P$ with no \alp\ rules}
+\AxiomC{$N'  \p P'$ with no \alp\ rules}
+\LeftLabel{$\p\ app.$}
+\BinaryInfC{$N N' \p P P'$}
+\DisplayProof
+
+                       \\
+         \end{tabular}
+
+Tesis: $M M' \p P P'$
+
+Proof:
+\AxiomC{$M  \alpsy N$}
+\AxiomC{$N  \p P$ no \alp\ rules}
+\LeftLabel{ind. hyp.}
+\BinaryInfC{$M \p P$}
+
+\AxiomC{$M'  \alpsy N'$}
+\AxiomC{$N'  \p P'$ no \alp\ rules}
+\LeftLabel{ind. hyp.}
+\BinaryInfC{$M' \p P'$}
+
+\LeftLabel{\p app.}
+\BinaryInfC{$M M' \p P P'$}
+\DisplayProof
+
+     \item[$\beta$\ rule:]
+
+         \begin{tabular}[t]{cc}
+           Hypotheses: $N = \lam y N N'$& 
+
+\AxiomC{$\lam x M  \alpsy \lam y N$}
+\AxiomC{$M'  \alpsy N'$}
+\LeftLabel{$\alpsy\ app.$}
+\BinaryInfC{$\lam x M M' \alpsy \lam y N N'$}
+\DisplayProof          \\
+
+                        & 
+\AxiomC{$ N  \p P$ with no \alp\ rules}
+\AxiomC{$N'  \p P'$ with no \alp\ rules}
+\LeftLabel{$\p\ app.$}
+\BinaryInfC{$\lam y N N' \p P [y := P']$ }
+\DisplayProof
+
+                       \\
+         \end{tabular}
+
+Tesis: $\lam x M M' \p P [y := P']$
+
+Proof: 
+
+\AxiomC{$\lam x M  \alpsy \lam y N$}
+\UnaryInfC{$M \alpsy N[y:=x]$}
+\AxiomC{$N \p P$}
+\LeftLabel{subst. lemma \p}
+\UnaryInfC{$N[y:=x] \p P[y:=x]$}
+\LeftLabel{lemma\p no$\alpha$}
+\UnaryInfC{$\exists Q, Q \alpsy P[y:=x], N[y:=x]\p Q$ no \alp\ rules}
+\LeftLabel{ind. hyp.}
+\BinaryInfC{$M \p Q$}
+\DisplayProof
+
+\AxiomC{$M \p Q$}
+\AxiomC{$Q \alpsy P[y:=x]$}
+\LeftLabel{\p \alp}
+\BinaryInfC{$M \p P[y:=x]$}
+
+\AxiomC{$M' \alpsy N'$}
+\AxiomC{$N' \p P'$}
+\LeftLabel{ind. hyp.}
+\BinaryInfC{$M' \p P'$}
+
+\LeftLabel{\p $\beta$}
+\BinaryInfC{$\lam x M M' \p P[y:=x][x:=P']$}
+\DisplayProof
+
+
+\AxiomC{$\lam x M M' \p P[y:=x][x:=P']$}
+
+\AxiomC{$x \# \lam x M$}
+\AxiomC{$\lam x M \alpsy \lam y N $}
+\BinaryInfC{$x \# \lam y N$}
+\AxiomC{$\lam y N \p \lam y P$}
+\BinaryInfC{$x \# \lam y P$}
+\UnaryInfC{$P[y:=x][x:=P'] \alpsy P[y:=P']$}
+\LeftLabel{\p \alp}
+\BinaryInfC{$\lam x M M' \p P[y:=P']$}
+\DisplayProof
+
+     \end{itemize}
+
+   \item[abs. case:] $N = \lam y N$
+
+\begin{minipage}{0.2\linewidth}
+           Hypotheses: 
+\end{minipage}
+\begin{minipage}{0.2\linewidth}
+$\lam x M \alpsy \lam y N $ , 
+\end{minipage}
+\begin{minipage}{0.6\linewidth}
+\AxiomC{$N \p P$}
+\LeftLabel{$\p abs.$}
+\UnaryInfC{$\lam y N \p \lam y P$}
+\DisplayProof          
+\end{minipage}
+
+Tesis: $\lam x M \p \lam y P$
+
+Proof: 
+
+\AxiomC{$\lam x M  \alpsy \lam y N$}
+\UnaryInfC{$M \alpsy N[y:=x]$}
+
+\AxiomC{$N \p P$}
+\LeftLabel{subst. lemma \p}
+\UnaryInfC{$N[y:=x] \p P[y:=x]$}
+\LeftLabel{lemma\p no$\alpha$}
+\UnaryInfC{$\exists Q, Q \alpsy P[y:=x], N[y:=x]\p Q$ no \alp\ rules}
+\LeftLabel{ind. hyp.}
+\BinaryInfC{$M \p Q$}
+\DisplayProof
+
+
+\AxiomC{$M \p Q$}
+\AxiomC{$Q \alpsy P[y:=x]$}
+\LeftLabel{\p \alp}
+\BinaryInfC{$M \p P[y:=x]$}
+\LeftLabel{\p abs.}
+\UnaryInfC{$\lam x M  \p \lam x P[y:=x]$}
+
+\AxiomC{$x \# \lam x M$}
+\AxiomC{$\lam x M \alpsy \lam y N $}
+\BinaryInfC{$x \# \lam y N$}
+\AxiomC{$\lam y N \p \lam y P$}
+\BinaryInfC{$x \# \lam y P$}
+\UnaryInfC{$\lam x P[y:=x] \alpsy \lam y P$}
+\LeftLabel{\p \alp}
+\BinaryInfC{$\lam x M \p \lam y P$}
+\DisplayProof
+
+\end{itemize}
+\end{proof}
+
+Finally, we present the diamond property of the parallel reduction.
+
+\ExecuteMetaData[ChurchRosser.tex]{paralleldiamond}
+
+To prove this result we use a similar approach to previous lemma, proving first a weakened version of it, which adds that the parallel reduction premises have no \alp\ rules in its derivations.
+
+\ExecuteMetaData[ChurchRosser.tex]{paralleldiamondnoalpha}
+
+With previous lemma  and the lemma\p no\alp result the proof is direct.
+
+\begin{proof}
+\AxiomC{$M \p N$}
+\LeftLabel{lemma\p no\alp}
+\UnaryInfC{$\exists N', N' \alpsy N, M \p N'$ with no \alp\ rules}
+\DisplayProof
+
+\AxiomC{$M \p P$}
+\LeftLabel{lemma\p no\alp}
+\UnaryInfC{$\exists P', P' \alpsy P, M \p P'$ with no \alp\ rules}
+\DisplayProof
+
+\AxiomC{$M \p N'$ with no \alp\ rules}
+\AxiomC{$M \p P'$ with no \alp\ rules}
+\LeftLabel{diam\p no\alp}
+\BinaryInfC{$\exists Q, N'\p Q P'\p Q$}
+\DisplayProof
+
+\AxiomC{$N \alpsy N'$}
+\AxiomC{$N' \p Q$}
+\LeftLabel{lemma\p\alp left}
+\BinaryInfC{$N \p Q$}
+
+\AxiomC{$P \alpsy P'$}
+\AxiomC{$P' \p Q$}
+\LeftLabel{lemma\p\alp left}
+\BinaryInfC{$P \p Q$}
+
+\BinaryInfC{$\exists Q, N \p Q, P \p Q$}
+\DisplayProof
+\end{proof}
+
+Next, we prove the auxiliary lemma.
+
+\begin{proof}
+By induction on the parallel reduction relations. Since \alp\ rules can not ocurr by hypotheses, the possible cases are reduced to the following ones:
+
+\begin{itemize}
+\item[var-var rules:] The proof is direct.
+\item[abs-abs rules:] 
+  \begin{tabular}[t]{cc}
+   Hypotheses: &
+\AxiomC{$M \p N$ with no \alp\ rules}
+\LeftLabel{\p abs}
+\UnaryInfC{$\lam x M \p \lam x N$}
+\DisplayProof
+               \\
+               & 
+\AxiomC{$M \p P$ with no \alp\ rules}
+\LeftLabel{\p abs}
+\UnaryInfC{$\lam x M \p \lam x P$}
+\DisplayProof
+  \end{tabular}
+
+
+Thesis: $\exists Q, \lam x N \p Q, \lam x P \p Q$
+  
+Proof:
+
+\AxiomC{$M \p N$ with no \alp\ rules}
+\AxiomC{$M \p P$ with no \alp\ rules}
+\LeftLabel{ind. hyp.}
+\BinaryInfC{$\exists Q', N \p Q', P \p Q'$}
+\DisplayProof
+
+\AxiomC{$N \p Q'$}
+\LeftLabel{\p abs}
+\UnaryInfC{$\lam x N \p \lam x Q'$}
+
+\AxiomC{$P \p Q'$}
+\LeftLabel{\p abs}
+\UnaryInfC{$\lam x P \p \lam x Q'$}
+
+\BinaryInfC{$\exists Q = \lam x Q', \lam x N \p Q , \lam x P \p Q$}
+\DisplayProof
+
+\item[app-app rules:] 
+  \begin{tabular}[t]{cc}
+   Hypotheses: &
+\AxiomC{$M \p N$ with no \alp\ rules}
+\AxiomC{$M' \p N'$ with no \alp\ rules}
+\LeftLabel{\p app}
+\BinaryInfC{$M M' \p N N'$}
+\DisplayProof
+               \\
+               & 
+\AxiomC{$M \p P$ with no \alp\ rules}
+\AxiomC{$M' \p P'$ with no \alp\ rules}
+\LeftLabel{\p app}
+\BinaryInfC{$M M' \p P P'$}
+\DisplayProof
+  \end{tabular}
+
+Thesis: $\exists Q, N N' \p Q, P P' \p Q$
+  
+Proof:
+
+\AxiomC{$M \p N$ with no \alp\ rules}
+\AxiomC{$M \p P$ with no \alp\ rules}
+\LeftLabel{ind. hyp.}
+\BinaryInfC{$\exists Q', N \p Q', P \p Q'$}
+\DisplayProof
+
+\AxiomC{$M' \p N'$ with no \alp\ rules}
+\AxiomC{$M' \p P'$ with no \alp\ rules}
+\LeftLabel{ind. hyp.}
+\BinaryInfC{$\exists Q'', N' \p Q'', P' \p Q''$}
+\DisplayProof
+
+\AxiomC{$N \p Q'$ }
+\AxiomC{$N' \p Q''$}
+\LeftLabel{\p app}
+\BinaryInfC{$N N' \p Q' Q''$}
+
+\AxiomC{$P \p Q'$ }
+\AxiomC{$P' \p Q''$}
+\LeftLabel{\p app}
+\BinaryInfC{$P P' \p Q' Q''$}
+
+\BinaryInfC{$\exists Q = Q' Q'', N N' \p Q, P P' \p Q$}
+\DisplayProof
+
+
+\item[beta-beta rules:] 
+  \begin{tabular}[t]{cc}
+   Hypotheses: &
+\AxiomC{$M \p N$ with no \alp\ rules}
+\AxiomC{$M' \p N'$ with no \alp\ rules}
+\LeftLabel{$\p \beta$}
+\BinaryInfC{$\lam x M M' \p N [ x := N']$}
+\DisplayProof
+               \\
+               & 
+\AxiomC{$M \p P$ with no \alp\ rules}
+\AxiomC{$M' \p P'$ with no \alp\ rules}
+\LeftLabel{$\p \beta$}
+\BinaryInfC{$\lam x M M' \p P [ x := P' ]$}
+\DisplayProof
+  \end{tabular}
+
+Thesis: $\exists Q, N [ x := N'] \p Q, P [x := P'] \p Q$
+  
+Proof:
+
+\AxiomC{$M \p N$ with no \alp\ rules}
+\AxiomC{$M \p P$ with no \alp\ rules}
+\LeftLabel{ind. hyp.}
+\BinaryInfC{$\exists Q', N \p Q', P \p Q'$}
+\DisplayProof
+
+\AxiomC{$M' \p N'$ with no \alp\ rules}
+\AxiomC{$M' \p P'$ with no \alp\ rules}
+\LeftLabel{ind. hyp.}
+\BinaryInfC{$\exists Q'', N' \p Q'', P' \p Q''$}
+\DisplayProof
+
+Applying the substitution lemma of parallel reduction (lemma\p).
+
+\AxiomC{$N \p Q'$}
+\AxiomC{$N' \p Q''$}
+\UnaryInfC{$[x := N'] \p [x := Q'']$}
+\LeftLabel{lemma\p}
+\BinaryInfC{$N [x := N'] \p Q' [ x := Q''] $}
+\DisplayProof
+
+In a similar way we have that $P [x := P'] \p Q' [ x := Q''] $, then exists $Q = Q' [ x := Q'']$ that satifies the thesis.
+
+\item[beta-app rules:] Similar to the two previous cases combined.
+\item[app-beta rules:] Simetric to previous case.
+
+\end{itemize}
+\end{proof}
+
+Beta contraction
+
+\ExecuteMetaData[Beta.tex]{betacontraction} 
+
+
+Contextual closure of beta contraction.
+
+\ExecuteMetaData[Beta.tex]{beta} 
+
+Alpha beta union relation.
+
+\ExecuteMetaData[Beta.tex]{alphabeta} 
+
+To end the proof of \betaalpha\ relation confluence we the following two results:
+
+\begin{itemize}
+\item $\betaalpha \subseteq \p$
+\item $\p \subseteq \betaalpha^*$
+\end{itemize}
+
+Both proofs are a direct induction on the left relations on both inclusions. In the beta case of the second proof we use the following two subtitutions lemmas for the $\betaalpha^*$\ relation:
+
+\ExecuteMetaData[Beta.tex]{betaalphasubstitutionterm} 
+
+\begin{proof} 
+This lemma is proved by induction on the reflexive and transitive closure of $\betaalpha$\ relation. The reflexive and transitive cases of the closure are direct. The only remaining case is the one step case, which can be an \alp\ or $\beta$\ step.
+
+\begin{itemize}
+ \item \alp\ case: As the substitution normilises \alp-convertible terms the result is a direct reflexive step.
+ \item $\beta$ case: We do an induction on the closure cases, all are direct, except from the abstraction and $\beta$-contraction cases that we discuss next.
+
+   \begin{itemize}
+   \item abstraction case:
+
+   \[ \begin{array}{rcll}
+       (\lam x M) \sigma & \betaalpha^*\ & \{\text{by substitution definition, with}\ y = \choice\ \sigma\ (\lam x M) &\} \\
+       \lam y (M \sigma \add{x}{y}) & \betaalpha^* & \{\text{by inductive hypotheses and that the} &\} \\
+                                    &              &\{ \betaalpha^* \text{ relation is preserved by the application of an abstraction} &\} \\
+ 
+       \lam y (M' \sigma \add{x}{y}) & \betaalpha^*& \{\text{by being \alp-convertible, with}\ y' = \choice\ \sigma\ (\lam x M') &\} \\
+       \lam y' (M' \sigma \add{x}{y'}) & \betaalpha^*& \{\text{by substitution definition} &\} \\
+       ((\lam x M') \sigma &&&
+   \end{array} \]
+   \item $\beta$\  case:
+
+   \[ \begin{array}{rcll}
+       ((\lam x M) N) \sigma & \betaalpha^*\ & \{\text{by substitution definition, with}\ y = \choice\ \sigma\ (\lam x M) &\} \\
+       (\lam y (M \sigma \add{x}{y})) (N \sigma) & \betaalpha^* & \{\beta\text{-contraction} &\} \\
+       (M \sigma \add{x}{y}) \iota \add{y}{N \sigma}  & \betaalpha^* & \{\text{substitution lemma corollary 1} &\} \\
+       (M \sigma \add{x}{N \sigma}  & \betaalpha^* & \{\text{corollary 1 prop 7 Stoughton} &\} \\
+       (M \iota \add{x}{N}) \sigma &&&
+       \end{array} \]
+  
+   \end{itemize}
+\end{itemize}
+  
+\end{proof}
+
+Finally we prove the remaining lemma to complete the relations inclusions proof.
+
+\ExecuteMetaData[Beta.tex]{alphabetaastersubstitutionsigma} 
+
+\begin{proof} By induction on terms. The only non direct case is the following abstraction case:
+
+   \[ \begin{array}{rcll}
+       (\lam x M)  \sigma & \betaalpha^*\ & \{\text{by substitution definition, with}\ y = \choice\ \sigma\ (\lam x M) &\} \\
+       \lam y (M \sigma \add{x}{y}))  & \betaalpha^* & \{\text{by inductive hypotheses and that the} &\} \\
+                                    &              &\{ \betaalpha^* \text{ relation is preserved by the application of an abstraction} &\} \\
+       \lam y (M \sigma' \add{x}{y})  & \betaalpha^* & \{\text{by being \alp-convertible, with}\ y' = \choice\ \sigma\ (\lam x M') &\} \\
+       \lam y' (M \sigma' \add{x}{y'})  & \betaalpha^* & \{\text{by substitution definition} &\} \\
+       (\lam x M) \sigma' &&&
+       \end{array} \]
+
+  
+\end{proof}
+
+\end{document}

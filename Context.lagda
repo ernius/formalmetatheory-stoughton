@@ -128,8 +128,8 @@ lemma⊆∷ : {x : K}{d : D}{Γ Δ : Cxt} → Γ ⊆ Δ → Γ ‚ x , d ⊆ Δ 
 lemma⊆∷ Γ⊆Δ (here z≡x)       = here z≡x , refl
 lemma⊆∷ Γ⊆Δ (there z≢x z∈Γ)  = there z≢x (proj₁ (Γ⊆Δ z∈Γ)) , proj₂ (Γ⊆Δ z∈Γ)
 
-_\\_ : Cxt → K → Cxt
-cxt \\ k = filter (λ y → not (⌊ k ≟ proj₁ y ⌋)) cxt
+--_\\_ : Cxt → K → Cxt
+--cxt \\ k = filter (λ y → not (⌊ k ≟ proj₁ y ⌋)) cxt
 
 -- postulate
 --   lemma\\→  : (x y : K)(xs : Cxt) → (p : x ∈ xs \\ y) 

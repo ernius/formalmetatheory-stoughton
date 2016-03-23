@@ -14,7 +14,7 @@ open import Relation.Binary.PropositionalEquality as PropEq
   using (_≡_; _≢_; refl; sym; cong; cong₂; trans)
 open PropEq.≡-Reasoning renaming (begin_ to begin≡_;_∎ to _◻)
 
-infix  1 _∼α_ 
+infix  3 _∼α_ 
 \end{code}
 
 
@@ -30,8 +30,17 @@ data _∼α_ : Λ → Λ → Set where
 \end{code}
 
 \begin{code}
+infix 1 _∼α_⇂_
 _∼α_⇂_ : Σ → Σ → Λ → Set
 σ ∼α σ' ⇂ M = (x : V) → x * M → σ x ∼α σ' x
+
+lemmaι∼α⇂ : {M : Λ} → ι ∼α ι ⇂ M
+lemmaι∼α⇂ {M} x _ = ∼v 
+
+lemma≺+∼α⇂ : {x : V}{M N P : Λ}{σ σ' : Σ} → σ ∼α σ' ⇂ M → N ∼α P → σ ≺+ (x , N) ∼α σ' ≺+ (x , P) ⇂ M
+lemma≺+∼α⇂ {x} σ∼ασ'⇂M N~P y y*M with x ≟ y
+... | yes  _ = N~P 
+... | no   _ = σ∼ασ'⇂M y y*M 
 \end{code}
 
 Freshness lemmas used in lemmaM∼M'→free lemmas
@@ -119,3 +128,13 @@ lemmaM∼M'→free← (∼ƛ {M} {M'} {x} {x'} {y}
   lemma : z * (M ∙ (ι ≺+ (x , v y)))
   lemma = lemmaM∼M'→free← Mι≺+xy∼M'ι≺+x'y z (lemmafree1 x'≢z zfreeM')
 \end{code}
+
+\begin{code}
+lemmaM∼N# :  {M N : Λ}
+             → M ∼α N
+             → (z : V) → z # M → z # N
+lemmaM∼N# {M} {N} M∼N z z#M with z #? N
+... | yes z#N   = z#N
+... | no  ¬z#N  = ⊥-elim ((lemma-free→¬# (lemmaM∼M'→free← M∼N z (lemma¬#→free ¬z#N))) z#M) 
+\end{code}
+

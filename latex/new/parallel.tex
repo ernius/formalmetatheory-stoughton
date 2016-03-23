@@ -1,0 +1,309 @@
+\documentclass{article} 
+
+% no margen
+% \usepackage[margin=0.1in]{geometry}
+\usepackage{graphicx}
+
+%\usepackage[bw,references]{latex/agda}
+%\usepackage[conor,references]{latex/agda}
+\usepackage[hidelinks]{hyperref}
+\usepackage[references,links]{agda}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{mathtools}
+\usepackage{textgreek}
+\usepackage{catchfilebetweentags}
+\usepackage{tipa}
+\usepackage{bussproofs}
+
+%math
+\newcommand{\alp}{\ensuremath{\alpha}}
+\newcommand{\lam}{\ensuremath{\lambda}}
+\newcommand{\alpsy}{\ensuremath{\sim}}
+\newcommand{\choice}[2]{\ensuremath{\chi(#1,#2)}}
+\newcommand{\pr}{\ensuremath{\rightrightarrows}}
+\newcommand{\then}{\ensuremath{\Rightarrow}}
+
+%Agda
+\newcommand{\freshin}[2]{\ensuremath{#1 \mathbin{\AgdaDatatype{\#}} #2}}
+\newcommand{\lambAg}[2]{\ensuremath{\AgdaInductiveConstructor{ƛ}\, #1\, #2}}
+\newcommand{\inAg}{\ensuremath{\mathbin{\AgdaFunction{∈}}}}
+\newcommand{\ninAg}{\ensuremath{\mathbin{\AgdaFunction{∉}}}}
+\newcommand{\neqAg}{\ensuremath{\mathbin{\AgdaInductiveConstructor{≢}}}}
+\newcommand{\ap}[2]{#1 \ensuremath{\mathbin{\AgdaInductiveConstructorFunction{·}} #2}}
+\newcommand{\var}[1]{\ensuremath{\AgdaInductiveConstructorFunction{v}\, #1}}
+\newcommand{\fv}{\ensuremath{{\AgdaFunction{fv}}\,}}
+\newcommand{\perm}{\ensuremath{\mathbin{\AgdaFunction{∙}}}}
+\newcommand{\perma}{\ensuremath{\mathbin{\AgdaFunction{∙}_a}}}
+\newcommand{\free}{\ensuremath{\mathbin{\AgdaFunction{*}}}}
+\newcommand{\choiceAg}{\ensuremath{\AgdaFunction{χ}\,}}
+\newcommand{\choiceAgaux}{\ensuremath{\AgdaFunction{χ'}\,}}
+\newcommand{\alpeqAg}{\ensuremath{\mathbin{\AgdaDatatype{∼α}}}}
+\newcommand{\swap}[3]{\ensuremath{(#1 \mathbin{\AgdaFunction{∙}} #2)\, #3}}
+
+% \newcommand{\agdaf}[1]{\ensuremath{\AgdaFunction{#1}\,}}
+% \newcommand{\agdaD}[1]{\ensuremath{\AgdaDatatype{#1}\,}}
+% \newcommand{\agdav}[1]{\ensuremath{\AgdaBound{#1}\,}}
+
+\DeclareUnicodeCharacter{411}{\textipa{\textcrlambda}}
+\DeclareUnicodeCharacter{65288}{(}
+\DeclareUnicodeCharacter{65289}{)}
+\DeclareUnicodeCharacter{8788}{\ensuremath{\coloneqq}}
+\DeclareUnicodeCharacter{8336}{\ensuremath{_a}}
+\DeclareUnicodeCharacter{8799}{\ensuremath{\overset{?}{=}}}
+\DeclareUnicodeCharacter{8759}{\ensuremath{\dblcolon}}
+\DeclareUnicodeCharacter{8718}{\ensuremath{\square}}
+\DeclareUnicodeCharacter{9657}{\ensuremath{\triangleright}}
+
+\newtheorem{lem}{Lemma}
+
+\begin{document}
+
+% Parallel ------------------------------------------------------------------------------------------------------------------------------------------
+\section{Parallel Reduction}
+\label{sec:parrallel}
+
+\begin{minipage}{0.5\linewidth}
+\AxiomC{}
+\LeftLabel{v}
+\UnaryInfC{$x \pr x$}
+\DisplayProof 
+\end{minipage}
+\begin{minipage}{0.5\linewidth}
+\AxiomC{$M \pr M'$}
+\AxiomC{$N \pr N'$}
+\LeftLabel{a}
+\BinaryInfC{$M N \pr N N'$}
+\DisplayProof
+\end{minipage}
+\begin{minipage}{0.5\linewidth}
+\AxiomC{$M [x/z] \pr M' [y/z]$}
+\LeftLabel{$\lam$}
+\RightLabel{$z \# \lam x M, \lam y M'$}
+\UnaryInfC{$\lam x M \pr \lam y M'$}
+\DisplayProof
+\end{minipage}
+\begin{minipage}{0.5\linewidth}
+\AxiomC{$M \pr M'$}
+\AxiomC{$N \pr N'$}
+\LeftLabel{$\beta$}
+\BinaryInfC{$(\lam x M) N \pr M' [x/N']$}
+\DisplayProof
+\end{minipage}
+
+\hspace{1px}
+
+Principal ideas:
+\begin{enumerate}
+\item  \lam\ rule subsumes \alp\ rule.
+\item  Syntax directed, except for the superposition between application and $\beta$ rules, 
+  in the case that the left subterm of an application is an abstraction,
+  which is needed to express the choice to reduce or not a redex.
+\end{enumerate}
+
+Because we modify the parallel reduction relation we have to prove again the substitution lemma for parallel reduction holds.
+
+% LEMMA 1 ------------------------------------------------------------------------------------------------------------------------------------------
+
+\begin{lem}{$M \pr M', \sigma \pr \sigma' \then  M\sigma \pr M'\sigma'$}
+  \begin{proof}Induction on \pr\ relation.
+    \begin{itemize}
+    \item[\lam\ case:] 
+\begin{minipage}{0.2\linewidth}
+      \underline{Hypotheses:} 
+\end{minipage}
+\begin{minipage}{0.6\linewidth}
+\AxiomC{$M [x/z] \pr M' [y/z]$}
+\LeftLabel{$\lam$}
+\RightLabel{$z \# \lam x M, \lam y M'$}
+\UnaryInfC{$\lam x M \pr \lam y M'$}
+\DisplayProof
+\end{minipage}
+\begin{minipage}{0.2\linewidth}
+,\quad $\sigma \pr \sigma'$
+\end{minipage}
+
+\begin{minipage}{0.2\linewidth}
+      \underline{Tesis:} 
+\end{minipage}
+\begin{minipage}{0.6\linewidth}
+$(\lam x M) \sigma \pr (\lam y M') \sigma'$
+\end{minipage}
+
+\underline{Proof}:
+
+      \[
+      \begin{array}{rcll}
+        \lam x M    &\pr& \lam y M'  & \text{hypothesis} \\
+         M [x/z]    &\pr& M' [y/z]  & \pr\ \text{\lam\ rule}\ \exists z / z \# \lam x M, \lam y M' \\
+        (M [x/z]) \sigma [z/z] &\pr& (M'  [y/z]) \sigma' [z/z] & \text{inductive hypothesis with}\ \sigma = \sigma [z/z], \sigma' = \sigma' [z/z] \\
+        M  (\sigma [z/z] \circ [x/z]) &\pr& M'  (\sigma' [z/z] \circ [y/z]) & \text{substitution composition} \\
+        M  \sigma [x/z] &\pr& M' \sigma'[y/z] & \text{lemmas and}\ u = \choice{\sigma}{\lam x M}, w = \choice{\sigma'}{\lam y M'} \\
+        M ([u/z] \circ \sigma [x/u]) &\pr& M' ([w/z] \circ \sigma'[y/w]) & \text{lemmas} \\ % lemmaσ∘≺+ and lemmaσ≡σ'→Mσ≡Mσ' 
+        (M \sigma [x/u]) [u/z] &\pr& (M'\sigma'[y/w]) [w/z] & \text{substitution composition} \\
+        \lam u M \sigma [x/u] &\pr& \lam w M'\sigma'[y/w] & \pr\ \text{\lam\ rule} \\
+        (\lam x M) \sigma &\pr& (\lam y M') \sigma'& \text{substitution definition}\\
+      \end{array}
+      \]
+     \qed
+
+
+    \item[$\beta$\ case:] 
+
+\begin{minipage}{0.2\linewidth}
+      \underline{Hypotheses:} 
+\end{minipage}
+\begin{minipage}{0.6\linewidth}
+\AxiomC{$M \pr M'$}
+\AxiomC{$N \pr N'$}
+\LeftLabel{$\beta$}
+\BinaryInfC{$(\lam x M) N \pr M' [x/N']$}
+\DisplayProof
+\end{minipage}
+\begin{minipage}{0.2\linewidth}
+,\quad $\sigma \pr \sigma'$
+\end{minipage}
+
+\begin{minipage}{0.2\linewidth}
+      \underline{Tesis:} 
+\end{minipage}
+\begin{minipage}{0.6\linewidth}
+$((\lam x M) N) \sigma  \pr (M' [x/N']) \sigma'$
+\end{minipage}
+
+\underline{Proof}:
+
+      \[
+      \begin{array}{rcll}
+        (\lam x M) N &\pr& M' [x/N'] & \text{hypothesis} \\
+         M \pr M' &\wedge& N \pr N'  & \beta\ \text{rule} \\
+         M \sigma [x/y]  \pr M' \sigma' [x/y] &\wedge& N \sigma \pr N' \sigma'  &\text{inductive hypothesis, with}\ y = \choice{\sigma}{\lam x M} \\
+         (\lam y M \sigma [x/y]) (N \sigma)  &\pr&  (M' \sigma' [x/y]) [y / N' \sigma'] &\beta\ \text{rule} \\
+         (\lam y M \sigma [x/y]) (N \sigma)  &\pr&  M' \sigma' [x/ N' \sigma'] & \text{auxiliary lemmas} \\
+         ((\lam x M) N) \sigma             &\pr&  (M' [x/ N']) \sigma' & \text{substitution definition and auxiliar lemma} \\
+      \end{array}
+      \]
+      \qed
+    \end{itemize}
+  \end{proof}
+\end{lem}
+
+% LEMMA 2 ------------------------------------------------------------------------------------------------------------------------------------------
+
+Now we prove the needed lemma. {\color{red}Now is needed indeed ?}
+
+\begin{lem}{$M \alpsy N, N \pr P,  \then  M \pr P$}
+  \begin{proof}Induction on \pr\ relation.
+    \begin{itemize}
+    \item[\lam\ case:] 
+
+\begin{minipage}{0.16\linewidth}
+      \underline{Hypotheses:} 
+\end{minipage}
+\begin{minipage}{0.55\linewidth}
+\AxiomC{$M [w/u] \alpsy N [x/u]$}
+\LeftLabel{$\lam$}
+\RightLabel{$u \# \lam w M, \lam x N$}
+\UnaryInfC{$\lam w M  \alpsy \lam x N$}
+\DisplayProof
+\end{minipage}
+\begin{minipage}{0.5\linewidth}
+\AxiomC{$N [x/z] \pr P [y/z]$}
+\LeftLabel{$\lam$}
+\RightLabel{$z \# \lam x N, \lam y P$}
+\UnaryInfC{$\lam x N \pr \lam y P$}
+\DisplayProof
+\end{minipage}
+
+\begin{minipage}{0.2\linewidth}
+      \underline{Tesis:} 
+\end{minipage}
+\begin{minipage}{0.6\linewidth}
+$\lam w M \pr \lam y P$
+\end{minipage}
+
+\underline{Proof}:
+
+      \[
+      \begin{array}{rcll}
+         M [w/u] &\alpsy& N [x/u]  & \text{hypothesis} \\
+         M [w/u][u/z] &\alpsy& N [x/u][u/z]  & \text{substitution lemma of alpha equivalence relation} \\
+         M [w/z] &\alpsy& N [x/z]  & \text{auxiliar lemma and } u \# \lam w M, \lam x N \\
+      \end{array}
+      \]
+
+So $M [w/z] \alpsy N [x/z]$\ and $N [x/z] \pr P [y/z]$ then by inductive hypothesis $M [w/z] \pr P [y/z]$\ with $z \#  \lam x N, \lam y P$. As $\lam w M \alpsy \lam x N$\ then $z \# \lam w M, \lam y P$.
+
+Finally, applying lambda rule of parallel reduction relation we have the desired result.
+
+\begin{center}
+  \AxiomC{$M [w/z] \pr P [y/z]$} \LeftLabel{$\lam$}
+  \RightLabel{$z \# \lam w M, \lam y P$}
+  \UnaryInfC{$\lam w M \pr \lam y P$} \DisplayProof
+\end{center}
+\qed
+      
+    \item[$\beta$\ case:] 
+
+\begin{minipage}{0.2\linewidth}
+      \underline{Hypotheses:} 
+\end{minipage}
+\begin{minipage}{0.6\linewidth}
+\AxiomC{$M[y/z] \alpsy N[x/z]$}
+\RightLabel{$z \# \lam y M, \lam x N$}
+\LeftLabel{$\lam$}
+\UnaryInfC{$\lam y M \alpsy \lam x N$ }
+\AxiomC{$M' \alpsy N'$}
+\LeftLabel{a}
+\BinaryInfC{$(\lam y M) M' \alpsy (\lam x N) N'$}
+\DisplayProof
+\end{minipage}
+
+\begin{minipage}{0.2\linewidth}
+.
+\end{minipage}
+\begin{minipage}{0.6\linewidth}
+\AxiomC{$N \pr P$}
+\AxiomC{$N' \pr P'$}
+\LeftLabel{$\beta$}
+\BinaryInfC{$(\lam x N) N' \pr P [x/P']$}
+\DisplayProof
+\end{minipage}
+
+\begin{minipage}{0.2\linewidth}
+      \underline{Tesis:} 
+\end{minipage}
+\begin{minipage}{0.6\linewidth}
+$(\lam y M) M' \pr P [x/P']$
+\end{minipage}
+
+\underline{Proof}:
+
+\AxiomC{$M' \alpsy N'$}
+\AxiomC{$N' \pr P'$}
+\LeftLabel{inductive hypothesis}
+\BinaryInfC{$M' \pr P'$}
+\DisplayProof
+
+
+\AxiomC{$M[y/z] \alpsy N[x/z]$}
+\LeftLabel{subst.lemma}
+\UnaryInfC{$M[y/z][z/x] \alpsy N[x/z][z/x]$}
+\UnaryInfC{$M[y/x] \alpsy N$}
+\AxiomC{$N \pr P$}
+\LeftLabel{inductive hypothesis}
+\BinaryInfC{$M[y/x] \pr P$}
+\LeftLabel{subst. lemma}
+\UnaryInfC{$M[y/x][x/y] \pr P [x/y]$}
+\UnaryInfC{$M[y/y] \pr P [x/y]$}
+\DisplayProof
+
+
+
+    \end{itemize}
+  \end{proof}
+\end{lem}
+
+
+
+\end{document}

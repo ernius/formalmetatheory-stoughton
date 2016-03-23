@@ -1,0 +1,142 @@
+\message{ !name(diapositivas.tex)}\documentclass[utf,utf8x,hyperref=hidelinks]{beamer}
+
+% no margen
+%\usepackage[margin=0.1in]{geometry}
+\usepackage{graphicx}
+%\usepackage[bw,references]{latex/agda}
+%\usepackage[conor,references]{latex/agda}
+\usepackage[references,links]{agda}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{textgreek}
+\usepackage{catchfilebetweentags}
+\usepackage{tipa}
+
+%math
+\newcommand{\alp}{\ensuremath{\alpha}}
+\newcommand{\lamb}{\ensuremath{\lambda}}
+\newcommand{\alphaeqsym}{\ensuremath{\sim_\alpha}}
+\newcommand{\choice}{\ensuremath{\chi}}
+
+%Agda
+\newcommand{\freshin}[2]{\ensuremath{#1 \mathbin{\AgdaDatatype{\#}} #2}}
+\newcommand{\lambAg}[2]{\ensuremath{\AgdaInductiveConstructor{ƛ}\, #1\, #2}}
+\newcommand{\inAg}{\ensuremath{\mathbin{\AgdaFunction{∈}}}}
+\newcommand{\ninAg}{\ensuremath{\mathbin{\AgdaFunction{∉}}}}
+\newcommand{\neqAg}{\ensuremath{\mathbin{\AgdaInductiveConstructor{≢}}}}
+\newcommand{\ap}[2]{#1 \ensuremath{\mathbin{\AgdaInductiveConstructorFunction{·}} #2}}
+\newcommand{\var}[1]{\ensuremath{\AgdaInductiveConstructorFunction{v}\, #1}}
+\newcommand{\fv}{\ensuremath{{\AgdaFunction{fv}}\,}}
+\newcommand{\perm}{\ensuremath{\mathbin{\AgdaFunction{∙}}}}
+\newcommand{\perma}{\ensuremath{\mathbin{\AgdaFunction{∙}_a}}}
+\newcommand{\free}{\ensuremath{\mathbin{\AgdaFunction{*}}}}
+\newcommand{\choiceAg}{\ensuremath{\AgdaFunction{χ}\,}}
+\newcommand{\choiceAgaux}{\ensuremath{\AgdaFunction{χ'}\,}}
+\newcommand{\alpeqAg}{\ensuremath{\mathbin{\AgdaDatatype{∼α}}}}
+\newcommand{\swap}[3]{\ensuremath{(#1 \mathbin{\AgdaFunction{∙}} #2)\, #3}}
+
+% \newcommand{\agdaf}[1]{\ensuremath{\AgdaFunction{#1}\,}}
+% \newcommand{\agdaD}[1]{\ensuremath{\AgdaDatatype{#1}\,}}
+% \newcommand{\agdav}[1]{\ensuremath{\AgdaBound{#1}\,}}
+
+\DeclareUnicodeCharacter{411}{\textipa{\textcrlambda}}
+\DeclareUnicodeCharacter{65288}{(}
+\DeclareUnicodeCharacter{65289}{)}
+\DeclareUnicodeCharacter{8788}{\ensuremath{\coloneqq}}
+\DeclareUnicodeCharacter{8336}{\ensuremath{_a}}
+\DeclareUnicodeCharacter{8799}{\ensuremath{\overset{?}{=}}}
+\DeclareUnicodeCharacter{8759}{\ensuremath{\dblcolon}}
+\DeclareUnicodeCharacter{8718}{\ensuremath{\square}}
+\DeclareUnicodeCharacter{9657}{\ensuremath{\triangleright}}
+
+%\usetheme{Berlin}
+%\inserttocsection
+\mode<presentation>
+%% \newcommand\Section[2][]{%
+%%    \section<presentation>[#1]{#2}
+%%    \section<article>{#2}
+%% }
+
+\begin{document}
+
+\message{ !name(diapositivas.tex) !offset(-3) }
+
+
+%% \AgdaTarget{Λ}
+%% \ExecuteMetaData[Term.tex]{term} 
+\title{Alpha-Structural Induction and Recursion for the Lambda Calculus in Constructive Type Theory}
+\author{Ernesto Copello,\'Alvaro Tasistro,Nora Szasz, Ana Bove, Maribel Fern\'andez}
+
+\date[LSFA ’15]{10th Workshop on Logical and Semantic Frameworks, with Applications.}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}
+\frametitle{Outline}
+\tableofcontents
+\end{frame}
+
+\section{Motivation}
+
+\begin{frame}
+
+\begin{block}{Motivation}
+  We are interested in studying and formalising rasoning techniques over programming languages.
+  \begin{itemize}
+  \item like pen-and-paper ones
+  \item using constructive type theory as proof assistant
+  \end{itemize}
+
+  \smallskip
+
+  As $\lambda$-calculus is a minimal one, we want to formilise its properties in Agda.
+\end{block}
+
+\pause
+
+\begin{table}
+\begin{tabular}{c | c | c | }
+Strategy & Pros & Cons \\
+\hline 
+John T & 13:04 & 24:15  \onslide<2-> \\ 
+Norman P & 8:00 & 22:45 \onslide<3->\\
+Alex K & 14:00 & 28:00  \onslide<4->\\
+Sarah H & 9:22 & 21:10 
+\end{tabular}
+\end{table}
+
+% \begin{block}{Several known formalisation strategies}
+%   \begin{minipage}{0.3\linewidth}
+%     \begin{itemize}
+%     \item<1-> One sort variables 
+%     \item<3-> Frege 
+%     \item<5-> De Bruijn 
+%     \item<7-> Locally Nameless
+%     \item<9-> Hoas, Weak-Hoas
+%     \item<11-> Nominal
+%     \end{itemize}
+%   \end{minipage}
+%   \begin{minipage}{0.68\linewidth}
+%     \begin{itemize}
+%     \item<2-> capture avoiding substitution, reasoning over $\alpha$-equivalence classes \emph{BVC}
+%     \item<4-> reasoning over $\alpha$-equivalence classes
+%     \item<6-> introduces indexes operations, well-formed predicates, distance from intuitive classical proofs
+%     \item<8-> need less indexes operations
+%     \item<10-> has limitations
+%     \item<12-> we study this strategy in this work
+%     \end{itemize}
+%   \end{minipage}
+\end{block}
+
+% \pause
+% \begin{block}{Which to choose ?}
+% \end{block}
+
+
+\end{frame}
+
+\end{document}
+
+\message{ !name(diapositivas.tex) !offset(-142) }

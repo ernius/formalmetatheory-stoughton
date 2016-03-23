@@ -15,9 +15,9 @@ open Inverse
 import Function.Equality as FE
 open import Data.Sum hiding (map) renaming (_⊎_ to _∨_)
 open import Data.Product renaming (Σ to Σₓ;map to mapₓ;_,_ to _∶_) public
-open import Relation.Nullary
+open import Relation.Nullary 
 open import Relation.Nullary.Decidable hiding (map)
-open import Relation.Binary
+open import Relation.Binary hiding (Rel)
 open import Relation.Binary.PropositionalEquality as PropEq renaming ([_] to [_]ᵢ) 
 open import Data.List hiding (any) renaming (length to length') 
 -- open import Data.List.Any as Any hiding (map)
@@ -311,14 +311,14 @@ lemmaStrengthening⊢# {M = ƛ y M} {x}
 --    lemmaStrengthening⊢,#  : {Γ : Cxt}{M : Λ}{x : V}{α β : Type} 
 --                           → x # M → Γ  ⊢ M ∶ α → Γ ‚ x ∶ β ⊢ M ∶ α 
 
-lemma⊢*∈  : {Γ : Cxt}{M : Λ}{x : V}{α : Type} 
-          → Γ ⊢ M ∶ α → x * M → x ∈ Γ
-lemma⊢*∈ (⊢v x∈Γ)             *v            = x∈Γ
-lemma⊢*∈ (⊢· Γ⊢M:α⟶β Γ⊢N:α)  (*·l x*M)     = lemma⊢*∈ Γ⊢M:α⟶β x*M
-lemma⊢*∈ (⊢· Γ⊢M:α⟶β Γ⊢N:α)  (*·r x*N)     = lemma⊢*∈ Γ⊢N:α x*N
-lemma⊢*∈ (⊢ƛ Γ,y:α⊢M:β)       (*ƛ x*M y≢x) with lemma⊢*∈ Γ,y:α⊢M:β x*M
-... | here x≡y     = ⊥-elim (y≢x (sym x≡y))
-... | there _ x∈Γ  = x∈Γ
+-- lemma⊢*∈  : {Γ : Cxt}{M : Λ}{x : V}{α : Type} 
+--           → Γ ⊢ M ∶ α → x * M → x ∈ Γ
+-- lemma⊢*∈ (⊢v x∈Γ)             *v            = x∈Γ
+-- lemma⊢*∈ (⊢· Γ⊢M:α⟶β Γ⊢N:α)  (*·l x*M)     = lemma⊢*∈ Γ⊢M:α⟶β x*M
+-- lemma⊢*∈ (⊢· Γ⊢M:α⟶β Γ⊢N:α)  (*·r x*N)     = lemma⊢*∈ Γ⊢N:α x*N
+-- lemma⊢*∈ (⊢ƛ Γ,y:α⊢M:β)       (*ƛ x*M y≢x) with lemma⊢*∈ Γ,y:α⊢M:β x*M
+-- ... | here x≡y     = ⊥-elim (y≢x (sym x≡y))
+-- ... | there _ x∈Γ  = x∈Γ
 
 -- lemmaStrengthening⊢⊆#  : {Γ : Cxt}{M : Λ}{α : Type} 
 --                        → Γ ⊢ M ∶ α → Σₓ Cxt (λ Δ → (Δ ⊢ M ∶ α) × (Δ ⊆ Γ) × ((x : V) → x ∈ Δ → x * M))
@@ -337,4 +337,19 @@ lemma⊢*∈ (⊢ƛ Γ,y:α⊢M:β)       (*ƛ x*M y≢x) with lemma⊢*∈ Γ,y
 --       | yes refl  = ⊥-elim ((lemma#→¬free x#M) (∀x→x∈Δ→x*M x x∈Δ))
 \end{code}
 %</typeStrengthening>
+
+\begin{code}
+open import Relation Λ
+
+dual-#-* : {R : Rel}{y : V} → (_#_ y) preserved-by R → (_*_ y) preserved-by (dual R)
+dual-#-* {R} {y} #-pres-R {m} {m'} y*m m'Rm with y #? m'
+... | yes y#m' = ⊥-elim (lemma-free→¬# y*m (#-pres-R {m'} {m} y#m' m'Rm))
+... | no ¬y#m' = lemma¬#→free ¬y#m'
+
+dual-*-# : {R : Rel}{y : V} → (_*_ y) preserved-by (dual R) → (_#_ y) preserved-by R
+dual-*-# {R} {y} *-pres-R {m} {m'} y#m m'Rm with y #? m'
+... | yes y#m' = y#m'
+... | no ¬y#m' = ⊥-elim (lemma-free→¬# (*-pres-R (lemma¬#→free ¬y#m') m'Rm) y#m) 
+\end{code}
+
 
