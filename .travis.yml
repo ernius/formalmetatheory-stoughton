@@ -40,13 +40,15 @@ install:
   - cabal install Agda-2.4.2.5
 
   - mkdir -p $HOME/stdlib/
-  - if [[ ! -e $HOME/stdlib/ ]]; then
-      wget https://github.com/agda/agda-stdlib/archive/2.4.2.5.zip $HOME/stdlib/2.4.2.5.zip &&
-      unzip $HOME/stdlib/2.4.2.5.zip;
-    fi
+  - wget https://github.com/agda/agda-stdlib/archive/v0.11.tar.gz $HOME/stdlib/v0.11.tar.gz
+  - tar xzvf v0.11.tar.gz $HOME/stdlib/
+  # - if [[ ! -e $HOME/stdlib/ ]]; then 
+  #     wget https://github.com/agda/agda-stdlib/archive/2.4.2.5.zip $HOME/stdlib/2.4.2.5.zip &&
+  #     unzip $HOME/stdlib/2.4.2.5.zip;
+  #   fi
 
 script:
-  - agda -i . -i $HOME/stdlib/agda-stdlib-2.4.2.5/src/ ChurchRosser.lagda
+  - agda -i . -i $HOME/stdlib/agda-stdlib-0.11/src/ ChurchRosser.lagda
 
 
 notifications:
