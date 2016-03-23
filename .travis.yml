@@ -36,6 +36,7 @@ install:
 
   - cabal install alex
   - cabal install happy
+  - cabal install cpphs-1.19.3
   - cabal install Agda-2.4.2.5
 
   - mkdir -p $HOME/stdlib/
