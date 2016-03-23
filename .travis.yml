@@ -1,7 +1,7 @@
 language: haskell
 
 ghc:
-  - 7.10.2
+  - 7.10
 
 before_install:
 #  - zlib1g-dev 
