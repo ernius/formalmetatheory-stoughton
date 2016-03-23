@@ -8,6 +8,7 @@ cache:
   - $HOME/.ghc
   - $HOME/.cabal
   - $HOME/.stack
+  - $HOME/stdlib/
 
 before_install:
 #  - zlib1g-dev 
@@ -31,7 +32,7 @@ install:
   - cabal install alex
   - cabal install cpphs
 
-  - cabal install Agda-2.4.2.5
+  - cabal --force-reinstalls install Agda-2.4.2.5
   - wget https://github.com/agda/agda-stdlib/archive/2.4.2.5.zip $HOME/stdlib/2.4.2.5.zip
   - unzip $HOME/stdlib/2.4.2.5.zip 
 
