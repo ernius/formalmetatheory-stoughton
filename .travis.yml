@@ -41,7 +41,7 @@ install:
 
   - mkdir -p $HOME/stdlib/
   - wget https://github.com/agda/agda-stdlib/archive/v0.11.tar.gz -O $HOME/stdlib/v0.11.tar.gz
-  - tar xzvf $HOME/stdlib/v0.11.tar.gz $HOME/stdlib/
+  - tar -xzvf -C $HOME/stdlib/ $HOME/stdlib/v0.11.tar.gz 
   # - if [[ ! -e $HOME/stdlib/ ]]; then 
   #     wget https://github.com/agda/agda-stdlib/archive/2.4.2.5.zip $HOME/stdlib/2.4.2.5.zip &&
   #     unzip $HOME/stdlib/2.4.2.5.zip;
