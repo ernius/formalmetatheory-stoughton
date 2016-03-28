@@ -89,25 +89,6 @@ lemmaλxM∼λyN→M∼N[y/x] {x} {y} {M} {N} (∼ƛ {y = z} z#λxM z#λyN M[x/z
      ≈⟨ sym (lemma≺+ z#λyN) ⟩
        N ∙ ι ≺+ (y , v x)
      ∎
---
--- lemmaλxM∼λyN←M∼N[y/x] : {x y : V}{M N : Λ} → x # ƛ y N → M ∼α N ∙ ι ≺+ (y , v x) →  ƛ x M ∼α ƛ y N 
--- lemmaλxM∼λyN←M∼N[y/x] {x} {y} {M} {N} x#ƛyN M~N[y/x] 
---   = ∼ƛ  z#ƛxM z#ƛyN 
---         (begin
---           M ∙ ι ≺+ (x , v z) 
---         ∼⟨ lemma-subst M~N[y/x] lemma∼α⇂ρ  ⟩
---           (N ∙ ι ≺+ (y , v x)) ∙ ι ≺+ (x , v z)
---         ≈⟨ sym (lemma≺+ {y} {x} {N} {v z} {ι} x#ƛyN) ⟩
---           N ∙ ι ≺+ (y ∶ v z)
---         ∎)
---   where 
---   z = χₜ (ƛ x M · ƛ y N)
---   z#ƛxM : z # ƛ x M
---   z#ƛxM with lemmaχₜ# {ƛ x M · ƛ y N}
---   ... | #· z# _ = z# 
---   z#ƛyN : z # ƛ y N
---   z#ƛyN with lemmaχₜ# {ƛ x M · ƛ y N}
---   ... | #· _ z# = z# 
 \end{code}
 
 %<*parallellnoalphaeftalpha>

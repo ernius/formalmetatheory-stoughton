@@ -124,10 +124,33 @@ lemma→α⊆⇉ (inj₂ M~N)
 \begin{code}
 lemma⇉⊆→α* :  _⇉_ ⊆R _→α*_
 lemma⇉⊆→α* (⇉v x)             = refl
-lemma⇉⊆→α* (⇉ƛ x M⇉N)         = abs-star  (lemma⇉⊆→α* M⇉N)
-lemma⇉⊆→α* (⇉· M⇉M' N⇉N')     = app-star  (lemma⇉⊆→α* M⇉M')  (lemma⇉⊆→α* N⇉N')
-lemma⇉⊆→α* (⇉β x M⇉M' N⇉N')   = →α*-rdx   (lemma⇉⊆→α* M⇉M')  (lemma⇉⊆→α* N⇉N') 
-lemma⇉⊆→α* (⇉α M⇉N N∼P)       = trans     (lemma⇉⊆→α* M⇉N)   (just (inj₂ N∼P))
+lemma⇉⊆→α* (⇉ƛ x M⇉N)         = abs-star (lemma⇉⊆→α* M⇉N)
+lemma⇉⊆→α* (⇉· {M} {M'} {N} {N'} M⇉M' N⇉N')     
+  = begin→ 
+       M · N
+     →⟨ app-star-l (lemma⇉⊆→α* M⇉M')  ⟩
+       M' · N
+     →⟨ app-star-r (lemma⇉⊆→α* N⇉N') ⟩
+       M' · N'
+     ▣ 
+lemma⇉⊆→α* (⇉β x {M} {M'} {N} {N'} M⇉M' N⇉N')   
+  =  begin→
+       (ƛ x M) · N
+     →⟨ app-star-l (abs-star (lemma⇉⊆→α* M⇉M'))  ⟩
+       (ƛ x M') · N
+     →⟨ app-star-r (lemma⇉⊆→α* N⇉N')   ⟩
+       (ƛ x M') · N'
+     →⟨ just (inj₁ ( ctxinj ▹β))  ⟩
+       M' ∙ ι ≺+ (x , N')
+     ▣ 
+lemma⇉⊆→α* (⇉α {M} {N} {P} M⇉N N∼P)       
+  =  begin→
+       M
+     →⟨ lemma⇉⊆→α* M⇉N ⟩
+       N
+     →⟨ just (inj₂ N∼P) ⟩
+       P   
+     ▣  
 \end{code}
 
 \begin{code}

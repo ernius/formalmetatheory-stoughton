@@ -16,6 +16,7 @@
 \usepackage{catchfilebetweentags}
 \usepackage{tipa}
 \usepackage{bussproofs}
+\usepackage{color}
 
 %math
 \newcommand{\noalp}{\ensuremath{no\alpha}}
@@ -217,6 +218,81 @@ Proof:
 With previous result we are able to prove that the parallel relation is also alpha compatible in the left term of the relation.
 
 \ExecuteMetaData[ChurchRosser.tex]{parallelleftalpha}
+
+{\color{red} Nuevo: This result can not be proved by induction on the term $M$, neither its length, because in the alpha case of the parallel relation the term in the premises does not decrease. The only remaining choice is an induction on the parallel relation, which fails due to our substitution operation always renames abstraction variables. We show the failing abstraction case to make explicit this problematic behaviour.
+
+\begin{itemize}
+   \item[abs. case:] $M = \lam x M$
+
+\begin{minipage}{0.2\linewidth}
+           Hypotheses: 
+\end{minipage}
+\begin{minipage}{0.2\linewidth}
+$\lam x M \alpsy \lam y N $ , 
+\end{minipage}
+\begin{minipage}{0.6\linewidth}
+\AxiomC{$N \p P$}
+\LeftLabel{$\p abs.$}
+\UnaryInfC{$\lam y N \p \lam y P$}
+\DisplayProof          
+\end{minipage}
+
+Tesis: $\lam x M \p \lam y P$
+
+Proof: 
+
+By being doing the induction over the parallel relation, we have to apply the inductive hypothesis to $N \p P$.  Then we proceed as follows:
+
+\AxiomC{$\lam x M  \alpsy \lam y N$}
+\UnaryInfC{$M [x := y] \alpsy N$}
+
+\AxiomC{$N \p P$}
+\LeftLabel{h.i.}
+\BinaryInfC{$M [x := y] \p P$}
+\LeftLabel{subst. lemma \p}
+\UnaryInfC{$M [x := y] [y := x]\p P [y := x] $}
+\DisplayProof
+
+Here the problem comes because of $M [x := y] [y := x]$\ is not equals to $M$, as our substitution normilises terms, so we only have that $M [x := y] [y := x] \alpsy M$. Here appears the need of an induction on the term to be able to apply inductive hypothesis again and obtain that $M \p P [y := x]$, and then continue as follows:
+
+\AxiomC{$M \p P [y := x]$}
+\LeftLabel{\p\lam}
+\UnaryInfC{$\lam x M \p \lam x P [y := x]$}
+\AxiomC{$\lam x P [y := x] \alpsy \lam y P$}
+\LeftLabel{\p\alp}
+\BinaryInfC{$\lam x M \p \lam y P $}
+\DisplayProof
+
+But as we already explained due to alpha rule it is imposible an inductions on terms. So we introduce $\p_0$ relation to pospone the alpha problematic rule, and be able to do an induction on terms.
+% \LeftLabel{subst. lemma \p}
+% \UnaryInfC{$N[y:=x] \p P[y:=x]$}
+% \LeftLabel{lemma\p no$\alpha$}
+% \UnaryInfC{$\exists Q, Q \alpsy P[y:=x], N[y:=x]\p Q$ no \alp\ rules}
+% \LeftLabel{ind. hyp.}
+% \BinaryInfC{$M \p Q$}
+% \DisplayProof
+
+
+% \AxiomC{$M \p Q$}
+% \AxiomC{$Q \alpsy P[y:=x]$}
+% \LeftLabel{\p \alp}
+% \BinaryInfC{$M \p P[y:=x]$}
+% \LeftLabel{\p abs.}
+% \UnaryInfC{$\lam x M  \p \lam x P[y:=x]$}
+
+% \AxiomC{$x \# \lam x M$}
+% \AxiomC{$\lam x M \alpsy \lam y N $}
+% \BinaryInfC{$x \# \lam y N$}
+% \AxiomC{$\lam y N \p \lam y P$}
+% \BinaryInfC{$x \# \lam y P$}
+% \UnaryInfC{$\lam x P[y:=x] \alpsy \lam y P$}
+% \LeftLabel{\p \alp}
+% \BinaryInfC{$\lam x M \p \lam y P$}
+% \DisplayProof
+
+\end{itemize}
+
+ }
 
 To prove this result we will use the next similar one, it adds the extra premise that the parallel relation hypothesis has no alpha rules in its derivation.
 
