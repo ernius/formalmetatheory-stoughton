@@ -1,55 +1,51 @@
-language: c
-
-# explicitly request container-based infrastructure
+# Use new container infrastructure to enable caching
 sudo: false
 
-matrix:
-  include:
-    - env: CABALVER=1.22 GHCVER=7.10.2
-      addons: {apt: {packages: [cabal-install-1.22,ghc-7.10.2],sources: [hvr-ghc]}}
-      
+# Do not choose a language; we provide our own build tools.
+language: generic
 
+# Caching so the next build will be fast too.
 cache:
   directories:
-  - $HOME/.ghc
-  - $HOME/.cabal
   - $HOME/.stack
-  - $HOME/stdlib/
+
+# Ensure necessary system libraries are present
+addons:
+  apt:
+    packages:
+      - libgmp-dev
 
 before_install:
-  - export PATH=/opt/ghc/$GHCVER/bin:/opt/cabal/$CABALVER/bin:$PATH
+# Download and unpack the stack executable
+- mkdir -p ~/.local/bin
+- export PATH=$HOME/.local/bin:$PATH
+- travis_retry curl -L https://get.haskellstack.org/stable/linux-x86_64.tar.gz | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/stack'
 
 install:
-  # Number of modules compile in parallel.
-  - export JOBS=2
+  - stack install --no-terminal --install-ghc --resolver lts-3.0 Agda
+  #- cabal install cabal-install
+  #- export PATH=$HOME/.cabal/bin:$PATH
 
-  # The Emacs version.
-  - emacs --version
+  # Showing Cabal configuration
+  #- cat $HOME/.cabal/config
 
-  # Reading package list for `hackage.haskell.org`.
-  - cabal update
-  - cat $HOME/.cabal/config
+  # New Happy needed for haskell-src-exts
+  #- cabal install happy
 
-  # Installing latest version of cabal-install.
-  - cabal install cabal-install
-  - export PATH=$HOME/.cabal/bin:$PATH
+  # New new Alex for us
+  #- cabal install alex
+  #- cabal install cpphs-1.18.9
 
-  - cabal install alex
-  - cabal install happy
-  - cabal install cpphs-1.19.3
-  - cabal install Agda-2.4.2.5
-
-  - mkdir -p $HOME/stdlib/
-  - wget https://github.com/agda/agda-stdlib/archive/v0.11.tar.gz -O $HOME/stdlib/v0.11.tar.gz
-  - tar -xzvC $HOME/stdlib/ -f $HOME/stdlib/v0.11.tar.gz 
-  # - if [[ ! -e $HOME/stdlib/ ]]; then 
-  #     wget https://github.com/agda/agda-stdlib/archive/2.4.2.5.zip $HOME/stdlib/2.4.2.5.zip &&
-  #     unzip $HOME/stdlib/2.4.2.5.zip;
-  #   fi
-
+  #- cabal install Agda-2.4.2.2
+  # - wget https://github.com/agda/agda-stdlib/archive/v0.9.tar.gz -O /tmp/v0.9.tar.gz
+  #- tar -xzf /tmp/v0.9.tar.gz -C /tmp/
+  # Agda 2.4.2.5
+  - wget https://github.com/agda/agda-stdlib/archive/v0.11.tar.gz -O /tmp/v0.11.tar.gz
+  - tar -xzf /tmp/v0.11.tar.gz -C /tmp/
+  
 script:
-  - agda -i . -i $HOME/stdlib/agda-stdlib-0.11/src/ ChurchRosser.lagda
-
+  - agda --version
+  - agda -i . -i /tmp/agda-stdlib-0.11/src/ ChurchRosser.lagda
 
 notifications:
   email: false
